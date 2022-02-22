@@ -1,0 +1,1 @@
+gcc so_long.c errors.c gnl/*.c libft/*.c srcs/*.c -Lmlx -lmlx -framework OpenGL -framework AppKit -Werror -Wextra -Wall -g -o so_long && ./so_long map.ber
