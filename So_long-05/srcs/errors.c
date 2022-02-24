@@ -1,41 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   errors.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/23 16:37:52 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/02/23 16:38:34 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/02/23 17:00:15 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/02/23 17:00:17 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdio.h>
 
-static int	check_set(char c, char *set)
+int	error(char *message)
 {
-	int	k;
-
-	k = 0;
-	while (set[k])
-	{
-		if (c == set[k])
-			return (1);
-		k++;
-	}
+	printf("\033[0;31m" " Error\n    %s\n" "\033[0m", message);
 	return (0);
 }
 
-char	*ft_strtrim(char const *s1, char const *set)
+void	*null_error(char *message)
 {
-	int		c;
-	int		k;
+	printf("\033[0;31m" " Error\n	%s\n" "\033[0m", message);
+	return (0);
+}
 
-	c = 0;
-	while (check_set(s1[c], (char *)set))
-		c++;
-	k = ft_strlen(s1);
-	while (check_set(s1[k - 1], (char *)set) && k > c)
-		k--;
-	return (ft_substr((char *)s1, c, k - c));
+void	print_warning(char *message)
+{
+	printf("\033[0;33m" " Warning\n %s\n" "\033[0m", message);
 }

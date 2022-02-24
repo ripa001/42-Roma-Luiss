@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   moves.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/23 17:00:27 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/02/23 17:00:28 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/so_long.h"
 
 void	move_to_empty(t_game *game, t_tile *tile)
@@ -13,9 +25,8 @@ void	move_to_empty(t_game *game, t_tile *tile)
 void	move_to_exit(t_game *game, t_tile *tile)
 {
 	effect_anim(&game->effect, tile->position);
-	// remove_player(game);
+	remove_player(game);
 	game->collects = -1;
-	// end_program(game);
 }
 
 void	pick_collect(t_game *game, t_tile *tile)
@@ -57,7 +68,7 @@ t_bool	move_to(t_game *game, t_tile *tile)
 		kill_player(game, tile->position);
 	else
 		return (FALSE);
-	if (game->enemy_exist)
+	if (game->enemy_exist && game->player.tile != NULL)
 		move_enemies(game);
 	return (TRUE);
 }

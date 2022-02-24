@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   so_long.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/02/23 16:55:32 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/02/23 16:58:59 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "includes/so_long.h"
 
 int	free_matrix(char **table)
@@ -52,6 +64,8 @@ int	input(int key, t_game *game)
 	t_bool	moved;
 
 	moved = 0;
+	if (key == ESC)
+		end_program(game);
 	if (game->collects != -1)
 	{
 		if (key == KEY_UP && !(game->player.tile == NULL))
@@ -62,15 +76,11 @@ int	input(int key, t_game *game)
 			moved = move_to(game, game->player.tile->left);
 		else if (key == KEY_RIGHT && !(game->player.tile == NULL))
 			moved = move_to(game, game->player.tile->right);
-		else if (key == ESC)
-			end_program(game);
 		else
 			return (0);
 		if (moved)
 			printf("Mosse -> %02d\n", game->moves++);
 	}
-	// else
-	// 	exit(0);
 	return (1);
 }
 
@@ -80,6 +90,8 @@ int	main(int argc, char *argv[])
 	char	**matrix;
 
 	matrix = checks(argv[1], argc);
+	if (!matrix)
+		return (0);
 	game.tilemap = generate_tilemap(matrix, &game);
 	free_matrix(matrix);
 	setup_animation(&game);

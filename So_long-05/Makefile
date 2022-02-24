@@ -1,28 +1,37 @@
-# %.o: %.c
-# 	$(CC) -Wall -Wextra -Werror -Imlx -c $< -o $@
-
-# ${NAME}: $(OBJ)
-# 	$(CC) $(OBJ) -Lmlx -lmlx -framework OpenGL -framework AppKit -o $(NAME)
-
-# all: gcc so_long.c errors.c gnl/*.c libft/*.c srcs/*.c -Lmlx -lmlx -framework OpenGL -framework AppKit -Werror -Wextra -Wall -g -o so_long && ./so_long map.ber
-
 NAME = so_long
-SRC = my_lib/gnl/*.c my_lib/libft/*.c srcs/*.c
+SRC = so_long.c my_lib/gnl/*.c my_lib/libft/*.c \
+	srcs/animation.c \
+	srcs/check_map.c  \
+	srcs/color.c \
+	srcs/end_program.c \
+	srcs/errors.c \
+	srcs/imgs.c \
+	srcs/map_set.c \
+	srcs/move_enemy.c \
+	srcs/move_enemy_sup.c \
+	srcs/moves.c \
+	srcs/moves_sup.c \
+	srcs/rendering.c \
+	srcs/so_long_sup.c \
+	srcs/tilemap.c \
+	srcs/tilemap_sup.c \
+	srcs/validate.c
 
-FLAGS = -Wall -Werror -Wextra -g -o
+MIN = -lmlx -framework OpenGL -framework AppKit
+FLAGS = -Werror -Wextra -Wall -g -o
 CC = gcc
 OBJ = $(SRC:.=.o)
 
 $(NAME):
-	$(CC) $(FLAGS) $(SRCS)
+	$(CC) $(SRC) $(MIN) $(FLAGS) $(NAME)
 
-all: $(NAME) | ./a.out map.ber
+all: $(NAME)
 
 clean:
 	rm -rf *.o
 
 fclean: clean
-	rm -rf $(NAME) a.out
+	rm -rf $(NAME)
 
 re: fclean all
 

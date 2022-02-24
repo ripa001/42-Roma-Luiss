@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/23 19:31:56 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/02/02 17:08:18 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/02/23 16:59:37 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_strjoin_free(char const *s1, char const *s2, int size);
 char	*ft_substr_edit(char const *s, int start, int len, int free_flag);
 int		ft_strchr_edit(const char *s, int c);
-int     ft_strlen_gnl(const char *str);
+int		ft_strlen_gnl(const char *str);
 char	*get_next_line(int fd);
 void	funzione_while(char *s, char *sub, int len, int start);
 
