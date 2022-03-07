@@ -1,40 +1,40 @@
 #include "pusciacca.h"
 
-int findComb(int *arr, int *comb, int count, int x)
-{
-	int i;
-	int k;
-	int j;
-	int c;
+// int findComb(int *arr, int *comb, int count, int x)
+// {
+// 	int i;
+// 	int k;
+// 	int j;
+// 	int c;
 
-	i = x;
-	comb = malloc(sizeof(int) * count);
-	j = -1;
-	k = -1;
-	c = 1;
-	while (++i != x)
-	{
-		if (arr[i] == arr[j] + 1)
-		{
-			comb[++k] = arr[i];
-			c += 1;
-			j = i;
-		}
-		if (i == count)
-			i = -1;
-	}
-	i = x;
-	while (++i != )
-	{
-		if (arr[i] == x + 1)
-		{
-			comb[++j] = arr[i];
-			c += 1;
-			x = arr[i];
-		}
-	}
-	return (c);
-}
+// 	i = x;
+// 	comb = malloc(sizeof(int) * count);
+// 	j = -1;
+// 	k = -1;
+// 	c = 1;
+// 	while (++i != x)
+// 	{
+// 		if (arr[i] == arr[j] + 1)
+// 		{
+// 			comb[++k] = arr[i];
+// 			c += 1;
+// 			j = i;
+// 		}
+// 		if (i == count)
+// 			i = -1;
+// 	}
+// 	i = x;
+// 	while (++i != )
+// 	{
+// 		if (arr[i] == x + 1)
+// 		{
+// 			comb[++j] = arr[i];
+// 			c += 1;
+// 			x = arr[i];
+// 		}
+// 	}
+// 	return (c);
+// }
 
 int countBination(int *arr, int count)
 {
@@ -42,6 +42,7 @@ int countBination(int *arr, int count)
 	int k;
 	int j;
 	int c;
+	int x;
 	int max;
 
 	i =  -1;
@@ -49,6 +50,9 @@ int countBination(int *arr, int count)
 	c = 1;
 	j =  -1;
 	k = i;
+	x = 0;
+	// for (int a = 0; a < count - 1; a++)
+	// 	printf("%d \n", arr[a]);
 	while (++i < count)
 	{
 		c = 1;
@@ -56,16 +60,35 @@ int countBination(int *arr, int count)
 		k = i;
 		while (++j != i)
 		{
+			
+
 			if (arr[j] == arr[k] + 1)
 			{
+				if (c == 12)
+					printf("senno qui");
 				c += 1;
 				k = j;
 			}
 			if (j == count)
 				j = -1;
 		}
+		x = k;
+		while (++k != i)
+		{
+			if (arr[k] > arr[x])
+			{
+				if(c == 12)
+					printf("qui");
+				c += 1;
+				
+				x = k;
+			}
+			printf("%d %d - %d - %d\n", arr[k], k, arr[x], count);
+			if (k == count)
+				k = -1;
+		}
 		if (j == count - 1)
-			j =  -1;
+			j = -1;
 		else
 			j = i;
 		if (c > max)
@@ -152,7 +175,7 @@ int main(int argc, char *argv[])
 	mamma = numerateArr(argc - 1, temp, arrint);
 	max = countBination(mamma, argc - 1);
 	for (int a = 0; a < argc - 1; a++)
-		printf("%d - %d\n", mamma[a], max);
+		printf("%d - %d - %d \n", mamma[a], arrint[a], max);
 }
 
 
