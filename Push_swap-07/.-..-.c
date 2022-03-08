@@ -35,66 +35,109 @@
 // 	}
 // 	return (c);
 // }
+void emptyarr(t_arrt arrt)
+{
+	int j;
+
+	j = -1;
+	while (++j < arrt.count)
+		arrt.arr[j] = 0;
+}
+
+int checkarr(t_arrt *arrt, int i, int x)
+{
+	int	j;
+
+	j = -1;
+	while (++j < i)
+		if (arrt[j].arr[arrt[i].count - 1] < x)
+			return (0);
+	return (1);
+}
+
+int checkrevarr(t_arrt *arrt, int i, int x)
+{
+	int	j;
+
+	j = -1;
+	while (++j < i)
+		if (arrt[j].arr[arrt[i].count - 1] > x)
+			return (0);
+	return (1);
+}
+
+void swaparr(t_arrt *arrt, int c, int lines)
+{
+	int i;
+
+	i = c - 1;
+	while (++i < lines)
+	{
+		arrt[i - 1] = arrt[i];
+	}
+}
+
+int	middlecheck(t_arrt *arrt, int lines, int x)
+{
+	int i;
+	int c;
+
+	i = lines;
+	c = 0;
+	while (--i)
+	{
+		if (arrt[i].arr[arrt[i].count - 1] < x)
+		{
+			arrt[i].arr[arrt[i].count] = x;
+			c = arrt[i].count;
+			arrt[i].count++;
+			break;
+		}
+	}
+	i = lines;
+	while (--i)
+		if (arrt[i].count == c)
+			emptyarr(arrt[i]);
+	i = lines;
+	while (--i)
+		if (arrt[i - 1].arr[0] == 0)
+			swaparr(arrt, i, lines);
+}
+
 
 int countBination(int *arr, int count)
 {
+	t_arrt *arrt;
 	int i;
-	int k;
 	int j;
-	int c;
-	int x;
-	int max;
+	int lines;
 
-	i =  -1;
-	max = 1;
-	c = 1;
-	j =  -1;
-	k = i;
-	x = 0;
-	// for (int a = 0; a < count - 1; a++)
-	// 	printf("%d \n", arr[a]);
+	arrt = malloc(sizeof(t_arrt)*count);
+	i = -1;
+	j = 0;
+	lines = 1;
+	// arrt[0].arr = malloc(sizeof(int)*count);
+	// arrt[0].arr[0] = arr[0];
 	while (++i < count)
 	{
-		c = 1;
-		j = i;
-		k = i;
-		while (++j != i)
+		if (checkarr(arrt, lines, arr[i]))
 		{
-			
-
-			if (arr[j] == arr[k] + 1)
-			{
-				if (c == 12)
-					printf("senno qui");
-				c += 1;
-				k = j;
-			}
-			if (j == count)
-				j = -1;
+			arrt[j].arr = ft_calloc(count, sizeof());
+			arrt[j].arr[0] = arr[i];
+			arrt[j].count = 1;
+			lines++;
 		}
-		x = k;
-		while (++k != i)
+		else if (checkrevarr(arrt, lines, arr[i]))
 		{
-			if (arr[k] > arr[x])
-			{
-				if(c == 12)
-					printf("qui");
-				c += 1;
-				
-				x = k;
-			}
-			printf("%d %d - %d - %d\n", arr[k], k, arr[x], count);
-			if (k == count)
-				k = -1;
+			arrt[lines - 1].arr[arrt[lines - 1].count] = arr[i];
+			arrt[lines - 1].count++;
 		}
-		if (j == count - 1)
-			j = -1;
 		else
-			j = i;
-		if (c > max)
-			max = c;
+		{
+			middlecheck(arrt, lines, arr[i]);
+			lines--;
+		}
 	}
-	return (max);
 }
 
 int checkintrip(int *arr, int count, int checker)
@@ -175,7 +218,7 @@ int main(int argc, char *argv[])
 	mamma = numerateArr(argc - 1, temp, arrint);
 	max = countBination(mamma, argc - 1);
 	for (int a = 0; a < argc - 1; a++)
-		printf("%d - %d - %d \n", mamma[a], arrint[a], max);
+		printf("%d - %d \n", mamma[a], arrint[a]);
 }
 
 
