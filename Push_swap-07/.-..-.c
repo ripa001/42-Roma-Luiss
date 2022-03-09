@@ -49,9 +49,12 @@ int checkarr(t_arrt *arrt, int i, int x)
 	int	j;
 
 	j = -1;
-	while (++j < i)
-		if (arrt[j].arr[arrt[i].count - 1] < x)
+	while (++j < i - 1)
+	{
+		printf("%d, %d\n", j, i);
+		if (arrt[j].arr[arrt[i].count] < x)
 			return (0);
+	}
 	return (1);
 }
 
@@ -60,9 +63,10 @@ int checkrevarr(t_arrt *arrt, int i, int x)
 	int	j;
 
 	j = -1;
-	while (++j < i)
-		if (arrt[j].arr[arrt[i].count - 1] > x)
-			return (0);
+	while (++j < i - 1){
+		printf("%d, %d -\n", arrt[j].arr[0], j);
+		if (arrt[j].arr[arrt[i].count] > x)
+			return (0);}
 	return (1);
 }
 
@@ -77,7 +81,7 @@ void swaparr(t_arrt *arrt, int c, int lines)
 	}
 }
 
-int	middlecheck(t_arrt *arrt, int lines, int x)
+void	middlecheck(t_arrt *arrt, int lines, int x)
 {
 	int i;
 	int c;
@@ -105,29 +109,22 @@ int	middlecheck(t_arrt *arrt, int lines, int x)
 }
 
 
-int countBination(int *arr, int count)
+void countBination(int *arr, int count)
 {
 	t_arrt *arrt;
 	int i;
 	int j;
 	int lines;
 
-	arrt = malloc(sizeof(t_arrt)*count);
+	arrt = malloc(sizeof(t_arrt) * count);
 	i = -1;
 	j = 0;
 	lines = 1;
-	// arrt[0].arr = malloc(sizeof(int)*count);
-	// arrt[0].arr[0] = arr[0];
+	arrt[0].arr = ft_calloc(lines, sizeof(int));
+	arrt[0].arr[0] = arr[0];
 	while (++i < count)
 	{
-		if (checkarr(arrt, lines, arr[i]))
-		{
-			arrt[j].arr = ft_calloc(count, sizeof());
-			arrt[j].arr[0] = arr[i];
-			arrt[j].count = 1;
-			lines++;
-		}
-		else if (checkrevarr(arrt, lines, arr[i]))
+		if (checkrevarr(arrt, lines, arr[i]))
 		{
 			arrt[lines - 1].arr[arrt[lines - 1].count] = arr[i];
 			arrt[lines - 1].count++;
@@ -137,6 +134,7 @@ int countBination(int *arr, int count)
 			middlecheck(arrt, lines, arr[i]);
 			lines--;
 		}
+		if (i == )
 	}
 }
 
@@ -216,7 +214,7 @@ int main(int argc, char *argv[])
 		temp[i] = ft_atoi(argv[i + 1]);
 	}
 	mamma = numerateArr(argc - 1, temp, arrint);
-	max = countBination(mamma, argc - 1);
+	countBination(mamma, argc - 1);
 	for (int a = 0; a < argc - 1; a++)
 		printf("%d - %d \n", mamma[a], arrint[a]);
 }
