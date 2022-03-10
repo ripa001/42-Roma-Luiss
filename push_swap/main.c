@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/09 20:04:14 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/10 12:43:47 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,6 @@ void	ft_resolve(t_struct *data)
 	data->size_b = 0;
 	if(ft_order(data->ar_a, data->size_a) == 0)
 	{
-		printf("ciao\n");
 		ft_printarray(ft_findcomb(data), data->size_comb);
 
 		//ft_sep(data);
@@ -148,7 +147,7 @@ int main(int argc, char *argv[])
 	data.size_a = argc - 1;
 	if (ft_checkfordoubles(data.ar_a, data.size_a) == 0)
 		ft_error();
-	data.ar_a = ft_trasformer(data.ar_a, data.size_a);
+	// data.ar_a = ft_trasformer(data.ar_a, data.size_a);
 	data.min = ft_min(data.ar_a, data.size_a);
 	data.min_pos = ft_findind(data.min, data.ar_a, data.size_a);
 	data.max = ft_max(data.ar_a, data.size_a);
