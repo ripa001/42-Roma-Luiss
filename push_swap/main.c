@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/15 20:10:27 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/16 00:55:35 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,16 @@
 // 	ft_printarray(data->ar_b, data->size_b);
 // 	printf("\n");
 // }
+int ft_move(t_struct *data, int pos, int dir)
+{
+	if (dir)
+	{
+// 	rra
+	}
+	else{
+		//ra
+	}
+}
 
 int ft_check_set(int *arr, int c, int size)
 {
@@ -133,46 +143,78 @@ int get_max(int *arr, int size, int x)
 	return (max);
 }
 
+int	ft_get_min_arr(int *arr, int size)
+{
+	int i;
+	int min;
+
+	i = -1;
+	min = 0;
+	while (++i < size)
+		if (min > arr[i] || i == 0)
+			min = i;
+	return (min);
+}
+
+
+int ft_count_front(t_struct *data, int i)
+{
+	int count;
+	int max;
+
+	count = -1;
+	max = 0;
+	while (++count < data->size_a)
+	{
+		max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
+		if (data->ar_a[count] == max)
+			break ;
+	}
+	return (count + 2);
+}
+
+int ft_count_back(t_struct *data, int i)
+{
+	int count;
+	int max;
+
+	count = data->size_a;
+	max = 0;
+	while (count--)
+	{
+		max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
+		if (data->ar_a[count] == max)
+			break ;
+	}
+	return (data->size_a - count);
+}
+
 int	*ft_count_moves(t_struct *data)
 {
 	int	i;
 	int	count;
 	int	min;
-	int	max;
-	int	div;
+	int	flag;
 	int	*a;
 
 	i = -1;
 	count = 0;
-	div = 0;
 	min = 1;
 	a = malloc(sizeof(int) * (data->size_b));
 	while (++i < data->size_b)
 	{
-		count = -1;
-		while (++count < data->size_a)
-		{
-			max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
-			if (data->ar_a[count] == max)
-				break ;
-		}
-		min += count++;
-		count = data->size_a;
-		while (count--)
-		{
-			max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
-			if (data->ar_a[count] == max)
-				break ;
-		}
-		count = data->size_a - count;
-		max = 1;
-		if (++count < min)
+		min = ft_count_front(data, i);
+		count = ft_count_back(data, i);
+		flag = 1;
+		if (count < min)
 		{
 			min = count;
-			max = 0;
+			flag = 0;
 		}
 		a[i] = min;
 	}
+	min = ft_get_min_arr(a, data->size_b);
+	ft_move(data, min, flag);
 	return (a);
 }
 
@@ -248,6 +290,7 @@ void	ft_resolve(t_struct *data)
 	int	max_size;
 	int *max;
 	int *avg;
+	int *moves;
 
 	max_size = data->size_a;
 	data->ar_b = (int *) malloc (sizeof(int) * max_size);
@@ -257,12 +300,14 @@ void	ft_resolve(t_struct *data)
 		max = ft_findcomb(data);
 		avg = ft_avg(data->size_a);
 		ft_sep(data, max, avg);
-		ft_count_moves(data);
 		ft_printarray(max, data->size_comb);
 		printf("\n");
 		ft_printarray(data->ar_a, data->size_a);
 		printf("\n");
 		ft_printarray(data->ar_b, data->size_b);
+		printf("\n");
+		moves = ft_count_moves(data);
+		ft_printarray(ft_count_moves(data), data->size_b);
 	}
 }
 
