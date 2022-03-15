@@ -10,10 +10,10 @@ Per ogni B calcolo quale riesco ad inserire con meno spostamenti
 e lo inserisco.
 
 a.out 1
-5	4
+5	4	2
+3	2	3
+4	3	1
 1   1
-3	2
-4	3
 10	6
 6	5
 

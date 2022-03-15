@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/10 12:43:47 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/15 13:18:05 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,20 +94,139 @@
 // 	ft_printarray(data->ar_b, data->size_b);
 // 	printf("\n");
 // }
+int ft_check_set(int *arr, int c, int size)
+{
+	int i;
+
+	i = -1;
+	while (++i < size)
+		if (arr[i] == c)
+			return (1);
+	return (0);
+}
+
+void	push_in_b(t_struct *data, int pos, int val)
+{
+	int div;
+
+	div = data->size_a / 2;
+	if (pos < div)
+		while (data->ar_a[0] != val)
+			ft_rotate_a(data);
+	else
+		while (data->ar_a[0] != val)
+			ft_rev_rotate_a(data);
+	ft_push_b(data);
+}
+
+
+int ft_check_chunk(t_struct *data, int c, int y, int *maxcomb)
+{
+	int i;
+
+	i = -1;
+	printf ("%d - ", c);
+	while (++i < data->size_a)
+		if (data->ar_a[i] > c && data->ar_a[i] < y && !ft_check_set(maxcomb, data->ar_a[i], data->size_comb))
+			return (1);
+	return (0);
+}
+
+void	ft_sep(t_struct *data, int *max_comb, int *avg)
+{
+	int i;
+	int f;
+	int flag;
+
+	i = -1;
+	f = 0;
+	flag = 1;
+	while (++f < 5)
+	{
+		flag = 1;
+		while (flag)
+		{
+			i = -1;
+			ft_printarray(data->ar_a, data->size_a);
+
+			while (++i < data->size_a)
+			{
+				if (!ft_check_set(max_comb, data->ar_a[i], data->size_comb))
+					if (data->ar_a[i] > avg[f - 1] && data->ar_a[i] <= avg[f])
+					{
+						flag = 1;
+						push_in_b(data, i, data->ar_a[i]);
+						break ;
+					}
+				flag = 0;
+			}
+		}
+		// while (data->size_b < data->size_a - data->size_comb - 1)
+		// {
+		// 	if (!ft_check_set(max_comb, data->ar_a[i], data->size_comb))
+		// 	{
+		// 		if (data->ar_a[0] > avg[f - 1] && data->ar_a[0] <= avg[f]){
+		// 			printf("push %d - %d\n",data->ar_a[0], data->size_b);
+		// 			ft_push_b(data);
+		// 			continue ;
+		// 			printf("push %d - %d\n",data->ar_a[0], data->size_b);
+		// 			printf("\n");
+		// 		}
+		// 	}
+		// 	ft_rotate_a(data);
+		// }
+	}
+}
+
+int *ft_avg(int size)
+{
+	int i;
+	int *s;
+	int g;
+
+	s = (int *)malloc(sizeof(int) * 5);
+	i = -1;
+	g = 0;
+	while (++i < size)
+		g += i + 1;
+	s[0] = 0;
+	s[2] = g / (i + 1);
+	i = -1;
+	g = 0;
+	while (++i < size / 2)
+		g += i + 1;
+	s[1] = g / (i + 1);
+	g = 0;
+	while (++i < size + 1)
+		g += i;
+	s[3] = g / ((i) / 2);
+	s[4] = size;
+	return (s);
+}
 
 void	ft_resolve(t_struct *data)
 {
 	int	max_size;
+	int *max;
+	int *avg;
 
 	max_size = data->size_a;
 	data->ar_b = (int *) malloc (sizeof(int) * max_size);
 	data->size_b = 0;
 	if(ft_order(data->ar_a, data->size_a) == 0)
 	{
-		ft_printarray(ft_findcomb(data), data->size_comb);
-
-		//ft_sep(data);
-		//ft_brainfuck(data);
+		max = ft_findcomb(data);
+		avg = ft_avg(data->size_a);
+		ft_printarray(data->ar_a, data->size_a);
+		printf("\n");
+		ft_printarray(data->ar_b, data->size_b);
+		printf("\n");
+		ft_sep(data, max, avg);
+		ft_printarray(max, data->size_comb);
+		printf("\n");
+		ft_printarray(data->ar_a, data->size_a);
+		printf("\n");
+		ft_printarray(data->ar_b, data->size_b);
 	}
 }
 
@@ -147,9 +266,11 @@ int main(int argc, char *argv[])
 	data.size_a = argc - 1;
 	if (ft_checkfordoubles(data.ar_a, data.size_a) == 0)
 		ft_error();
-	// data.ar_a = ft_trasformer(data.ar_a, data.size_a);
+	data.ar_a = ft_trasformer(data.ar_a, data.size_a);
 	data.min = ft_min(data.ar_a, data.size_a);
 	data.min_pos = ft_findind(data.min, data.ar_a, data.size_a);
+	ft_printarray(data.ar_a, data.size_a);
+	printf("\n");
 	data.max = ft_max(data.ar_a, data.size_a);
 	data.max_pos = ft_findind(data.max, data.ar_a, data.size_a);
 	ft_resolve(&data);

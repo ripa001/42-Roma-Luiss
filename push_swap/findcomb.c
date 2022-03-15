@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 21:45:51 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/10 12:47:26 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/11 18:54:55 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,11 @@ int	*ft_findcomb(t_struct *data)
 			ft_newrow(comb, data->ar_a[i], ++row);
 		else
 			ft_checkmiddle(comb, data->ar_a[i], row);
-}
 		i++;
 		if (i == data->size_a)
 			i = 0;
 	}
 	// free(comb);
-	data->size_comb = row;
+	data->size_comb = row + 1;
 	return (comb[row]);
 }

@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 05:30:57 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/10 12:44:19 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/11 18:54:26 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_printarray(int *ar, int size)
 	int	i;
 
 	i = 0;
-	while (i <= size)
+	while (i < size)
 	{
 		printf("%d\n", ar[i]);
 		i++;

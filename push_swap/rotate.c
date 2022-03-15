@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 15:21:00 by mabasset          #+#    #+#             */
-/*   Updated: 2022/02/27 21:43:59 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/12 03:03:11 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_rotate(int *ar, int size)
 
 void	ft_rotate_a(t_struct *data)
 {
-	write(1, "ra\n", 3);
+// 	write(1, "ra\n", 3);
 	ft_rotate(data->ar_a, data->size_a);
 }
 
