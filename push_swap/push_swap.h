@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/09 20:02:22 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/15 17:45:02 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_arrt
 {
 	int *arr;
 	int count;
-}			t_arrt;
+}			t_arr;
 
 typedef	struct
 {
