@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/15 17:45:02 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/16 11:26:50 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ typedef	struct
 	int	min_pos;
 	int size_comb;
 }				t_struct;
+
+typedef struct s_moves
+{
+	int *arr;
+	int min_a;
+	int min_b;
+	int dir_a;
+	int dir_b;
+}				t_moves;
 
 void	ft_swap_a(int *ar);
 void	ft_swap_b(int *ar);
