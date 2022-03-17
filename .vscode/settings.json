@@ -10,6 +10,12 @@
 		"iterator": "c",
 		"string": "c",
 		"string_view": "c",
-		"vector": "c"
+		"vector": "c",
+		"__bit_reference": "c",
+		"__string": "c",
+		"deque": "c",
+		"ios": "c",
+		"memory": "c",
+		"type_traits": "c"
 	}
 }
