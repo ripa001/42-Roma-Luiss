@@ -6,115 +6,69 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/16 22:17:10 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/17 19:11:20 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-// void	ft_go_away(t_struct *data, int x)
-// {
-// 	int	i;
-// 	int	nb;
-
-// 	nb = data->ar_a[x];
-// 	i = 0;
-// 	while(data->ar_a[0] != nb)
-// 	{
-// 		if (x <= data->size_a / 2)
-// 			ft_rotate_a(data);
-// 		else if (x > data->size_a / 2)
-// 			ft_rev_rotate_a(data);
-// 	}
-// 	ft_push_b(data);
-// }
-
-// void	ft_sep(t_struct *data)
-// {
-// 	int	i;
-// 	int	j;
-// 	int	flag;
-
-// 	i = 0;
-// 	while (i < data->size_a)
-// 	{
-// 		flag = 0;
-// 		j = 0;
-// 		while (j < data->size_best)
-// 		{
-// 			if(data->best[j] == data->ar_a[i])
-// 				flag = 1;
-// 			j++;
-// 		}
-// 		if (flag == 0)
-// 		{
-// 			ft_go_away(data, i);
-// 			i = -1;
-// 		}
-// 		i++;
-// 	}
-// 	printf("\n");
-// 	printf("A:\n");
-// 	ft_printarray(data->ar_a, data->size_a);
-// 	printf("\n");
-// 	printf("B:\n");
-// 	ft_printarray(data->ar_b, data->size_b);
-// 	printf("\n");
-// }
-
-//int		ft_nbcheck()
-
-// int		ft_moves(int nb, t_struct *data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (data->ar_a[i] != nb + 1)
-// 	{
-// 		if (i == )
-// 	}
-// }
-
-// void	ft_brainfuck(t_struct *data)
-// {
-// 	printf("%d\n", data->ar_a[0]);
-// 	printf("%d\n", data->ar_b[0]);
-// 	while (data->size_b != 0)
-// 	{
-// 		if ()
-// 			while (data->ar_a[0] != data->ar_b[0] + 1)
-// 				ft_rotate_a(data);
-// 			ft_push_a(data);
-// 	}
-// 	printf("\n");
-// 	printf("A:\n");
-// 	ft_printarray(data->ar_a, data->size_a);
-// 	printf("\n");
-// 	printf("B:\n");
-// 	ft_printarray(data->ar_b, data->size_b);
-// 	printf("\n");
-// }
-int ft_move(t_struct *data, int pos, int dir1, int dir2)
+void	ft_move_until_orded(t_struct *data)
 {
-	if (dir1 && dir2)
+	int div;
+	int i;
+	int ix;
+
+	div = data->size_a / 2;
+	i = -1;
+	while (++i < data->size_a)
+		if (data->ar_a[i] == 1)
+			ix = i;
+	if (ix < div)
+		while (data->ar_a[0] != 1)
+			ft_rotate_a(data);
+	else
+		while (data->ar_a[0] != 1)
+			ft_rev_rotate_a(data);
+}
+
+void	ft_move(t_struct *data, t_moves *moves, int min)
+{
+	int a;
+	int b;
+
+	a = moves[min].min_a;
+	b = moves[min].min_b - 1;
+	if (moves[min].dir_b && moves[min].dir_a)
 	{
-		ft_rev_rotate_b(data);// 	rrb
-		ft_rev_rotate_a(data);// 	rra
+		while (b--)
+			ft_rotate_b(data);
+		while (a--)
+			ft_rev_rotate_a(data);
+		ft_push_a(data);
 	}
-	else if (dir1 && !dir2)
+	else if (moves[min].dir_b && !moves[min].dir_a)
 	{
-		ft_rotate_b(data);// 	rb
-		ft_rev_rotate_a(data);// 	rra
+		while (b--)
+			ft_rev_rotate_b(data);
+		while (a--)
+			ft_rotate_a(data);
+		ft_push_a(data);
 	}
-	else if (!dir1 && dir2)
+	else if (!moves[min].dir_b && moves[min].dir_a)
 	{
-		ft_rev_rotate_b(data);// 	rrb
-		ft_rotate_a(data);// 	ra
+		while (b--)
+			ft_rev_rotate_b(data);
+		while (a--)
+			ft_rev_rotate_a(data);
+		ft_push_a(data);
 	}
 	else
 	{
-		ft_rotate_b(data);// 	rrb
-		ft_rotate_a(data);// 	rra
+		while (b--)
+			ft_rev_rotate_b(data);
+		while (a--)
+			ft_rotate_a(data);
+		ft_push_a(data);
 	}
 }
 
@@ -156,17 +110,22 @@ int get_max(int *arr, int size, int x)
 	return (max);
 }
 
-int	ft_get_min_arr(int *arr, int size)
+int	ft_get_min_arr(t_moves *moves, int size)
 {
 	int i;
+	int ix;
 	int min;
 
 	i = -1;
 	min = 0;
+	ix = 0;
 	while (++i < size)
-		if (min > arr[i] || i == 0)
-			min = i;
-	return (min);
+		if (min > moves[i].sum || i == 0)
+		{
+			ix = i;
+			min = moves[i].sum;
+		}
+	return (ix);
 }
 
 
@@ -183,7 +142,7 @@ int ft_count_front_b(t_struct *data, int i)
 		if (data->ar_b[count] == max)
 			break ;
 	}
-	return (count);
+	return (data->size_b - i + 1);
 }
 
 int ft_count_back_b(t_struct *data, int i)
@@ -199,7 +158,7 @@ int ft_count_back_b(t_struct *data, int i)
 		if (data->ar_b[count] == max)
 			break ;
 	}
-	return (data->size_a - count - 1);
+	return (i + 1);
 }
 int ft_count_front_a(t_struct *data, int i)
 {
@@ -214,7 +173,7 @@ int ft_count_front_a(t_struct *data, int i)
 		if (data->ar_a[count] == max)
 			break ;
 	}
-	return (count + 2);
+	return (count + 1);
 }
 
 int ft_count_back_a(t_struct *data, int i)
@@ -230,49 +189,44 @@ int ft_count_back_a(t_struct *data, int i)
 		if (data->ar_a[count] == max)
 			break ;
 	}
-	return (data->size_a - count);
+	return (data->size_a - count - 1);
 }
 
-int	*ft_count_moves(t_struct *data)
+void	ft_count_moves(t_struct *data)
 {
-	t_moves moves;
+	t_moves *moves;
 	int	i;
 	int	count;
 	int	min;
-	int	min2;
-	int	flag;
-	int	*a;
 
 	i = -1;
 	count = 0;
-	min = 0;
-	min = 0;
-	moves.arr = malloc(sizeof(int) * (data->size_b));
+	// min = 0;
+	moves = malloc(sizeof(t_moves) * (data->size_b));
 	while (++i < data->size_b)
 	{
-
-		moves.min_a = ft_count_front_a(data, i);
-		count = ft_count_back_a(data, i);
-		moves.dir_a = 1;
-		if (count < moves.min_a)
+		moves[i].min_a = ft_count_back_a(data, i);
+		count = ft_count_front_a(data, i);
+		moves[i].dir_a = 1;
+		if (count < moves[i].min_a)
 		{
-			moves.min_a = count;
-			moves.dir_a = 0;
+			moves[i].min_a = count;
+			moves[i].dir_a = 0;
 		}
 		count = ft_count_front_b(data, i);
-		moves.min_b = ft_count_back_b(data, i);
-		moves.dir_b = 1;
-		if (count < moves.min_b)
+		moves[i].min_b = ft_count_back_b(data, i);
+		moves[i].dir_b = 1;
+		if (count < moves[i].min_b)
 		{
-			moves.min_b = count;
-			moves.dir_b = 0;
+			moves[i].min_b = count;
+			moves[i].dir_b = 0;
 		}
-		printf("min_b: %d - min_a: %d\n", moves.min_b, moves.min_a);
-		moves.arr[i] = moves.min_b + moves.min_a;
+		moves[i].sum = moves[i].min_b + moves[i].min_a;
+		printf("min_b - dir: %d - %d | min_a - dir: %d - %d | sum: %d \n", moves[i].min_b, moves[i].dir_b, moves[i].min_a, moves[i].dir_a, moves[i].sum);
 	}
-	min = ft_get_min_arr(moves.arr, data->size_b);
-	ft_move(data, min, moves.dir_b, moves.dir_a);
-	return (a);
+	min = ft_get_min_arr(moves, data->size_b);
+	printf("Chosed min index: %d\n", min);
+	ft_move(data, moves, min);
 }
 
 int ft_check_chunk(t_struct *data, int c, int y, int *maxcomb)
@@ -347,7 +301,6 @@ void	ft_resolve(t_struct *data)
 	int	max_size;
 	int *max;
 	int *avg;
-	int *moves;
 
 	max_size = data->size_a;
 	data->ar_b = (int *) malloc (sizeof(int) * max_size);
@@ -357,14 +310,26 @@ void	ft_resolve(t_struct *data)
 		max = ft_findcomb(data);
 		avg = ft_avg(data->size_a);
 		ft_sep(data, max, avg);
-		ft_printarray(max, data->size_comb);
-		printf("\n");
+
+		while (data->size_b){
+			printf("Arr a:\n");
 		ft_printarray(data->ar_a, data->size_a);
-		printf("\n");
+		printf("Arr b:\n");
+		ft_printarray(data->ar_b, data->size_b);
+			ft_count_moves(data);
+			}
+		// 	printf("Arr a moved:\n");
+		// ft_printarray(data->ar_a, data->size_a);
+		// printf("Arr b moved:\n");
+		// ft_printarray(data->ar_b, data->size_b);
+		// 	ft_count_moves(data);
+		ft_move_until_orded(data);
+		printf("Arr a moved:\n");
+		ft_printarray(data->ar_a, data->size_a);
+		printf("Arr b moved:\n");
 		ft_printarray(data->ar_b, data->size_b);
 		printf("\n");
-		moves = ft_count_moves(data);
-		ft_printarray(ft_count_moves(data), data->size_b);
+		// ft_printarray(ft_count_moves(data), data->size_b);
 	}
 }
 
@@ -399,7 +364,7 @@ int main(int argc, char *argv[])
     if (argc < 2)
 		ft_error();
     if (ft_check(argv, argc) == 0)
-        ft_error();
+		ft_error();
 	data.ar_a = ft_initializer(argv, argc);
 	data.size_a = argc - 1;
 	if (ft_checkfordoubles(data.ar_a, data.size_a) == 0)
