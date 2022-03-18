@@ -3,14 +3,55 @@
 /*                                                        :::      ::::::::   */
 /*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 15:06:31 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/06 12:14:13 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/18 12:53:34 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+long long	checks(char *arg, int i, long long nbr)
+{
+	while (arg[i])
+	{
+		if (arg[i] < '0' || arg[i] > '9')
+		{
+			ft_error();
+			exit(0);
+		}
+		i++;
+	}
+	i = 0;
+	while (arg[i])
+	{
+		nbr = nbr * 10 + (arg[i] - 48);
+		i++;
+	}
+	return (nbr);
+}
+
+int	ft_is_integer(char *arg)
+{
+	long long	nbr;
+	int			i;
+	int			sign;
+
+	nbr = 0;
+	sign = 1;
+	i = 0;
+	if (arg[0] == '-')
+	{
+		i++;
+		sign = -1;
+	}
+	nbr = checks(arg, i, nbr);
+	nbr *= sign;
+	if (nbr > 2147483647 || nbr < -2147483648)
+		return (0);
+	return (1);
+}
 
 void	ft_checkmalloc(void *ptr)
 {
@@ -32,22 +73,24 @@ int	ft_order(int *ar, int size)
 	return (1);
 }
 
-int ft_check(char **matrix, int size)
+int	ft_check(char **argv, int size)
 {
-	int row;
-	int col;
+	int	row;
+	int	col;
 
 	row = 1;
 	while (row < size)
 	{
 		col = 0;
-		if (matrix[row][col] == '-' || matrix[row][col] == '+')
+		if (argv[row][col] == '-' || argv[row][col] == '+')
 			col += 1;
-		if (matrix[row][col] == '\0')
+		if (argv[row][col] == '\0')
 			return (0);
-		while (matrix[row][col] != '\0')
+		if (!ft_is_integer(argv[row]))
+			return (0);
+		while (argv[row][col] != '\0')
 		{
-			if (ft_isdigit(matrix[row][col]) == 0)
+			if (ft_isdigit(argv[row][col]) == 0)
 				return (0);
 			col++;
 		}
@@ -61,17 +104,13 @@ int	ft_checkfordoubles(int *ar, int size)
 	int	i;
 	int	j;
 
-	i = 0;
-	while (i < size)
+	i = -1;
+	while (++i < size)
 	{
 		j = i + 1;
 		while (j < size)
-		{
-			if( ar[i] == ar[j])
+			if (ar[i] == ar[j++])
 				return (0);
-			j++;
-		}
-		i++;
 	}
 	return (1);
 }

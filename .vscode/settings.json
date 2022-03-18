@@ -16,6 +16,8 @@
 		"deque": "c",
 		"ios": "c",
 		"memory": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"bitset": "c",
+		"unordered_map": "c"
 	}
 }

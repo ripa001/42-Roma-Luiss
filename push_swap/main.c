@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/17 19:11:20 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 13:11:55 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ft_move_until_orded(t_struct *data)
 {
-	int div;
-	int i;
-	int ix;
+	int	div;
+	int	i;
+	int	ix;
 
 	div = data->size_a / 2;
 	i = -1;
@@ -33,8 +33,8 @@ void	ft_move_until_orded(t_struct *data)
 
 void	ft_move(t_struct *data, t_moves *moves, int min)
 {
-	int a;
-	int b;
+	int	a;
+	int	b;
 
 	a = moves[min].min_a;
 	b = moves[min].min_b - 1;
@@ -49,7 +49,7 @@ void	ft_move(t_struct *data, t_moves *moves, int min)
 	else if (moves[min].dir_b && !moves[min].dir_a)
 	{
 		while (b--)
-			ft_rev_rotate_b(data);
+			ft_rotate_b(data);
 		while (a--)
 			ft_rotate_a(data);
 		ft_push_a(data);
@@ -72,9 +72,9 @@ void	ft_move(t_struct *data, t_moves *moves, int min)
 	}
 }
 
-int ft_check_set(int *arr, int c, int size)
+int	ft_check_set(int *arr, int c, int size)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < size)
@@ -83,9 +83,9 @@ int ft_check_set(int *arr, int c, int size)
 	return (0);
 }
 
-void	push_in_b(t_struct *data, int pos, int val)
+int	push_in_b(t_struct *data, int pos, int val, int *flag)
 {
-	int div;
+	int	div;
 
 	div = data->size_a / 2;
 	if (pos < div)
@@ -94,13 +94,15 @@ void	push_in_b(t_struct *data, int pos, int val)
 	else
 		while (data->ar_a[0] != val)
 			ft_rev_rotate_a(data);
+	*flag = 1;
 	ft_push_b(data);
+	return (0);
 }
 
-int get_max(int *arr, int size, int x)
+int	get_max(int *arr, int size, int x)
 {
-	int i;
-	int max;
+	int	i;
+	int	max;
 
 	i = -1;
 	max = 0;
@@ -112,58 +114,28 @@ int get_max(int *arr, int size, int x)
 
 int	ft_get_min_arr(t_moves *moves, int size)
 {
-	int i;
-	int ix;
-	int min;
+	int	i;
+	int	ix;
+	int	min;
 
 	i = -1;
 	min = 0;
 	ix = 0;
 	while (++i < size)
+	{
 		if (min > moves[i].sum || i == 0)
 		{
 			ix = i;
 			min = moves[i].sum;
 		}
+	}
 	return (ix);
 }
 
-
-int ft_count_front_b(t_struct *data, int i)
+int	ft_count_front_a(t_struct *data, int i)
 {
-	int count;
-	int max;
-
-	count = -1;
-	max = 0;
-	while (++count < data->size_b)
-	{
-		max = get_max(data->ar_b, data->size_b, data->ar_b[i]);
-		if (data->ar_b[count] == max)
-			break ;
-	}
-	return (data->size_b - i + 1);
-}
-
-int ft_count_back_b(t_struct *data, int i)
-{
-	int count;
-	int max;
-
-	count = data->size_b;
-	max = 0;
-	while (count--)
-	{
-		max = get_max(data->ar_b, data->size_b, data->ar_b[i]);
-		if (data->ar_b[count] == max)
-			break ;
-	}
-	return (i + 1);
-}
-int ft_count_front_a(t_struct *data, int i)
-{
-	int count;
-	int max;
+	int	count;
+	int	max;
 
 	count = -1;
 	max = 0;
@@ -178,8 +150,8 @@ int ft_count_front_a(t_struct *data, int i)
 
 int ft_count_back_a(t_struct *data, int i)
 {
-	int count;
-	int max;
+	int	count;
+	int	max;
 
 	count = data->size_a;
 	max = 0;
@@ -192,59 +164,66 @@ int ft_count_back_a(t_struct *data, int i)
 	return (data->size_a - count - 1);
 }
 
+t_moves ft_get_moves_el(t_struct *data, int i)
+{
+	int		count;
+	t_moves	el;
+
+	count = 0;
+	el.min_a = ft_count_back_a(data, i);
+	count = ft_count_front_a(data, i);
+	el.dir_a = 1;
+	if (count < el.min_a)
+	{
+		el.min_a = count;
+		el.dir_a = 0;
+	}
+	count = data->size_b - i + 1;
+	el.min_b = i + 1;
+	el.dir_b = 1;
+	if (count < el.min_b)
+	{
+		el.min_b = count;
+		el.dir_b = 0;
+	}
+	el.sum = el.min_b + el.min_a;
+	return (el);
+}
+
 void	ft_count_moves(t_struct *data)
 {
-	t_moves *moves;
-	int	i;
-	int	count;
-	int	min;
+	t_moves	*moves;
+	int		i;
+	int		count;
+	int		min;
 
 	i = -1;
 	count = 0;
-	// min = 0;
 	moves = malloc(sizeof(t_moves) * (data->size_b));
 	while (++i < data->size_b)
-	{
-		moves[i].min_a = ft_count_back_a(data, i);
-		count = ft_count_front_a(data, i);
-		moves[i].dir_a = 1;
-		if (count < moves[i].min_a)
-		{
-			moves[i].min_a = count;
-			moves[i].dir_a = 0;
-		}
-		count = ft_count_front_b(data, i);
-		moves[i].min_b = ft_count_back_b(data, i);
-		moves[i].dir_b = 1;
-		if (count < moves[i].min_b)
-		{
-			moves[i].min_b = count;
-			moves[i].dir_b = 0;
-		}
-		moves[i].sum = moves[i].min_b + moves[i].min_a;
-		printf("min_b - dir: %d - %d | min_a - dir: %d - %d | sum: %d \n", moves[i].min_b, moves[i].dir_b, moves[i].min_a, moves[i].dir_a, moves[i].sum);
-	}
+		moves[i] = ft_get_moves_el(data, i);
 	min = ft_get_min_arr(moves, data->size_b);
-	printf("Chosed min index: %d\n", min);
 	ft_move(data, moves, min);
+	free(moves);
 }
 
 int ft_check_chunk(t_struct *data, int c, int y, int *maxcomb)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (++i < data->size_a)
-		if (data->ar_a[i] > c && data->ar_a[i] < y && !ft_check_set(maxcomb, data->ar_a[i], data->size_comb))
+		if (data->ar_a[i] > c && data->ar_a[i] < y && \
+			!ft_check_set(maxcomb, data->ar_a[i], data->size_comb))
 			return (1);
 	return (0);
 }
 
 void	ft_sep(t_struct *data, int *max_comb, int *avg)
 {
-	int i;
-	int f;
-	int flag;
+	int	i;
+	int	f;
+	int	flag;
 
 	i = -1;
 	f = 0;
@@ -259,22 +238,19 @@ void	ft_sep(t_struct *data, int *max_comb, int *avg)
 			{
 				if (!ft_check_set(max_comb, data->ar_a[i], data->size_comb))
 					if (data->ar_a[i] > avg[f - 1] && data->ar_a[i] <= avg[f])
-					{
-						flag = 1;
-						push_in_b(data, i, data->ar_a[i]);
-						break ;
-					}
+						if (!push_in_b(data, i, data->ar_a[i], &flag))
+							break ;
 				flag = 0;
 			}
 		}
 	}
 }
 
-int *ft_avg(int size)
+int	*ft_avg(int size)
 {
-	int i;
-	int *s;
-	int g;
+	int	i;
+	int	*s;
+	int	g;
 
 	s = (int *)malloc(sizeof(int) * 5);
 	i = -1;
@@ -299,49 +275,34 @@ int *ft_avg(int size)
 void	ft_resolve(t_struct *data)
 {
 	int	max_size;
-	int *max;
-	int *avg;
+	int	*max;
+	int	*avg;
 
 	max_size = data->size_a;
 	data->ar_b = (int *) malloc (sizeof(int) * max_size);
 	data->size_b = 0;
-	if(ft_order(data->ar_a, data->size_a) == 0)
+	if (ft_order(data->ar_a, data->size_a) == 0)
 	{
 		max = ft_findcomb(data);
 		avg = ft_avg(data->size_a);
 		ft_sep(data, max, avg);
-
-		while (data->size_b){
-			printf("Arr a:\n");
-		ft_printarray(data->ar_a, data->size_a);
-		printf("Arr b:\n");
-		ft_printarray(data->ar_b, data->size_b);
+		free(max);
+		free(avg);
+		while (data->size_b)
 			ft_count_moves(data);
-			}
-		// 	printf("Arr a moved:\n");
-		// ft_printarray(data->ar_a, data->size_a);
-		// printf("Arr b moved:\n");
-		// ft_printarray(data->ar_b, data->size_b);
-		// 	ft_count_moves(data);
 		ft_move_until_orded(data);
-		printf("Arr a moved:\n");
-		ft_printarray(data->ar_a, data->size_a);
-		printf("Arr b moved:\n");
-		ft_printarray(data->ar_b, data->size_b);
-		printf("\n");
-		// ft_printarray(ft_count_moves(data), data->size_b);
 	}
 }
 
 int	*ft_trasformer(int *ar, int size)
 {
 	int	*temp;
-	int *new;
+	int	*new;
 	int	i;
 	int	j;
 
 	new = ft_ardup(ar, size);
-	temp = (int *) malloc (sizeof(int) * size);
+	temp = (int *)malloc(sizeof(int) * size);
 	ft_sort_ar(new, size);
 	i = 0;
 	while (i < size)
@@ -359,11 +320,11 @@ int	*ft_trasformer(int *ar, int size)
 
 int main(int argc, char *argv[])
 {
-	t_struct data;
+	t_struct	data;
 
-    if (argc < 2)
+	if (argc < 2)
 		ft_error();
-    if (ft_check(argv, argc) == 0)
+	if (ft_check(argv, argc) == 0)
 		ft_error();
 	data.ar_a = ft_initializer(argv, argc);
 	data.size_a = argc - 1;
@@ -371,11 +332,9 @@ int main(int argc, char *argv[])
 		ft_error();
 	data.ar_a = ft_trasformer(data.ar_a, data.size_a);
 	data.min = ft_min(data.ar_a, data.size_a);
-	data.min_pos = ft_findind(data.min, data.ar_a, data.size_a);
-	ft_printarray(data.ar_a, data.size_a);
-	printf("\n");
+	data.min_pos = ft_findind(data.min, data.ar_a);
 	data.max = ft_max(data.ar_a, data.size_a);
-	data.max_pos = ft_findind(data.max, data.ar_a, data.size_a);
+	data.max_pos = ft_findind(data.max, data.ar_a);
 	ft_resolve(&data);
 	free(data.ar_a);
 	free(data.ar_b);

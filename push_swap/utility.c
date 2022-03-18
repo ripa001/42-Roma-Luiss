@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 05:30:57 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/11 18:54:26 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 13:01:48 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_error(void)
 	exit(1);
 }
 
-int		*ft_ardup(int *ar, int size)
+int	*ft_ardup(int *ar, int size)
 {
 	int	*ptr;
 	int	i;
@@ -57,7 +57,7 @@ void	ft_sort_ar(int *ar, int size)
 		i = 0;
 		while (i < size - 1)
 		{
-			if(ar[i] > ar[i + 1])
+			if (ar[i] > ar[i + 1])
 			{
 				ft_swap(ar + i, ar + (i + 1));
 				flag = 0;
@@ -69,7 +69,7 @@ void	ft_sort_ar(int *ar, int size)
 
 int	*ft_initializer(char **matrix, int size)
 {
-	int row;
+	int	row;
 	int	*ar;
 	int	i;
 

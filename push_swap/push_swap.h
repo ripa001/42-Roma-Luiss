@@ -6,45 +6,45 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/16 11:26:50 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 13:11:40 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include "libft/libft.h"
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/wait.h>
+# include "libft/libft.h"
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <sys/wait.h>
 
 typedef struct s_arrt
 {
-	int *arr;
-	int count;
+	int	*arr;
+	int	count;
 }			t_arr;
 
-typedef	struct
+typedef struct s_struct
 {
 	int	*ar_a;
 	int	*ar_b;
 	int	size_a;
 	int	size_b;
 	int	max;
-	int max_pos;
+	int	max_pos;
 	int	min;
 	int	min_pos;
-	int size_comb;
+	int	size_comb;
 }				t_struct;
 
 typedef struct s_moves
 {
-	int min_a;
-	int min_b;
-	int dir_a;
-	int dir_b;
-	int sum;
+	int	min_a;
+	int	min_b;
+	int	dir_a;
+	int	dir_b;
+	int	sum;
 }				t_moves;
 
 void	ft_swap_a(int *ar);
@@ -69,8 +69,10 @@ void	ft_printarray(int *ar, int size);
 void	ft_swap(int	*a, int *b);
 int		ft_min(int *array, int size);
 int		ft_max(int *array, int size);
-int		ft_findind(int nb, int *array, int size);
+int		ft_findind(int nb, int *array);
 int		*ft_findcomb(t_struct *data);
 void	ft_checkmalloc(void *ptr);
+void	free_matrix(int **matrix, int size);
+
 
 #endif
