@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 16:32:07 by mabasset          #+#    #+#             */
-/*   Updated: 2022/01/14 10:04:22 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/18 16:29:48 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,19 @@ static int	ft_putstr(char *matrix, char const *str, char c)
 	return (i);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split_push(char const *s, char c, int *argc)
 {
 	char	**matrix;
 	int		count;
 	int		len;
 	int		row;
 
-	count = ft_rowcount(s, c);
-	matrix = (char **) malloc (sizeof(char *) * (count + 1));
+	count = ft_rowcount(s, c) + 1;
+	matrix = (char **) malloc (sizeof(char *) * (count + 2));
 	matrix[count] = NULL;
 	len = 0;
 	row = 0;
+	matrix[row++] = "nome";
 	while (row < count)
 	{
 		len = ft_rowlen(s, c);
@@ -86,6 +87,7 @@ char	**ft_split(char const *s, char c)
 		s += ft_putstr(matrix[row], s, c);
 		row++;
 	}
+	*argc = count;
 	return (matrix);
 }
 

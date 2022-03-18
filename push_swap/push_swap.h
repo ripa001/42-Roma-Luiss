@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 13:11:40 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 17:24:52 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,16 @@ int		ft_findind(int nb, int *array);
 int		*ft_findcomb(t_struct *data);
 void	ft_checkmalloc(void *ptr);
 void	free_matrix(int **matrix, int size);
-
+void	sort_3(t_struct *data);
+void	sort_u6_2(t_struct *data);
+int		sort_u6(t_struct *data);
+void	find_smallest(t_struct *data);
+void	ft_move_1(t_struct *data, t_moves *moves, int min);
+void	ft_move_2(t_struct *data, t_moves *moves, int min);
+void	ft_move_3(t_struct *data, t_moves *moves, int min);
+void	ft_move_4(t_struct *data, t_moves *moves, int min);
+void	ft_move(t_struct *data, t_moves *moves, int min);
+int		get_max(t_struct *data);
+int		get_this_min(t_struct *data);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 13:11:55 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 17:30:51 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,47 +29,6 @@ void	ft_move_until_orded(t_struct *data)
 	else
 		while (data->ar_a[0] != 1)
 			ft_rev_rotate_a(data);
-}
-
-void	ft_move(t_struct *data, t_moves *moves, int min)
-{
-	int	a;
-	int	b;
-
-	a = moves[min].min_a;
-	b = moves[min].min_b - 1;
-	if (moves[min].dir_b && moves[min].dir_a)
-	{
-		while (b--)
-			ft_rotate_b(data);
-		while (a--)
-			ft_rev_rotate_a(data);
-		ft_push_a(data);
-	}
-	else if (moves[min].dir_b && !moves[min].dir_a)
-	{
-		while (b--)
-			ft_rotate_b(data);
-		while (a--)
-			ft_rotate_a(data);
-		ft_push_a(data);
-	}
-	else if (!moves[min].dir_b && moves[min].dir_a)
-	{
-		while (b--)
-			ft_rev_rotate_b(data);
-		while (a--)
-			ft_rev_rotate_a(data);
-		ft_push_a(data);
-	}
-	else
-	{
-		while (b--)
-			ft_rev_rotate_b(data);
-		while (a--)
-			ft_rotate_a(data);
-		ft_push_a(data);
-	}
 }
 
 int	ft_check_set(int *arr, int c, int size)
@@ -99,7 +58,7 @@ int	push_in_b(t_struct *data, int pos, int val, int *flag)
 	return (0);
 }
 
-int	get_max(int *arr, int size, int x)
+int	get_max_move(int *arr, int size, int x)
 {
 	int	i;
 	int	max;
@@ -141,7 +100,7 @@ int	ft_count_front_a(t_struct *data, int i)
 	max = 0;
 	while (++count < data->size_a)
 	{
-		max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
+		max = get_max_move(data->ar_a, data->size_a, data->ar_b[i]);
 		if (data->ar_a[count] == max)
 			break ;
 	}
@@ -157,7 +116,7 @@ int ft_count_back_a(t_struct *data, int i)
 	max = 0;
 	while (count--)
 	{
-		max = get_max(data->ar_a, data->size_a, data->ar_b[i]);
+		max = get_max_move(data->ar_a, data->size_a, data->ar_b[i]);
 		if (data->ar_a[count] == max)
 			break ;
 	}
@@ -321,12 +280,18 @@ int	*ft_trasformer(int *ar, int size)
 int main(int argc, char *argv[])
 {
 	t_struct	data;
+	int			i;
 
-	if (argc < 2)
+	i = 0;
+	if (argc == 1)
 		ft_error();
+	if (argc == 2)
+		argv = ft_split_push(argv[1], ' ', &argc);
 	if (ft_check(argv, argc) == 0)
 		ft_error();
 	data.ar_a = ft_initializer(argv, argc);
+	if (argc < 6)
+		return (sort_u6(&data));
 	data.size_a = argc - 1;
 	if (ft_checkfordoubles(data.ar_a, data.size_a) == 0)
 		ft_error();
