@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 17:24:52 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 19:14:31 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,15 @@ void	ft_move_4(t_struct *data, t_moves *moves, int min);
 void	ft_move(t_struct *data, t_moves *moves, int min);
 int		get_max(t_struct *data);
 int		get_this_min(t_struct *data);
+void	ft_move_until_orded(t_struct *data);
+int		ft_check_set(int *arr, int c, int size);
+int		push_in_b(t_struct *data, int pos, int val, int *flag);
+int		get_max_move(int *arr, int size, int x);
+int		ft_get_min_arr(t_moves *moves, int size);
+int		ft_count_front_a(t_struct *data, int i);
+int		ft_count_back_a(t_struct *data, int i);
+t_moves	ft_get_moves_el(t_struct *data, int i);
+void	ft_count_moves(t_struct *data);
+int		*ft_avg(int size);
 
 #endif

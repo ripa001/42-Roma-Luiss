@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/03 17:47:40 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 16:53:55 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 18:28:22 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,30 @@ void	free_matrix(int **matrix, int size)
 	while (++i < size)
 		free(matrix[i]);
 	free(matrix);
+}
+
+int	*ft_avg(int size)
+{
+	int	i;
+	int	*s;
+	int	g;
+
+	s = (int *)malloc(sizeof(int) * 5);
+	i = -1;
+	g = 0;
+	while (++i < size)
+		g += i + 1;
+	s[0] = 0;
+	s[2] = g / (i + 1);
+	i = -1;
+	g = 0;
+	while (++i < size / 2)
+		g += i + 1;
+	s[1] = g / (i + 1);
+	g = 0;
+	while (++i < size + 1)
+		g += i;
+	s[3] = g / ((i) / 2);
+	s[4] = size;
+	return (s);
 }

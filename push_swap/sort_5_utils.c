@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:15:13 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/18 17:30:17 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 19:16:59 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	get_max(t_struct *data)
 	}
 	return (max);
 }
-
 
 void	exec_middle(t_struct *data, int min)
 {

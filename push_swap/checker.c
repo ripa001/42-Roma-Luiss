@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/14 15:06:31 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 12:53:34 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/18 19:13:56 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,6 @@ int	ft_check(char **argv, int size)
 			col++;
 		}
 		row++;
-	}
-	return (1);
-}
-
-int	ft_checkfordoubles(int *ar, int size)
-{
-	int	i;
-	int	j;
-
-	i = -1;
-	while (++i < size)
-	{
-		j = i + 1;
-		while (j < size)
-			if (ar[i] == ar[j++])
-				return (0);
 	}
 	return (1);
 }
