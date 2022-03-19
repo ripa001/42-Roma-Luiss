@@ -74,11 +74,9 @@ void	ft_count_moves(t_struct *data)
 {
 	t_moves	*moves;
 	int		i;
-	int		count;
 	int		min;
 
 	i = -1;
-	count = 0;
 	moves = malloc(sizeof(t_moves) * (data->size_b));
 	while (++i < data->size_b)
 		moves[i] = ft_get_moves_el(data, i);

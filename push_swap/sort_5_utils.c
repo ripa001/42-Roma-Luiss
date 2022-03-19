@@ -71,9 +71,6 @@ void	exec_swap2(t_struct *data, int min)
 
 void	exec_swap(t_struct *data, int min)
 {
-	int	i;
-
-	i = 0;
 	if (data->ar_a[0] == min)
 		ft_push_b(data);
 	else if (data->ar_a[1] == min)

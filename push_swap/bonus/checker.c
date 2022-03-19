@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../push_swap.h"
 #include "checker.h"
 
 t_struct	*init_game(void)
@@ -32,12 +31,12 @@ void	handle_result_line2(char *line, t_struct *data)
 	else if (!(ft_strncmp(line, "rr", ft_strlen(line) - 1)))
 		ft_rotate_r(data);
 	else if (!(ft_strncmp(line, "sb", ft_strlen(line) - 1)))
-		ft_swap_b(data);
+		ft_swap_b(data->ar_b);
 	else if (!(ft_strncmp(line, "ss", ft_strlen(line) - 1)))
 		ft_swap_s(data->ar_a, data->ar_b);
 	else
 	{
-		ft_exit("Error\n");
+		ft_error();
 		exit(0);
 	}
 }
@@ -45,7 +44,7 @@ void	handle_result_line2(char *line, t_struct *data)
 void	handle_result_line(char *line, t_struct *data)
 {
 	if (!(ft_strncmp(line, "sa", ft_strlen(line) - 1)))
-		ft_swap_a(data);
+		ft_swap_a(data->ar_a);
 	else if (!(ft_strncmp(line, "pa", ft_strlen(line) - 1)))
 		ft_push_a(data);
 	else if (!(ft_strncmp(line, "pb", ft_strlen(line) - 1)))
@@ -77,8 +76,8 @@ void	read_finish(char *line, t_struct *data)
 		free(line);
 		line = get_next_line(0);
 	}
-	if (ordered_stack(*data) > 0)
-		ft_exit("\nOK\n");
+	if (ordered_stack(data) > 0)
+		ft_error();
 	else
 		ft_exit("\nKO\n");
 }
@@ -86,26 +85,20 @@ void	read_finish(char *line, t_struct *data)
 int	main(int argc, char *argv[])
 {
 	t_struct	*data;
-	int			i;
-	int			max;
 	char		*line;
-	int			res;
 
-	i = 0;
-	res = 0;
-	max = 0;
 	data = init_game();
 	line = NULL;
 	if (argc < 2)
 		return (0);
-	fill_args(*data, argv, argc);
-	if (!check_args(argc, argv) || !check_duplicates(data))
+	fill_args(data, argv, argc);
+	if (!check_args(argc, argv) || !ft_checkfordoubles(data->ar_a, data->size_a))
 	{
-		free_all2(*data);
+		free_all2(data);
 		ft_exit("Error\n");
 		return (0);
 	}
 	read_finish(line, data);
-	free_all2(*data);
+	free_all2(data);
 	return (0);
 }

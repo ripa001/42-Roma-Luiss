@@ -76,7 +76,7 @@ char	**ft_split_push(char const *s, char c, int *argc)
 
 	count = ft_rowcount(s, c) + 1;
 	matrix = (char **) malloc (sizeof(char *) * (count + 2));
-	matrix[count] = NULL;
+	matrix[count + 1] = NULL;
 	len = 0;
 	row = 0;
 	matrix[row++] = "nome";
@@ -91,9 +91,23 @@ char	**ft_split_push(char const *s, char c, int *argc)
 	return (matrix);
 }
 
-/*#include <stdio.h>
-
-int main()
+char	**ft_split(char const *s, char c)
 {
-	ft_split(" 1 2 3 4 5 6 7 8 9 10 11   12     13     14 15", ' ');
-}*/
+	char	**matrix;
+	int		count;
+	int		len;
+	int		row;
+
+	count = ft_rowcount(s, c) + 1;
+	matrix = (char **) malloc (sizeof(char *) * (count + 1));
+	matrix[count] = NULL;
+	len = 0;
+	row = -1;
+	while (++row < count)
+	{
+		len = ft_rowlen(s, c);
+		matrix[row] = (char *) malloc (sizeof(char) * (len + 1));
+		s += ft_putstr(matrix[row], s, c);
+	}
+	return (matrix);
+}

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "checker.h"
-#include "../push_swap.h"
 
 int	check_integer(char *str)
 {
@@ -22,7 +21,7 @@ int	check_integer(char *str)
 	nbrs = ft_split(str, ' ');
 	while (nbrs[i])
 	{
-		if (!is_integer(nbrs[i]))
+		if (!ft_is_integer(nbrs[i]))
 		{
 			free_nbrs(nbrs);
 			return (0);
@@ -101,7 +100,7 @@ int	check_args(int argc, char *argv[])
 	}
 	while (i < argc)
 	{
-		if (!is_integer(argv[i]))
+		if (!ft_is_integer(argv[i]))
 			return (0);
 		i++;
 	}

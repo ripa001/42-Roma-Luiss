@@ -1,33 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.h                                          :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/18 18:43:37 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/18 18:43:58 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/23 19:31:56 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/26 23:02:42 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CHECKER_H
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-# define CHECKER_H
-
-# include <unistd.h>
-# include <stdio.h>
 # include <stdlib.h>
-# include <fcntl.h>
-# include "../libft/libft.h"
-# include "../push_swap.h"
+# include <stdio.h>
+# include <unistd.h>
+# define BUFFER_SIZE 42
 
-int		ordered_stack(t_struct *data);
+char	*ft_strtrim(char const *s1, char const *set);
+char	*ft_strjoin_free(char const *s1, char const *s2, int size);
+char	*ft_substr(char const *s, int start, int len, int free_flag);
+int		ft_strlen(const char *str);
+int		ft_strchr(const char *s, int c);
 char	*get_next_line(int fd);
-int		check_args(int argc, char *argv[]);
-void	handle_arg(t_struct *data, char **nums, char *argv[], int i);
-void	fill_args(t_struct *data, char *argv[], int argc);
-void	free_all2(t_struct *data);
-void	free_nbrs(char **nbrs);
-int		ft_exit(char *str);
+void	funzione_while(char *s, char *sub, int len, int start);
 
 #endif

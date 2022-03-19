@@ -94,5 +94,6 @@ int		ft_count_back_a(t_struct *data, int i);
 t_moves	ft_get_moves_el(t_struct *data, int i);
 void	ft_count_moves(t_struct *data);
 int		*ft_avg(int size);
+int		ft_is_integer(char *arg);
 
 #endif

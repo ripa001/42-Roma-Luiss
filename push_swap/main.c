@@ -100,9 +100,6 @@ int	*ft_trasformer(int *ar, int size)
 int	main(int argc, char *argv[])
 {
 	t_struct	data;
-	int			i;
-
-	i = 0;
 	if (argc == 1)
 		ft_error();
 	if (argc == 2)
