@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:01:24 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 19:14:31 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/20 01:10:21 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	ft_rev_rotate_r(t_struct *data);
 void	ft_error(void);
 int		ft_order(int *ar, int size);
 int		ft_check(char **matrix, int size);
-int		*ft_initializer(char **matrix, int size);
+void	ft_initializer(char **matrix, int size, t_struct *data);
 int		ft_checkfordoubles(int *ar, int size);
 int		*ft_ardup(int *ar, int size);
 void	ft_sort_ar(int *ar, int size);
@@ -73,9 +73,8 @@ int		ft_findind(int nb, int *array);
 int		*ft_findcomb(t_struct *data);
 void	ft_checkmalloc(void *ptr);
 void	free_matrix(int **matrix, int size);
-void	sort_3(t_struct *data);
-void	sort_u6_2(t_struct *data);
-int		sort_u6(t_struct *data);
+int		sort_3(t_struct *data);
+int		five_numbers(t_struct *data);
 void	find_smallest(t_struct *data);
 void	ft_move_1(t_struct *data, t_moves *moves, int min);
 void	ft_move_2(t_struct *data, t_moves *moves, int min);
@@ -95,5 +94,6 @@ t_moves	ft_get_moves_el(t_struct *data, int i);
 void	ft_count_moves(t_struct *data);
 int		*ft_avg(int size);
 int		ft_is_integer(char *arg);
+void	exec_swap(t_struct *data, int min);
 
 #endif

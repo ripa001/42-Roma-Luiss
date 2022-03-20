@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 18:44:08 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/18 19:28:18 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/19 23:46:51 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	read_finish(char *line, t_struct *data)
 		line = get_next_line(0);
 	}
 	if (ordered_stack(data) > 0)
-		ft_error();
+		ft_exit("\nOK\n");
 	else
 		ft_exit("\nKO\n");
 }
@@ -92,7 +92,8 @@ int	main(int argc, char *argv[])
 	if (argc < 2)
 		return (0);
 	fill_args(data, argv, argc);
-	if (!check_args(argc, argv) || !ft_checkfordoubles(data->ar_a, data->size_a))
+	if (!check_args(argc, argv)
+		|| !ft_checkfordoubles(data->ar_a, data->size_a))
 	{
 		free_all2(data);
 		ft_exit("Error\n");

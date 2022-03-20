@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/27 21:45:51 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 18:16:57 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/19 23:59:07 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,3 @@ int	*ft_findcomb(t_struct *data)
 	free_matrix(comb, data->size_comb - 1);
 	return (final);
 }
-

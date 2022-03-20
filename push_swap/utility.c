@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/07 05:30:57 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 13:01:48 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/20 01:09:10 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	ft_sort_ar(int *ar, int size)
 	}
 }
 
-int	*ft_initializer(char **matrix, int size)
+void	ft_initializer(char **matrix, int size, t_struct *data)
 {
 	int	row;
 	int	*ar;
@@ -84,5 +84,8 @@ int	*ft_initializer(char **matrix, int size)
 		i++;
 		row++;
 	}
-	return (ar);
+	data->ar_a = ar;
+	data->ar_b = (int *)malloc(sizeof(int) * size - 1);
+	data->size_b = 0;
+	data->size_a = size - 1;
 }

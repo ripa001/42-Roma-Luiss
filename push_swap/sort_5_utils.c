@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 17:15:13 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/18 19:16:59 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/19 23:58:14 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,3 @@ void	exec_swap(t_struct *data, int min)
 	else
 		exec_swap2(data, min);
 }
-
-void	find_smallest(t_struct *data)
-{
-	int	len;
-	int	min;
-
-	min = 2147483647;
-	len = 0;
-	while (len < data->size_a)
-	{
-		if (data->ar_a[len] < min)
-			min = data->ar_a[len];
-		len++;
-	}
-	exec_swap(data, min);
-}
-

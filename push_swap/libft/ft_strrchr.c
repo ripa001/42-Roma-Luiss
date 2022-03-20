@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabasset <mabasset@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 09:24:02 by mabasset          #+#    #+#             */
-/*   Updated: 2022/01/14 16:13:14 by mabasset         ###   ########.fr       */
+/*   Updated: 2022/03/20 01:04:32 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,3 @@ char	*ft_strrchr(const char *s, int c)
 		return ((char *)str + i);
 	return (NULL);
 }
-
-/*int main()
-{
-	printf("%s\n", strrchr("ciao matteo", 'c'));
-	printf("%s\n", ft_strrchr("ciao matteo", 'c'));
-}*/

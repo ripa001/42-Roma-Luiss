@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/06 10:58:46 by mabasset          #+#    #+#             */
-/*   Updated: 2022/03/18 19:13:45 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/20 01:08:46 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	ft_resolve(t_struct *data)
 	int	*avg;
 
 	max_size = data->size_a;
-	data->ar_b = (int *) malloc (sizeof(int) * max_size);
-	data->size_b = 0;
 	if (ft_order(data->ar_a, data->size_a) == 0)
 	{
 		max = ft_findcomb(data);
@@ -100,16 +98,18 @@ int	*ft_trasformer(int *ar, int size)
 int	main(int argc, char *argv[])
 {
 	t_struct	data;
+
 	if (argc == 1)
 		ft_error();
 	if (argc == 2)
 		argv = ft_split_push(argv[1], ' ', &argc);
 	if (ft_check(argv, argc) == 0)
 		ft_error();
-	data.ar_a = ft_initializer(argv, argc);
-	if (argc < 6)
-		return (sort_u6(&data));
-	data.size_a = argc - 1;
+	ft_initializer(argv, argc, &data);
+	if (argc == 4)
+		return (sort_3(&data));
+	if (argc < 7 && argc > 4)
+		return (five_numbers(&data));
 	if (ft_checkfordoubles(data.ar_a, data.size_a) == 0)
 		ft_error();
 	data.ar_a = ft_trasformer(data.ar_a, data.size_a);

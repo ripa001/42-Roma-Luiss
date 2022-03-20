@@ -1,41 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   swap.c                                             :+:      :+:    :+:   */
+/*   rotate.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/18 16:53:46 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/19 23:49:40 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/02/06 15:21:00 by mabasset          #+#    #+#             */
+/*   Updated: 2022/03/19 23:55:53 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../push_swap.h"
 
-void	ft_swap(int	*a, int *b)
+void	ft_rotate(int *ar, int size)
 {
 	int	temp;
+	int	i;
 
-	temp = *a;
-	*a = *b;
-	*b = temp;
+	size -= 1;
+	i = 0;
+	temp = ar[0];
+	while (i < size)
+	{
+		ar[i] = ar[i + 1];
+		i++;
+	}
+	ar[size] = temp;
 }
 
-void	ft_swap_a(int *ar)
+void	ft_rotate_a(t_struct *data)
 {
-	write(1, "sa\n", 3);
-	ft_swap(ar, ar + 1);
+	ft_rotate(data->ar_a, data->size_a);
 }
 
-void	ft_swap_b(int *ar)
+void	ft_rotate_b(t_struct *data)
 {
-	write(1, "sb\n", 3);
-	ft_swap(ar, ar + 1);
+	ft_rotate(data->ar_b, data->size_b);
 }
 
-void	ft_swap_s(int *ar_a, int *ar_b)
+void	ft_rotate_r(t_struct *data)
 {
-	write(1, "ss\n", 3);
-	ft_swap(ar_a, ar_a + 1);
-	ft_swap(ar_b, ar_b + 1);
+	ft_rotate(data->ar_a, data->size_a);
+	ft_rotate(data->ar_b, data->size_b);
 }

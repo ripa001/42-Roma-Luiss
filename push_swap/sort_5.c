@@ -6,52 +6,97 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 16:43:45 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/18 17:31:26 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/20 01:04:20 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	sort_3(t_struct *data)
+void	decrescent_algorithm(t_struct *data)
 {
-	if (data->ar_a[0] < data->ar_a[1] && data->ar_a[0] \
-		< data->ar_a[2] && data->ar_a[1] > data->ar_a[2])
-		ft_swap_a(data->ar_a);
-	if (data->ar_a[0] < data->ar_a[1] \
-		&& data->ar_a[0] > data->ar_a[2])
+	while (data->size_a > 3)
+	{
 		ft_rev_rotate_a(data);
-	if (data->ar_a[0] > data->ar_a[2])
+		ft_push_b(data);
+	}
+	ft_rotate_a(data);
+	ft_swap_a(data->ar_a);
+	while (data->size_b > 0)
+		ft_push_a(data);
+}
+
+int	sort_3(t_struct *data)
+{
+	if (data->ar_a[0] < data->ar_a[2] && data->ar_a[2] < data->ar_a[1])
+	{
 		ft_rotate_a(data);
-	if (data->ar_a[0] > data->ar_a[1])
+		ft_rotate_a(data);
 		ft_swap_a(data->ar_a);
-}
-
-void	sort_u6_2(t_struct *data)
-{
-	if (data->ar_b[0] < get_this_min(data))
-		ft_push_a(data);
-	else if (data->ar_b[0] > get_max(data))
-	{
-		ft_push_a(data);
+	}
+	else if (data->ar_a[1] < data->ar_a[0] && data->ar_a[0] < data->ar_a[2])
+		ft_swap_a(data->ar_a);
+	else if (data->ar_a[1] < data->ar_a[2] && data->ar_a[2] < data->ar_a[0])
 		ft_rotate_a(data);
-	}
-	else
-	{
-		ft_push_a(data);
-		find_smallest(data);
-	}
+	else if (data->ar_a[2] < data->ar_a[1] && data->ar_a[1] < data->ar_a[0])
+		decrescent_algorithm(data);
+	else if (data->ar_a[2] < data->ar_a[0] && data->ar_a[0] < data->ar_a[1])
+		ft_rev_rotate_a(data);
+	return (0);
 }
 
-int	sort_u6(t_struct *data)
+int	find_min_pos(t_struct *data)
 {
-	if (data->size_a > 3)
+	int	i;
+	int	min;
+
+	i = -1;
+	min = 0;
+	while (++i < data->size_a)
+		if (data->ar_a[i] < data->ar_a[min])
+			min = i;
+	return (min);
+}
+
+int	five_numbers(t_struct *data)
+{
+	int	i;
+
+	while (data->size_a > 3)
 	{
-		if (data->size_a == 5)
-			ft_push_b(data);
+		i = find_min_pos(data);
+		if (i < 3)
+		{
+			while (i-- > 0)
+				ft_rotate_a(data);
+		}
+		else
+		{
+			while (data->size_a - i > 0)
+			{
+				ft_rev_rotate_a(data);
+				i++;
+			}
+		}
 		ft_push_b(data);
 	}
 	sort_3(data);
-	while (data->size_b)
-		sort_u6_2(data);
+	ft_push_a(data);
+	ft_push_a(data);
 	return (0);
+}
+
+void	find_smallest(t_struct *data)
+{
+	int	len;
+	int	min;
+
+	min = 2147483647;
+	len = 0;
+	while (len < data->size_a)
+	{
+		if (data->ar_a[len] < min)
+			min = data->ar_a[len];
+		len++;
+	}
+	exec_swap(data, min);
 }
