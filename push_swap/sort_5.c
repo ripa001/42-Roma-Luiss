@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/18 16:43:45 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/20 01:04:20 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/21 13:08:42 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	decrescent_algorithm(t_struct *data)
 	}
 	ft_rotate_a(data);
 	ft_swap_a(data->ar_a);
-	while (data->size_b > 0)
-		ft_push_a(data);
 }
 
 int	sort_3(t_struct *data)
