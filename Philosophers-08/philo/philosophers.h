@@ -1,0 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/27 18:44:07 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/03/27 20:10:28 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
+
+# include <sys/time.h>
+# include <unistd.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <pthread.h>
+
+typedef struct philo
+{
+	int			n;
+	int			left_fork;
+	int			right_fork;
+	int			n_meals;
+	pthread_t	thread;
+
+}	t_philo;
+
+typedef struct philosophers
+{
+	int				n;
+	int				time_death;
+	int				time_eat;
+	int				n_eating;
+	int				time_sleep;
+	int				dieded;
+	t_philo			**philos;
+	pthread_mutex_t	death;
+	pthread_mutex_t	finish;
+	pthread_mutex_t	is_eating;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	message;
+}	t_philosophers;
+
+#endif
