@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:48:14 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 20:17:52 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/28 18:48:00 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	*philo_loop(void *philo_void)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_void;
-	while (!(philo->data->dieded))
+	printf("%d", philo->id);
+	while (!philo->data->dead)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
 		print_mutex("has taken a fork", philo);
@@ -46,15 +47,18 @@ void	*philo_loop(void *philo_void)
 		print_mutex("has taken a fork", philo);
 		print_mutex("is eating", philo);
 		philo->eating = 1;
-		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
-			philo->n_eating++;
+		philo->n_eating++;
 		philo->last_meal = get_time() - philo->data->time;
+		usleep(philo->data->time_eat * 1000 - 20000);
+		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
+			continue ;
 		pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->id]);
-		philo->eating = 1;
-		usleep(philo->data->time_eat * 1000);
+		philo->eating = 0;
 		print_mutex("is sleeping", philo);
-		usleep(philo->data->time_sleep * 1000);
+		usleep(philo->data->time_sleep * 1000 - 20000);
+		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
+			continue ;
 		print_mutex("is thinking", philo);
 	}
 	return (NULL);
@@ -65,7 +69,7 @@ void	philo_dead(t_philosophers *philo, int i)
 	pthread_mutex_lock(&philo->death);
 	pthread_mutex_lock(&philo->message);
 	printf("[%llu] %d died\n", get_time() - philo->time, philo->philos[i]->id);
-	philo->dieded = 1;
+	philo->dead = 1;
 }
 
 void	*loop_check(void *philo_void)
@@ -75,7 +79,7 @@ void	*loop_check(void *philo_void)
 
 	i = -1;
 	philo = (t_philosophers *)philo_void;
-	while (!philo->dieded)
+	while (!philo->dead)
 	{
 		i = -1;
 		while (++i < philo->n)
@@ -84,7 +88,7 @@ void	*loop_check(void *philo_void)
 				philo_dead(philo, i);
 			if (philo->n_eating == philo->n)
 			{
-				philo->dieded = 1;
+				philo->dead = 1;
 				break ;
 			}
 		}
@@ -98,6 +102,7 @@ void	fill_philos(t_philosophers *x)
 
 	i = -1;
 	x->philos = malloc (sizeof(t_philo) * x->n);
+	x->dead = 0;
 	while (++i < x->n)
 	{
 		x->philos[i] = malloc (sizeof(t_philo));
@@ -106,9 +111,10 @@ void	fill_philos(t_philosophers *x)
 		x->philos[i]->right_fork = 0;
 		x->philos[i]->n_eating = 0;
 		x->philos[i]->eating = 0;
+		x->philos[i]->data = x;
 	}
 	i = -1;
-	while (!x->dieded)
+	while (!x->dead)
 	{
 		while (++i < x->n)
 		{
@@ -124,7 +130,8 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 	pthread_t	thread;
 
 	i = -1;
-	if (argc != 5 || argc != 6)
+	printf("cadscs");
+	if (argc < 5 || argc > 6)
 		exit(EXIT_FAILURE);
 	philo->n = ft_atoi(argv[1]);
 	philo->time_death = ft_atoi(argv[2]);
@@ -141,6 +148,7 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 	while (++i < philo->n)
 		pthread_mutex_init(&philo->forks[i], NULL);
 	pthread_create(&thread, NULL, loop_check, philo);
+	printf("cadscs");
 	fill_philos(philo);
 	if (philo->n < 2 || philo->time_death < 0 || philo->time_eat < 0
 		|| philo->time_sleep < 0)

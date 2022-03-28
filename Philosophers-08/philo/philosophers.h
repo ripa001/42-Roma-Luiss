@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:44:07 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 20:10:28 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/28 18:36:56 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct philosophers
 	int				target_eating;
 	int				n_eating;
 	int				time_sleep;
-	int				dieded;
+	int				dead;
 	t_philo			**philos;
 	pthread_mutex_t	death;
 	pthread_mutex_t	finish;
