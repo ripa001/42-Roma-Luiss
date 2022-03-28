@@ -12,16 +12,10 @@
 
 #include "philosophers.h"
 
-long long	timestamp(void)
+uint64_t	get_time(void)
 {
-	struct timeval	t;
+	struct timeval	timeval;
 
-	gettimeofday(&t, NULL);
-	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
-}
-
-void	error_null(void)
-{
-	exit(EXIT_FAILURE);
-	return (NULL);
+	gettimeofday(&timeval, NULL);
+	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
 }

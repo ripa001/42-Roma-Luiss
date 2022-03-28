@@ -18,22 +18,28 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include "libft/libft.h"
 
+uint64_t	get_time(void);
 typedef struct philo
 {
-	int			n;
-	int			left_fork;
-	int			right_fork;
-	int			n_meals;
-	pthread_t	thread;
-
+	struct philosophers	*data;
+	int				id;
+	int				left_fork;
+	int				right_fork;
+	int				n_eating;
+	int				last_meal;
+	int				eating;
+	pthread_t		thread;
 }	t_philo;
 
 typedef struct philosophers
 {
 	int				n;
+	uint64_t		time;
 	int				time_death;
 	int				time_eat;
+	int				target_eating;
 	int				n_eating;
 	int				time_sleep;
 	int				dieded;
