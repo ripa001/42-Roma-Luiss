@@ -38,7 +38,6 @@ void	*philo_loop(void *philo_void)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_void;
-	printf("%d", philo->id);
 	while (!philo->data->dead)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
@@ -46,12 +45,14 @@ void	*philo_loop(void *philo_void)
 		pthread_mutex_lock(&philo->data->forks[philo->id]);
 		print_mutex("has taken a fork", philo);
 		print_mutex("is eating", philo);
+		pthread_mutex_lock(&philo->data->is_eating);
 		philo->eating = 1;
 		philo->n_eating++;
 		philo->last_meal = get_time() - philo->data->time;
-		usleep(philo->data->time_eat * 1000 - 20000);
-		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
-			continue ;
+		pthread_mutex_unlock(&philo->data->is_eating);
+		usleep(philo->data->time_eat * 1000);
+		//while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
+		//	continue ;
 		pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->id]);
 		philo->eating = 0;
@@ -113,6 +114,12 @@ void	fill_philos(t_philosophers *x)
 		x->philos[i]->eating = 0;
 		x->philos[i]->data = x;
 	}
+}
+
+void p_thread(t_philosophers *x)
+{	
+	int i;
+
 	i = -1;
 	while (!x->dead)
 	{
@@ -130,7 +137,6 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 	pthread_t	thread;
 
 	i = -1;
-	printf("cadscs");
 	if (argc < 5 || argc > 6)
 		exit(EXIT_FAILURE);
 	philo->n = ft_atoi(argv[1]);
@@ -148,8 +154,8 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 	while (++i < philo->n)
 		pthread_mutex_init(&philo->forks[i], NULL);
 	pthread_create(&thread, NULL, loop_check, philo);
-	printf("cadscs");
 	fill_philos(philo);
+	p_thread(philo);
 	if (philo->n < 2 || philo->time_death < 0 || philo->time_eat < 0
 		|| philo->time_sleep < 0)
 		return (0);
@@ -170,5 +176,5 @@ int	main(int argc, char *argv[])
 	init_philosophers(argv, &philo, argc);
 	if (!safhc)
 		return (0);
-	exit(EXIT_FAILURE);
+	exit(EXIT_SUCCESS);
 }
