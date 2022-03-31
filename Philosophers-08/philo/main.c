@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:48:14 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/28 18:48:00 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/03/31 19:39:10 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,12 @@ void	end_success(t_philosophers *philo)
 
 void	print_mutex(char *mess, t_philo	*philo)
 {
-	pthread_mutex_lock(&philo->data->message);
-	printf("[%llu] %d %s\n", get_time() - philo->data->time, philo->id, mess);
-	pthread_mutex_unlock(&philo->data->message);
+	if (!philo->data->dead)
+	{
+		pthread_mutex_lock(&philo->data->message);
+		printf("[%llu] %d %s\n", get_time() - philo->data->time, philo->id, mess);
+		pthread_mutex_unlock(&philo->data->message);
+	}
 }
 
 void	*philo_loop(void *philo_void)
@@ -38,7 +41,8 @@ void	*philo_loop(void *philo_void)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_void;
-	while (!philo->data->dead)
+
+	while (philo && !philo->data->dead)
 	{
 		pthread_mutex_lock(&philo->data->forks[philo->id - 1]);
 		print_mutex("has taken a fork", philo);
@@ -50,16 +54,17 @@ void	*philo_loop(void *philo_void)
 		philo->n_eating++;
 		philo->last_meal = get_time() - philo->data->time;
 		pthread_mutex_unlock(&philo->data->is_eating);
-		usleep(philo->data->time_eat * 1000);
-		//while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
-		//	continue ;
+		usleep(philo->data->time_eat * 1000 - 20000);
+		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
+			continue ;
 		pthread_mutex_unlock(&philo->data->forks[philo->id - 1]);
 		pthread_mutex_unlock(&philo->data->forks[philo->id]);
 		philo->eating = 0;
 		print_mutex("is sleeping", philo);
-		usleep(philo->data->time_sleep * 1000 - 20000);
-		while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
-			continue ;
+		usleep(philo->data->time_sleep * 1000);
+		// usleep(philo->data->time_sleep * 1000 - 20000);
+		// while ((get_time() - philo->data->time) - philo->last_meal < philo->data->time_eat)
+		// 	continue ;
 		print_mutex("is thinking", philo);
 	}
 	return (NULL);
@@ -78,20 +83,18 @@ void	*loop_check(void *philo_void)
 	t_philosophers	*philo;
 	int		i;
 
-	i = -1;
+	i = 0;
 	philo = (t_philosophers *)philo_void;
 	while (!philo->dead)
 	{
-		i = -1;
-		while (++i < philo->n)
+		i = 0;
+		while (philo->philos[i] && !philo->dead)
 		{
-			if ((get_time() - philo->time) - philo->philos[i]->last_meal >= philo->time_death && !philo->philos[i]->eating)
+			if (((get_time() - philo->time) - philo->philos[i]->last_meal >= philo->time_death) && !philo->philos[i]->eating)
 				philo_dead(philo, i);
 			if (philo->n_eating == philo->n)
-			{
 				philo->dead = 1;
-				break ;
-			}
+			i++;
 		}
 	}
 	return (NULL);
@@ -102,7 +105,7 @@ void	fill_philos(t_philosophers *x)
 	int	i;
 
 	i = -1;
-	x->philos = malloc (sizeof(t_philo) * x->n);
+	x->philos = malloc (sizeof(t_philo) * x->n + 1);
 	x->dead = 0;
 	while (++i < x->n)
 	{
@@ -114,19 +117,21 @@ void	fill_philos(t_philosophers *x)
 		x->philos[i]->eating = 0;
 		x->philos[i]->data = x;
 	}
+	x->philos[i] = 0;
 }
 
 void p_thread(t_philosophers *x)
-{	
+{
 	int i;
 
-	i = -1;
+	i = 0;
 	while (!x->dead)
 	{
-		while (++i < x->n)
+		while (x->philos[i] && !x->dead)
 		{
 			pthread_create(&x->philos[i]->thread, NULL, philo_loop,	(void *)x->philos[i]);
 			usleep(100);
+			i++;
 		}
 	}
 }
