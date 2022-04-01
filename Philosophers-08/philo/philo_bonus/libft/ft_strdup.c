@@ -1,28 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   strdup.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2021/12/10 16:15:03 by aperrone          #+#    #+#             */
+/*   Updated: 2022/01/13 00:44:34 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+char	*ft_strdup(char *src)
 {
-	struct timeval	timeval;
+	char	*dest;
+	int		i;
+	int		k;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	k = 0;
+	i = ft_strlen(src);
+	dest = (char *)malloc(sizeof(char) * (i + 1));
+	if (!dest)
+		return (0);
+	while (src[k])
+	{
+		dest[k] = src[k];
+		k++;
+	}
+	dest[k] = 0;
+	return (dest);
 }

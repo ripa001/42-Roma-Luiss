@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   ft_strncmp.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2021/12/05 20:42:12 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/14 15:15:58 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	struct timeval	timeval;
+	size_t	i;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	i = 0;
+	while (i < n)
+	{
+		if (*(s1 + i) == '\0')
+			return (*(unsigned char *)(s1 + i) - *(unsigned char *)(s2 + i));
+		else if (*(s1 + i) != *(s2 + i))
+			return (*(unsigned char *)(s1 + i) - *(unsigned char *)(s2 + i));
+		i++;
+	}
+	return (0);
 }

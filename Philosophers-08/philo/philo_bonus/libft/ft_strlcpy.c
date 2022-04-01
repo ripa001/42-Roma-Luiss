@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2021/12/01 10:44:44 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/14 15:01:25 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	struct timeval	timeval;
+	size_t	i;
+	int		k;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	i = 0;
+	k = ft_strlen(src);
+	if (dstsize != 0)
+	{
+		while (src[i] != '\0' && i < (dstsize - 1))
+		{
+			dst[i] = src[i];
+			i++;
+		}
+		dst[i] = '\0';
+	}
+	return (k);
 }

@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   ft_lstadd_back.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/14 17:17:09 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/14 17:17:41 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	struct timeval	timeval;
+	t_list	*tmp;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	if (lst)
+	{
+		if (*lst == NULL)
+			*lst = new;
+		else
+		{
+			tmp = ft_lstlast(*(lst));
+			tmp->next = new;
+		}
+	}
 }

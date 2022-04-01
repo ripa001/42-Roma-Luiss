@@ -1,28 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/13 00:41:01 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/14 15:32:22 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+char	*ft_strrchr(const char *s, int c)
 {
-	struct timeval	timeval;
+	unsigned char	*str;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	str = (unsigned char *)s + ft_strlen(s) - 1;
+	if (c == 0)
+		return ((char *)s + ft_strlen(s));
+	if (!ft_strlen(s))
+		return (NULL);
+	while (*str != (char)c)
+	{
+		if (str == (unsigned char *)s)
+			return (NULL);
+		str--;
+	}
+	return ((char *)str);
 }

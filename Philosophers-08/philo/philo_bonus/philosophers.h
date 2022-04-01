@@ -18,10 +18,10 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <pthread.h>
+# include <semaphore.h>
+# include <signal.h>
 # include "libft/libft.h"
 
-uint64_t	get_time(void);
-int my_exit(int res, char *str);
 
 typedef struct philo
 {
@@ -32,6 +32,7 @@ typedef struct philo
 	int				n_eating;
 	int				last_meal;
 	int				eating;
+	pid_t			pid;
 	pthread_t		thread;
 }	t_philo;
 
@@ -46,11 +47,13 @@ typedef struct philosophers
 	int				time_sleep;
 	int				dead;
 	t_philo			**philos;
-	pthread_mutex_t	death;
-	pthread_mutex_t	finish;
-	pthread_mutex_t	is_eating;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	message;
+	sem_t *is_eating;
+	sem_t *forks;
+	sem_t *message;
 }	t_philosophers;
+
+uint64_t	get_time(void);
+int my_exit(int res, char *str);
+void	philo_dead(t_philosophers *philo, int i);
 
 #endif

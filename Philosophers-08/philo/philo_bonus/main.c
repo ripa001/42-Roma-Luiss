@@ -12,27 +12,13 @@
 
 #include "philosophers.h"
 
-void	end_success(t_philosophers *philo)
-{
-	int i;
-
-	i = -1;
-	while (++i < philo->n)
-		free(philo->philos[i]);
-	free(philo->philos);
-	free(philo->forks);
-	pthread_mutex_destroy(&philo->is_eating);
-	pthread_mutex_destroy(&philo->death);
-	pthread_mutex_destroy(&philo->message);
-}
-
 void	print_mutex(char *mess, t_philo	*philo)
 {
 	if (!philo->data->dead)
 	{
-		pthread_mutex_lock(&philo->data->message);
+		sem_wait(philo->data->message);
 		printf("[%llu] %d %s\n", get_time() - philo->data->time, philo->id, mess);
-		pthread_mutex_unlock(&philo->data->message);
+		sem_post(philo->data->message);
 	}
 }
 
@@ -59,47 +45,22 @@ void		my_sleep(long long time, t_philosophers *philo)
 
 void my_eat(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->data->forks[philo->left_fork]);
+	sem_wait(philo->data->forks);
 	print_mutex("has taken a fork", philo);
-	pthread_mutex_lock(&philo->data->forks[philo->right_fork]);
+	sem_wait(philo->data->forks);
 	print_mutex("has taken a fork", philo);
 	print_mutex("is eating", philo);
-	pthread_mutex_lock(&philo->data->is_eating);
+	sem_wait(philo->data->is_eating);
 	philo->eating = 1;
 	if (++philo->n_eating == philo->data->target_eating)
 		if (++philo->data->n_finished == philo->data->n)
 			my_exit(1, "Tutti i filosofi hanno finito di mangiare");
 	philo->last_meal = get_time() - philo->data->time;
-	pthread_mutex_unlock(&philo->data->is_eating);
+	sem_post(philo->data->is_eating);
 	my_sleep(philo->data->time_eat, philo->data);
-	pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
-	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
+	sem_post(philo->data->forks);
+	sem_post(philo->data->forks);
 	philo->eating = 0;
-}
-
-void	*philo_loop(void *philo_void)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)philo_void;
-	if (philo->id % 2)
-		usleep(15000);
-	while (philo && !philo->data->dead)
-	{
-		my_eat(philo);
-		print_mutex("is sleeping", philo);
-		my_sleep(philo->data->time_sleep, philo->data);
-		print_mutex("is thinking", philo);
-	}
-	return (NULL);
-}
-
-void	philo_dead(t_philosophers *philo, int i)
-{
-	pthread_mutex_lock(&philo->death);
-	pthread_mutex_lock(&philo->message);
-	printf("[%llu] %d died\n", get_time() - philo->time, philo->philos[i]->id);
-	philo->dead = 1;
 }
 
 void	*loop_check(void *philo_void)
@@ -123,6 +84,23 @@ void	*loop_check(void *philo_void)
 	return (NULL);
 }
 
+void	*philo_loop(void *philo_void)
+{
+	t_philo		*philo;
+	pthread_t	thread;
+
+	philo = (t_philo *)philo_void;
+	pthread_create(&thread, NULL, loop_check, philo);
+	while (philo && !philo->data->dead)
+	{
+		my_eat(philo);
+		print_mutex("is sleeping", philo);
+		my_sleep(philo->data->time_sleep, philo->data);
+		print_mutex("is thinking", philo);
+	}
+	return (NULL);
+}
+
 void	fill_philos(t_philosophers *x)
 {
 	int	i;
@@ -139,6 +117,7 @@ void	fill_philos(t_philosophers *x)
 		x->philos[i]->n_eating = 0;
 		x->philos[i]->eating = 0;
 		x->philos[i]->data = x;
+		x->philos[i]->last_meal = 0;
 	}
 	x->philos[i] = 0;
 }
@@ -168,30 +147,29 @@ void init(char *argv[], t_philosophers *philo)
 	philo->target_eating = -1;
 	philo->n_finished = 0;
 	philo->time = get_time();
-	pthread_mutex_init(&philo->death, NULL);
-	pthread_mutex_init(&philo->finish, NULL);
-	pthread_mutex_init(&philo->is_eating, NULL);
-	pthread_mutex_init(&philo->message, NULL);
+	
 	if (philo->time_death < 0 || philo->time_eat < 0
 		|| philo->time_sleep < 0)
 		my_exit(0, "Errore argomenti: Tutti i parametri devono essere positivi");
 	if (philo->n < 2)
 		my_exit(0, "Errore argomenti: Il numero di filosofi deve essere maggiore di 1");
-	philo->forks = malloc(sizeof(pthread_mutex_t) * philo->n);
+	sem_unlink("sem_forks");
+	sem_unlink("sem_write");
+	sem_unlink("sem_eating");
+	philo->forks = sem_open("sem_forks", O_CREAT, 0644, philo->n);
+	philo->message = sem_open("sem_write", O_CREAT, 0644, 1);
+	philo->is_eating = sem_open("sem_eating", O_CREAT, 0644, 1);
 }
 
 int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 {
 	int	i;
-	pthread_t	thread;
 
 	i = -1;
 	if (argc < 5 || argc > 6)
 		my_exit(0, "Errore argomenti: Sono accettati 4 o 5 argomenti");
 	init(argv, philo);
-	while (++i < philo->n)
-		pthread_mutex_init(&philo->forks[i], NULL);
-	pthread_create(&thread, NULL, loop_check, philo);
+	
 	fill_philos(philo);
 	if (argc == 6)
 	{
@@ -199,13 +177,54 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 		if (philo->target_eating <= 0)
 			my_exit(0, "Errore argomenti: Minimo numero di pasti 1");
 	}
-	p_thread(philo);
+	// p_thread(philo);
 	return (1);
+}
+
+void end(t_philosophers *philo)
+{
+	int	i;
+	int	ret;
+
+	i = 0;
+	while (i < philo->n)
+	{
+		waitpid(-1, &ret, 0);
+		if (ret != 0)
+		{
+			i = -1;
+			while (++i < philo->n)
+				kill(philo->philos[i]->pid, SIGKILL);
+			break ;
+		}
+		i++;
+	}
+	sem_close(philo->forks);
+	sem_close(philo->message);
+	sem_close(philo->is_eating);
+	sem_unlink("sem_forks");
+	sem_unlink("sem_write");
+	sem_unlink("sem_eating");
 }
 
 int	main(int argc, char *argv[])
 {
 	t_philosophers	philo;
+	int i;
 
 	init_philosophers(argv, &philo, argc);
+	i = -1;
+	while (++i < philo.n)
+	{
+		philo.philos[i]->pid = fork();
+		if (philo.philos[i]->pid < 0)
+			return (my_exit(0, "Error while forking!\n"));
+		printf("cazz %d - %d", i , philo.n);
+		if (!philo.philos[i]->pid)
+			philo_loop(philo.philos[i]);
+		printf("cazz2 %d - %d", i , philo.n);
+
+	}
+	end(&philo);
+	return (1);
 }

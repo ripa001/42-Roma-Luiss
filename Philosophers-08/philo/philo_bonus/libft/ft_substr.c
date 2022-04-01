@@ -1,28 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_philo.c                                      :+:      :+:    :+:   */
+/*   substr.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/11 15:34:09 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/01/13 00:39:15 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "libft.h"
 
-uint64_t	get_time(void)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	struct timeval	timeval;
+	char	*sub;
+	int		i;
 
-	gettimeofday(&timeval, NULL);
-	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
-}
-
-int my_exit(int res, char *str)
-{
-	printf("%s\n", str);
-	exit(res);
-	return (res);
+	if ((int)len > ft_strlen(s))
+		len = ft_strlen(s);
+	if ((int)start > ft_strlen(s))
+		len = 0;
+	sub = (char *)malloc(len + 1);
+	i = 0;
+	while (s[start] && i < (int)len)
+	{
+		sub[i] = s[start];
+		start++;
+		i++;
+	}
+	sub[i] = 0;
+	return (sub);
 }
