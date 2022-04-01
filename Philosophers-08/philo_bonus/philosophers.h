@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:44:07 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/28 18:36:56 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/01 16:30:59 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct philosophers
 }	t_philosophers;
 
 uint64_t	get_time(void);
-int my_exit(int res, char *str);
-void	philo_dead(t_philosophers *philo, int i);
+int			my_exit(int res, char *str);
+void		philo_dead(t_philo *philo);
 
 #endif

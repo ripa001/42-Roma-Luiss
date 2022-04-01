@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:48:14 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/31 19:39:10 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/01 17:02:32 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_mutex(char *mess, t_philo	*philo)
 {
 	if (!philo->data->dead)
 	{
-		
+
 		sem_wait(philo->data->message);
 		printf("[%llu] %d %s\n", get_time() - philo->data->time, philo->id, mess);
 		sem_post(philo->data->message);
@@ -31,7 +31,7 @@ long long	time_function(void)
 	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
 }
 
-void		my_sleep(long long time, t_philosophers *philo)
+void	my_sleep(long long time, t_philosophers *philo)
 {
 	long long i;
 
@@ -51,7 +51,6 @@ void my_eat(t_philo *philo)
 	sem_wait(philo->data->forks);
 	print_mutex("has taken a fork", philo);
 	print_mutex("is eating", philo);
-	printf("ciao1");
 	sem_wait(philo->data->is_eating);
 	philo->eating = 1;
 	if (++philo->n_eating == philo->data->target_eating)
@@ -67,22 +66,32 @@ void my_eat(t_philo *philo)
 
 void	*loop_check(void *philo_void)
 {
-	t_philosophers	*philo;
+	t_philo	*philo;
 	int		i;
 
 	i = 0;
-	philo = (t_philosophers *)philo_void;
-	while (1)
+	philo = (t_philo *)philo_void;
+	while (!philo->data->dead)
 	{
-		i = 0;
-		while (philo->philos[i] && !philo->dead)
+		usleep(100);
+		// if (((get_time() - philo->time) - philo->philos[i]->last_meal >= philo->time_death) && !philo->philos[i]->eating)
+		// 		philo_dead(philo, i);
+		if ((get_time() - philo->data->time) - philo->last_meal >= philo->data->time_death && !philo->eating)
 		{
-			if (((get_time() - philo->time) - philo->philos[i]->last_meal >= philo->time_death) && !philo->philos[i]->eating)
-				philo_dead(philo, i);
-			i++;
-			usleep(100);
+			philo_dead(philo);
+			break ;
+		}
+		if (philo->data->target_eating != -1 && \
+			philo->n_eating == philo->data->target_eating)
+		{
+			philo->data->dead = 1;
+			break ;
 		}
 	}
+	if (philo->data->dead)
+		exit(1);
+	else
+		exit(0);
 	return (NULL);
 }
 
@@ -149,7 +158,7 @@ void init(char *argv[], t_philosophers *philo)
 	philo->target_eating = -1;
 	philo->n_finished = 0;
 	philo->time = get_time();
-	
+
 	if (philo->time_death < 0 || philo->time_eat < 0
 		|| philo->time_sleep < 0)
 		my_exit(0, "Errore argomenti: Tutti i parametri devono essere positivi");
