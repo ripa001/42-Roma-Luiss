@@ -16,6 +16,7 @@ void	print_mutex(char *mess, t_philo	*philo)
 {
 	if (!philo->data->dead)
 	{
+		
 		sem_wait(philo->data->message);
 		printf("[%llu] %d %s\n", get_time() - philo->data->time, philo->id, mess);
 		sem_post(philo->data->message);
@@ -50,6 +51,7 @@ void my_eat(t_philo *philo)
 	sem_wait(philo->data->forks);
 	print_mutex("has taken a fork", philo);
 	print_mutex("is eating", philo);
+	printf("ciao1");
 	sem_wait(philo->data->is_eating);
 	philo->eating = 1;
 	if (++philo->n_eating == philo->data->target_eating)
@@ -70,7 +72,7 @@ void	*loop_check(void *philo_void)
 
 	i = 0;
 	philo = (t_philosophers *)philo_void;
-	while (!philo->dead)
+	while (1)
 	{
 		i = 0;
 		while (philo->philos[i] && !philo->dead)
@@ -154,10 +156,10 @@ void init(char *argv[], t_philosophers *philo)
 	if (philo->n < 2)
 		my_exit(0, "Errore argomenti: Il numero di filosofi deve essere maggiore di 1");
 	sem_unlink("sem_forks");
-	sem_unlink("sem_write");
+	sem_unlink("sem_message");
 	sem_unlink("sem_eating");
 	philo->forks = sem_open("sem_forks", O_CREAT, 0644, philo->n);
-	philo->message = sem_open("sem_write", O_CREAT, 0644, 1);
+	philo->message = sem_open("sem_message", O_CREAT, 0644, 1);
 	philo->is_eating = sem_open("sem_eating", O_CREAT, 0644, 1);
 }
 
@@ -169,7 +171,6 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 	if (argc < 5 || argc > 6)
 		my_exit(0, "Errore argomenti: Sono accettati 4 o 5 argomenti");
 	init(argv, philo);
-	
 	fill_philos(philo);
 	if (argc == 6)
 	{
@@ -203,7 +204,7 @@ void end(t_philosophers *philo)
 	sem_close(philo->message);
 	sem_close(philo->is_eating);
 	sem_unlink("sem_forks");
-	sem_unlink("sem_write");
+	sem_unlink("sem_message");
 	sem_unlink("sem_eating");
 }
 
@@ -219,11 +220,8 @@ int	main(int argc, char *argv[])
 		philo.philos[i]->pid = fork();
 		if (philo.philos[i]->pid < 0)
 			return (my_exit(0, "Error while forking!\n"));
-		printf("cazz %d - %d", i , philo.n);
 		if (!philo.philos[i]->pid)
 			philo_loop(philo.philos[i]);
-		printf("cazz2 %d - %d", i , philo.n);
-
 	}
 	end(&philo);
 	return (1);

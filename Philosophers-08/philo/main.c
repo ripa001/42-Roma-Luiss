@@ -132,7 +132,7 @@ void	fill_philos(t_philosophers *x)
 	x->dead = 0;
 	while (++i < x->n)
 	{
-		x->philos[i] = malloc (sizeof(t_philo));
+		x-> philos[i]= malloc (sizeof(t_philo));
 		x->philos[i]->id = i + 1;
 		x->philos[i]->left_fork = i;
 		x->philos[i]->right_fork = (i + 1) % x->n;
