@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 02:29:22 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:31:48 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 02:44:12 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ void	*loop_check(void *philo_void)
 	while (!philo->data->dead)
 	{
 		usleep(100);
-		if ((get_time() - philo->data->time) - philo->lm >= philo->data->td \
-				&& !philo->eat)
+		if ((get_time() - philo->data->time) - philo->lm >= \
+				(unsigned long long)philo->data->td && !philo->eat)
 		{
 			philo_dead(philo);
 			break ;

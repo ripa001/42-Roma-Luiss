@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:48:14 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:21:23 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 02:52:53 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ void	*loop_check(void *philo_void)
 		while (philo->philos[i] && !philo->dead)
 		{
 			if (((get_time() - philo->time) - philo->philos[i]->last_meal >= \
-					philo->time_death) && !philo->philos[i]->eating)
+					(unsigned long long)philo->time_death) \
+						&& !philo->philos[i]->eating)
 				philo_dead(philo, i);
 			i++;
 			usleep(50);
