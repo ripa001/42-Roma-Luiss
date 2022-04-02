@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 02:18:59 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:20:07 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 03:18:47 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,15 @@ void	*philo_loop(void *philo_void)
 		print_mutex("is thinking", philo);
 	}
 	return (NULL);
+}
+
+int	ft_strisdigit(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (!ft_isdigit(str[i]))
+			return (0);
+	return (1);
 }

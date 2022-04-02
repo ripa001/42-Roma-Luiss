@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:44:07 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:23:10 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 03:20:36 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ void		fill_philos(t_philosophers *x);
 void		p_thread(t_philosophers *x);
 long long	time_function(void);
 int			init_philosophers(char *argv[], t_philosophers *philo, int argc);
+int			ft_strisdigit(char *str);
 
 #endif

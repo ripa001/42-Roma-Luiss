@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 02:31:07 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:31:13 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 03:15:55 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,11 @@ void	init(char *argv[], t_philosophers *philo)
 	philo->time = get_time();
 	if (philo->td < 0 || philo->time_eat < 0
 		|| philo->time_sleep < 0)
-		my_exit(0, "Errore argomenti: Tutti i parametri \
-			devono essere positivi");
+		my_exit(0, \
+		"Errore argomenti: Tutti i parametri devono essere positivi");
 	if (philo->n < 1)
-		my_exit(0, "Errore argomenti: Il numero di filosofi \
-			deve essere maggiore di 0");
+		my_exit(0, \
+		"Errore argomenti: Il numero di filosofi deve essere maggiore di 0");
 	sem_unlink("sem_forks");
 	sem_unlink("sem_message");
 	sem_unlink("sem_eating");
@@ -72,5 +72,16 @@ int	init_philosophers(char *argv[], t_philosophers *philo, int argc)
 		if (philo->n_e <= 0)
 			my_exit(0, "Errore argomenti: Minimo numero di pasti 1");
 	}
+	return (1);
+}
+
+int	ft_strisdigit(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+		if (!ft_isdigit(str[i]))
+			return (0);
 	return (1);
 }

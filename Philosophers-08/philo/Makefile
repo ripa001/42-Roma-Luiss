@@ -6,13 +6,11 @@ HEADER = philo.h
 CC = gcc -pthread
 FLAGS = -Wall -Werror -Wextra
 
-all: philo
-
-bonus: philo
-
-philo:
+$(NAME):
 	make -C libft
 	$(CC) $(FLAGS) $(SRCS) $(LIBFT) -o $(NAME)
+
+all: $(NAME)
 
 clean:
 	make clean -C libft

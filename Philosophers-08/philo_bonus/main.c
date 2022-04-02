@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:48:14 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 02:31:52 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 03:17:55 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ int	main(int argc, char *argv[])
 	t_philosophers	philo;
 	int				i;
 
+	i = 0;
+	while (++i < argc)
+		if (!ft_strisdigit(argv[i]))
+			my_exit(0, "Non sono previsti argomenti alfanumerici");
 	init_philosophers(argv, &philo, argc);
 	i = -1;
 	while (++i < philo.n)
