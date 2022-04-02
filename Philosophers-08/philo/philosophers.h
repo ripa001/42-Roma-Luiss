@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:44:07 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/28 18:36:56 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 02:23:10 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,16 @@
 # include <pthread.h>
 # include "libft/libft.h"
 
-uint64_t	get_time(void);
-int my_exit(int res, char *str);
-
 typedef struct philo
 {
 	struct philosophers	*data;
-	int				id;
-	int				left_fork;
-	int				right_fork;
-	int				n_eating;
-	int				last_meal;
-	int				eating;
-	pthread_t		thread;
+	int					id;
+	int					left_fork;
+	int					right_fork;
+	int					n_eating;
+	int					last_meal;
+	int					eating;
+	pthread_t			thread;
 }	t_philo;
 
 typedef struct philosophers
@@ -52,5 +49,19 @@ typedef struct philosophers
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	message;
 }	t_philosophers;
+
+uint64_t	get_time(void);
+int			my_exit(int res, char *str);
+void		end_success(t_philosophers *philo);
+void		print_mutex(char *mess, t_philo	*philo);
+void		my_sleep(long long time, t_philosophers *philo);
+void		my_eat(t_philo *philo);
+void		*philo_loop(void *philo_void);
+void		philo_dead(t_philosophers *philo, int i);
+void		*loop_check(void *philo_void);
+void		fill_philos(t_philosophers *x);
+void		p_thread(t_philosophers *x);
+long long	time_function(void);
+int			init_philosophers(char *argv[], t_philosophers *philo, int argc);
 
 #endif

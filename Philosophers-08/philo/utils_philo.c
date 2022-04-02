@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/27 18:46:05 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/03/27 19:19:47 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/02 02:16:26 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,36 @@ uint64_t	get_time(void)
 	return ((timeval.tv_sec * (uint64_t)1000) + (timeval.tv_usec / 1000));
 }
 
-int my_exit(int res, char *str)
+int	my_exit(int res, char *str)
 {
 	printf("%s\n", str);
 	exit(res);
 	return (res);
+}
+
+void	print_mutex(char *mess, t_philo	*philo)
+{
+	if (!philo->data->dead)
+	{
+		pthread_mutex_lock(&philo->data->message);
+		printf("[%llu] %d %s\n", get_time() - \
+			philo->data->time, philo->id, mess);
+		pthread_mutex_unlock(&philo->data->message);
+	}
+}
+
+long long	time_function(void)
+{
+	struct timeval	t;
+
+	gettimeofday(&t, NULL);
+	return ((t.tv_sec * 1000) + (t.tv_usec / 1000));
+}
+
+void	philo_dead(t_philosophers *philo, int i)
+{
+	pthread_mutex_lock(&philo->death);
+	pthread_mutex_lock(&philo->message);
+	printf("[%llu] %d died\n", get_time() - philo->time, philo->philos[i]->id);
+	philo->dead = 1;
 }
