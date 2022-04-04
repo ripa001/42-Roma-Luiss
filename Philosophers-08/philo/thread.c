@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 02:18:59 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/02 03:18:47 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/04/03 18:22:40 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ void	end_success(t_philosophers *philo)
 	pthread_mutex_destroy(&philo->is_eating);
 	pthread_mutex_destroy(&philo->death);
 	pthread_mutex_destroy(&philo->message);
+	pthread_mutex_destroy(&philo->finish);
+	i = -1;
+	while (++i < philo->n)
+		pthread_mutex_destroy(&philo->forks[i]);
 	exit(1);
 }
 
