@@ -1,6 +1,6 @@
-NAME = zombieHorde
+NAME = weapon
 CC = c++
-SRCS = $(addprefix src/, newZombie.cpp randomChump.cpp main.cpp Zombie.cpp zombieHorde.cpp)
+SRCS = $(addprefix src/, HumanA.cpp HumanB.cpp Weapon.cpp main.cpp)
 CFLAGS= -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
