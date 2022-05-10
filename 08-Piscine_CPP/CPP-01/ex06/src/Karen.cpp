@@ -1,6 +1,6 @@
 #include "../include/Karen.hpp"
 
-Karen::Karen( void )
+Karen::Karen( std::string level ) : levelFilter(level)
 {
 }
 
@@ -32,6 +32,7 @@ void	Karen::error( void )
 
 void	Karen::complain( std::string level )
 {
+	int		flag = 0;
 	void	(Karen::*complain[])( void ) = {
 		&Karen::debug,
 		&Karen::info,
@@ -44,11 +45,15 @@ void	Karen::complain( std::string level )
 		"WARNING",
 		"ERROR"
 	};
+	std::transform(levelFilter.begin(), levelFilter.end(), levelFilter.begin(), ::toupper);
 	for (int i = 0; i < 4; i++)
 	{	
+		if (levelFilter == complainLevels[i])
+			flag = 1;
 		void (Karen::*tmpComplain)( void ) = complain[i];
-		if (level == complainLevels[i])
+		if (level == complainLevels[i] && flag)
 			(this->*tmpComplain)();
 	}
-
+	if (!flag)
+		std::cout << "[ Probably complaining about insignificant problems ]" << std::endl;
 }

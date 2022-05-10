@@ -59,6 +59,14 @@
 		"system_error": "cpp",
 		"tuple": "cpp",
 		"typeinfo": "cpp",
-		"utility": "cpp"
+		"utility": "cpp",
+		"__bits": "cpp",
+		"__hash_table": "cpp",
+		"__node_handle": "cpp",
+		"clocale": "cpp",
+		"cmath": "cpp",
+		"complex": "cpp",
+		"optional": "cpp",
+		"sstream": "cpp"
 	}
 }
