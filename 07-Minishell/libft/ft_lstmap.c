@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpatrini <mpatrini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/14 17:11:04 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/14 17:15:21 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/12 06:57:38 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/01/12 07:29:21 by mpatrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,29 @@
 
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	t_list	*new;
-	t_list	*newlst;
+	t_list	*fi;
+	t_list	*n;
 
-	new = ft_lstnew(f(lst->content));
-	if (!(new))
-	{
-		ft_lstclear(&lst, del);
-		return (0);
-	}
-	newlst = new;
-	lst = lst->next;
+	if (!f || !del)
+		return (NULL);
+	fi = NULL;
 	while (lst)
 	{
-		new = ft_lstnew(f(lst->content));
-		if (!(new))
+		n = ft_lstnew((*f)(lst->content));
+		if (!n)
 		{
-			ft_lstclear(&lst, del);
-			ft_lstclear(&newlst, del);
-			return (0);
+			while (fi)
+			{
+				n = fi->next;
+				(*del)(fi->content);
+				free(fi);
+				fi = n;
+			}
+			lst = NULL;
+			return (NULL);
 		}
+		ft_lstadd_back(&fi, n);
 		lst = lst->next;
-		ft_lstadd_back(&newlst, new);
 	}
-	return (newlst);
+	return (fi);
 }

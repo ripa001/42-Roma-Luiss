@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   calloc.c                                           :+:      :+:    :+:   */
+/*   ft_calloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpatrini <mpatrini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/11 01:14:59 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/13 21:52:27 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/10 21:21:12 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/01/13 19:26:54 by mpatrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 void	*ft_calloc(size_t count, size_t size)
 {
-	void	*ptr;
+	void	*a;
 
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (0);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	a = (void *)malloc(count * size);
+	if (!a)
+		return (NULL);
+	ft_bzero (a, (count * size));
+	return (a);
 }

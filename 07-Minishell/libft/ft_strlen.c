@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strlen.c                                           :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/10 15:07:16 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/12 23:13:29 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/10 16:00:00 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/05/02 16:38:22 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_strlen(const char *str)
+#include "libft.h"
+
+size_t	ft_strlen(const char *c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (str[i])
+	while (c && c[i])
 		i++;
 	return (i);
 }

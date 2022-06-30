@@ -3,91 +3,124 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpatrini <mpatrini@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/13 00:45:17 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/14 19:51:18 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/11 03:32:37 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/01/13 03:19:19 by mpatrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	get_num_el(char const *s, char c)
+static char	*ft_strleng2(char const *str, int count, int i)
 {
-	char	*p;
-	int		i;
-	int		nbr;
+	int		k;
+	char	*st;
 
-	i = ft_strlen(s);
-	nbr = 0;
-	p = (char *)s;
-	while (*p)
+	st = (char *)malloc(count + 1);
+	if (!st)
+		return (NULL);
+	k = 0;
+	while ((i - count) < i)
 	{
-		while (*p == c)
-			p++;
-		if (!*p)
-			break ;
-		nbr++;
-		while (*p != c && *p)
-			p++;
+		st[k] = str[i - count];
+		k++;
+		count--;
 	}
-	return (nbr);
+	st[k] = 0;
+	return (st);
 }
 
-char	**memall(char *s, char c, int nbr, char **new)
+static int	ft_strleng(char const *str, char charset, char **mat)
 {
-	int		counter;
-	char	*ptr;
-	int		i;
+	int	i;
+	int	j;
+	int	count;
 
-	counter = 0;
 	i = 0;
-	ptr = (char *)s;
-	while (*ptr == c)
-		ptr++;
-	while (counter < nbr)
+	j = 0;
+	while (str[i])
 	{
-		i = 0;
-		while (*ptr == c)
-			ptr++;
-		while (*ptr != c && *ptr)
+		count = 0;
+		while (str[i] == charset)
+			i++;
+		while (str[i] != charset && str[i])
 		{
 			i++;
-			ptr++;
+			count++;
 		}
-		new[counter] = (char *)malloc(sizeof(char) * (i + 1));
-		new[counter][i] = 0;
-		counter++;
+		if (count > 0)
+		{
+			mat[j] = ft_strleng2(str, count, i);
+			j++;
+		}
 	}
-	new[counter] = 0;
-	return (new);
+	mat[j] = 0;
+	return (1);
 }
 
-char	**ft_split(char const *s, char c)
+static	int	ft_strcount(char const *str, char charset)
 {
-	int		nbr;
-	char	**new;
-	int		i;
-	int		counter;
+	size_t	i;
+	int		count;
+	size_t	h;
 
-	nbr = get_num_el(s, c);
-	new = (char **)malloc(sizeof(char *) * (nbr + 1));
-	if (!new)
-		return (0);
-	new = memall((char *)s, c, nbr, new);
-	counter = 0;
-	while (*s)
+	i = 0;
+	count = 0;
+	while (str[i])
 	{
-		i = 0;
-		while (*s == c)
-			s++;
-		while (*s != c && *s)
-		{
-			new[counter][i] = *s;
+		h = 0;
+		while (str[i] == charset)
 			i++;
-			s++;
+		while (str[i] != charset && str[i])
+		{
+			i++;
+			h++;
 		}
-		counter++;
+		count++;
 	}
-	return (new);
+	if (h == 0)
+		count -= 1;
+	return (count + 1);
+}
+
+static char	**ft_split2(char const *str)
+{
+	char	**matrix;
+
+	matrix = (char **)malloc(sizeof(char *) * 2);
+	if (!matrix)
+		return (NULL);
+	matrix[0] = ft_strdup(str);
+	matrix[1] = 0;
+	return (matrix);
+}
+
+char	**ft_split(char const *str, char charset)
+{
+	int		count;
+	char	**matrix;
+
+	if (!str || !*str)
+	{
+		matrix = malloc(sizeof(char *) * 1);
+		if (!matrix)
+			return (NULL);
+		*matrix = (void *)0;
+		return (matrix);
+	}
+	if (ft_strchr(str, charset) == NULL)
+	{
+		matrix = ft_split2(str);
+		if (!matrix)
+			return (NULL);
+		return (matrix);
+	}
+	count = ft_strcount(str, charset);
+	matrix = (char **)malloc(sizeof(char *) * (count));
+	if (!matrix)
+		return (NULL);
+	if (ft_strleng(str, charset, matrix) == 1)
+		return (matrix);
+	return (NULL);
 }

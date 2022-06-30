@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   substr.c                                           :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpatrini <mpatrini@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/11 15:34:09 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/13 00:39:15 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/11 00:26:44 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/06/29 20:21:46 by mpatrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,25 @@
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*sub;
 	int		i;
+	int		j;
+	size_t	a;
+	char	*r;
 
-	if ((int)len > ft_strlen(s))
-		len = ft_strlen(s);
-	if ((int)start > ft_strlen(s))
-		len = 0;
-	sub = (char *)malloc(len + 1);
-	i = 0;
-	while (s[start] && i < (int)len)
-	{
-		sub[i] = s[start];
-		start++;
-		i++;
-	}
-	sub[i] = 0;
-	return (sub);
+	if (!s)
+		return (NULL);
+	if (ft_strlen(s) > len)
+		a = len;
+	else
+		a = ft_strlen(s);
+	r = ft_calloc(a + 1, sizeof(char));
+	if (!r)
+		return (NULL);
+	i = -1;
+	j = -1;
+	while (s[++i])
+		if (i >= (int)start && ++j < (int)len)
+			r[j] = s[i];
+	r[j + 1] = 0;
+	return (r);
 }

@@ -3,34 +3,98 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+         #
+#    By: mpatrini <mpatrini@student.42roma.it>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/03/28 18:16:46 by ebassi            #+#    #+#              #
-#    Updated: 2022/04/04 17:31:51 by dripanuc         ###   ########.fr        #
+#    Created: 2022/06/12 16:02:33 by mpatrini          #+#    #+#              #
+#    Updated: 2022/06/29 20:52:45 by mpatrini         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = minishell
-SRCSFLS = main.c
-HEADER = minishell.h
-FLAGS = gcc -lreadline -Wall -Wextra -Werror
-LIBFT = ./libft/libft.a
+NAME	=	minishell
 
-all: minishell
+LIBFT	=	./libft/libft.a
 
-$(LIBFT):
-	$(MAKE) -C ./libft
+CC		=	gcc
 
-minishell: $(LIBFT)
-	$(FLAGS) $(LIBFT) $(SRCSFLS) -o minishell
+CFLAGS	=	-Wall -Wextra -Werror -g -I includes/ -I libft/
 
-clean:
-	$(MAKE) clean -C ./libft
+READLINE	= -L/usr/include -lreadline -lcurses -L /Users/$(USER)/.brew/opt/readline/lib -I /Users/$(USER)/.brew/opt/readline/include
 
-fclean:	clean
-	rm -f minishell
-	$(MAKE) fclean -C ./libft
+RM		=	rm -f
 
-re:			fclean all
+SRCSFLS = main.c \
+			minishell.c \
+			minishell2.c \
+			minishell3.c \
+			brackets.c \
+			check_command.c \
+			cmd_list.c \
+			cmd_list2.c \
+			env.c \
+			exec.c \
+			exec2.c \
+			expand_env.c \
+			expand_env2.c \
+			get_command.c \
+			heredoc-pipe.c \
+			mini.c \
+			redirections-fd.c \
+			utility.c \
+			quotes.c \
+			wildcard.c \
+			wildcard2.c \
+			wildcard3.c \
 
-.PHONY:		all clean fclean re bonus
+BUILTINS = cd.c \
+			pwd.c \
+			env.c \
+			exit.c \
+			echo.c \
+			export.c \
+			export2.c \
+			unset.c \
+
+SRCS = $(addprefix src/, $(SRCSFLS)) $(addprefix builtins/, $(BUILTINS))
+
+OBJ		=	$(SRCS:.c=.o)
+
+$(NAME):	$(OBJ)
+			@make -C libft/
+			@printf "\e[92mBuilding $(NAME)...\e[39m\n"
+			@$(CC) $(CFLAGS) -o $(NAME) $(LIBFT) $(OBJ) $(READLINE)
+			@printf "\e[102mEverything has been compiled, use './minishell' to run the program!\e[0m\n"
+
+%.o	:	%.c
+			@$(CC) $(CFLAGS) -c $< -o $@
+				
+all		:	$(NAME)
+
+clean	:
+			@printf "\e[93mCleaning Minishell objects...\e[39m\n"
+			@$(RM) $(OBJ) $(OBJ2)
+			@printf "\e[93mCleaning Libft objects...\e[39m\n"
+			@make clean -C ./libft
+			@printf "\e[103mAll objects have been deleted\e[0m\n"
+
+fclean	:	clean
+			@printf "\e[91mCleaning Minishell...\e[39m\n"
+			@$(RM) $(NAME)
+			@printf "\e[91mCleaning Libft...\e[39m\n"
+			@make fclean -C ./libft
+			@printf "\e[101mAll executables and libraries have been deleted\e[0m\n"
+
+re		:	fclean all
+
+test	:	all
+			@./$(NAME)
+			
+leaks	:	all
+			@leaks --atExit -- ./$(NAME)
+			
+l		:
+			@leaks --atExit -- ./$(NAME)
+
+norma	:
+			@norminette
+
+.PHONY	:	all clean fclean re test

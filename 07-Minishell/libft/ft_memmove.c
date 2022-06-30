@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   memmove.c                                          :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mpatrini <mpatrini@student.42roma.it>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/10 19:52:10 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/01/13 00:56:37 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/10 22:49:15 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/01/24 00:07:30 by mpatrini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dest, const void *src, size_t len)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	char		*d;
-	const char	*s;
-	const char	*lasts;
-	char		*lastd;
+	int	i;
 
-	d = dest;
-	lastd = d;
-	s = src;
-	lasts = s;
-	if (d < s)
-		while (len--)
-			*d++ = *s++;
+	i = 0;
+	if (!src && !dst && len > 0)
+		return (NULL);
+	if (dst > src)
+	{
+		i = (int)len - 1;
+		while (i >= 0)
+		{
+			*(char *)(dst + i) = *(char *)(src + i);
+			i--;
+		}
+	}
 	else
 	{
-		lasts = s + (len - 1);
-		lastd = d + (len - 1);
-		while (len--)
-			*lastd-- = *lasts--;
+		i = 0;
+		while (i < (int)len)
+		{
+			*(char *)(dst + i) = *(char *)(src + i);
+			i++;
+		}	
 	}
-	return (dest);
+	return (dst);
 }

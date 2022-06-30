@@ -5,32 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/10 23:28:15 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/04 18:42:16 by dripanuc         ###   ########.fr       */
+/*   Created: 2022/01/10 19:53:51 by mpatrini          #+#    #+#             */
+/*   Updated: 2022/05/13 11:27:38 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
+
 char	*ft_strchr(const char *s, int c)
 {
-	unsigned char	*str;
+	int	i;
 
-	str = (unsigned char *)s;
-	while (*str != (unsigned char)c)
+	i = 0;
+	while (s[i])
 	{
-		if (*str == 0)
-			return (0);
-		str++;
+		if (s[i] == (char)c)
+			return ((char *)(s + i));
+		i++;
 	}
-	return ((char *)str);
+	if (s[i] == (char)c)
+		return ((char *)(s + i));
+	return (NULL);
 }
 
-int	ft_index_strchr(const char *s, int c)
+int	ft_strchr_int(const char *s, int c)
 {
-	int				i;
+	int	i;
 
-	i = -1;
-	while (s[++i] != c)
-		if (s[i] == 0)
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == (char)c)
 			return (i);
+		i++;
+	}
 	return (i);
 }
