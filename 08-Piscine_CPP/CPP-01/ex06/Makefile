@@ -1,6 +1,6 @@
-NAME = karenFilter
+NAME = harlFilter
 CC = c++
-SRCS = $(addprefix src/, main.cpp Karen.cpp)
+SRCS = $(addprefix src/, main.cpp Harl.cpp)
 CFLAGS= -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)

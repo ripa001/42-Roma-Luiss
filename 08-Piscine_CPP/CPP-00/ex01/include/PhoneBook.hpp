@@ -1,7 +1,7 @@
 #ifndef PHONEBOOK_CLASS_HPP
 # define PHONEBOOK_CLASS_HPP
 
-# include "contact.hpp"
+# include "Contact.hpp"
 # include <algorithm>
 # include <cstring>
 # include <iomanip>
