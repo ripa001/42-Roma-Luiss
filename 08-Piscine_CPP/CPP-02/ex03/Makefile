@@ -1,6 +1,6 @@
-NAME = fixed
+NAME = bsp
 CC = c++
-SRCS = main.cpp Fixed.cpp
+SRCS = $(addprefix src/, Fixed.cpp Point.cpp main.cpp bsp.cpp)
 CFLAGS= -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
