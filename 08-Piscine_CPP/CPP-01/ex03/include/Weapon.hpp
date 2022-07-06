@@ -7,8 +7,8 @@ class Weapon {
 
 	public:
 		Weapon(std::string name);
-		Weapon(void);
-		~Weapon(void);
+		Weapon( void );
+		~Weapon( void );
 
 		const std::string	&getType( void );
 		void				setType(std::string name);

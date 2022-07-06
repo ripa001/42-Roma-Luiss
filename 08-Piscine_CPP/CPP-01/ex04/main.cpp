@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-void replace(char *argv[])
-{
+void replace(char *argv[]) {
 	int	i;
 	std::string filename;
 	std::string s1 = argv[1];
@@ -38,8 +37,7 @@ void replace(char *argv[])
 	file.close();
 }
 
-int main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]) {
 	if (argc == 4)
 		replace(&argv[1]);
 	return (0);

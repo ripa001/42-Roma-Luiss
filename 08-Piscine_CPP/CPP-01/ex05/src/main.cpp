@@ -1,8 +1,7 @@
 #include "../include/Harl.hpp"
 #include <iostream>
 
-int main()
-{
+int main() {
 	Harl harl;
 
 	harl.complain("DEBUG");

@@ -1,7 +1,6 @@
 #include <iostream>
 
-int	main(void)
-{
+int	main( void ) {
 	std::string my_string = "HI THIS IS BRAIN";
 	std::string *my_string_ptr = &my_string;
 	std::string &my_string_ref = my_string;

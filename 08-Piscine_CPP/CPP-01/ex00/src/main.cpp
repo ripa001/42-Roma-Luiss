@@ -1,7 +1,6 @@
 #include "../include/Zombie.hpp"
 
-int	main(void)
-{
+int	main( void ) {
 	Zombie *zombie1;
 	Zombie *zombie2;
 
