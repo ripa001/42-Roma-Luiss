@@ -109,3 +109,9 @@ div {
     font-size:70%;
     font-style:italic;
 }
+
+input[type="text"]:disabled  {
+    color : red;
+    background-color: white;
+    font-style:italic;
+}
