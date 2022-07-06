@@ -10,12 +10,12 @@ class Point {
 		Fixed const _y;
 	public:
 		Point(const float x, const float y);
-		Point(void);
+		Point( void );
 		Point(const Point &obj);
-		Fixed const &getX(void) const;
-		Fixed const &getY(void) const;
+		Fixed const &getX( void ) const;
+		Fixed const &getY( void ) const;
 		Point& operator=(const Point &point);
-		~Point(void);
+		~Point( void );
 
 
 };

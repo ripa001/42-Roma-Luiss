@@ -1,8 +1,7 @@
 #include <iostream>
 #include <cstring>
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
 	if (argc == 1)
 	{
 		std::cout << "* LOAD AND UNBEARABLE FEEDBACK NOISE *" << std::endl;

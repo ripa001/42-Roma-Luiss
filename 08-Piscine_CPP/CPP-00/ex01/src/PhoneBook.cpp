@@ -1,19 +1,16 @@
 #include "../include/PhoneBook.hpp"
 
-PhoneBook::PhoneBook(void)
-{
+PhoneBook::PhoneBook( void ) {
 	n = 0;
 	oldest = 0;
 	return ;
 }
 
-PhoneBook::~PhoneBook(void)
-{
+PhoneBook::~PhoneBook( void ) {
 	return ;
 }
 
-void PhoneBook::addContact(void)
-{
+void PhoneBook::addContact( void ) {
 	Contact tmp;
 
 	tmp.addInfo();
@@ -28,8 +25,7 @@ void PhoneBook::addContact(void)
 	return ;
 }
 
-void PhoneBook::searchContact(void)
-{
+void PhoneBook::searchContact( void ) {
 	int i = -1;
 	int j = -1;	
 	int	index;

@@ -10,11 +10,11 @@
 class PhoneBook {
 
 	public:
-		PhoneBook(void);
-		~PhoneBook(void);
+		PhoneBook( void );
+		~PhoneBook( void );
 
-		void addContact(void);
-		void searchContact(void);
+		void addContact( void );
+		void searchContact( void );
 
 	private:
 		Contact contact[8];

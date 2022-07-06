@@ -1,13 +1,12 @@
 #include <iostream>
-#include "../include/ScavTrap.hpp"
+#include "../include/FragTrap.hpp"
 
 int main( void ) {
-	
-	std::cout << "------- ScavTrap | Max 100HP - 50 energy Points  -------" << std::endl << std::endl;
-	ClapTrap a("Pippo");
-	ClapTrap b;
-	ScavTrap c("Pluto");
-	ScavTrap d("Gino");
+	std::cout << "------- FragTrap | Max 100HP - 100 energy Points  -------" << std::endl << std::endl;
+	ScavTrap a("Pippo");
+	ScavTrap b;
+	FragTrap c("Pluto");
+	FragTrap d("Gigi");
 
 	std::cout << "**** Testing ****  " << std::endl;
 
@@ -24,7 +23,9 @@ int main( void ) {
 	b.beRepaired(3);
 	c.beRepaired(4);
 
-	d.guardGate();
-	d.guardGate();
+	a.guardGate();
+	a.guardGate();
+
+	d.highFivesGuys();
 	std::cout << "**** Destructor ****" << std::endl;
 }

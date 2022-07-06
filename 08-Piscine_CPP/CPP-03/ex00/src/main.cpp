@@ -1,8 +1,7 @@
 #include <iostream>
 #include "../include/ClapTrap.hpp"
 
-int main( void )
-{
+int main( void ) {
 	std::cout << "------- ClapTrap | Max 10HP - 10 energy Points  -------" << std::endl << std::endl;
 	ClapTrap a("Foo");
 	ClapTrap b;

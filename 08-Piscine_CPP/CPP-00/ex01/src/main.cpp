@@ -1,7 +1,6 @@
 #include "../include/PhoneBook.hpp"
 
-int main(void)
-{
+int main( void ) {
 	PhoneBook phoneBook;
 	std::string s;
 	while(1)

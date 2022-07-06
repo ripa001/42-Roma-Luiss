@@ -4,7 +4,6 @@
 #include <iostream>
 
 class ClapTrap {
-
 	protected:
 		std::string			_name;
 		static const int	_maxHitPoints = 100;

@@ -6,10 +6,10 @@
 class Contact {
 
 	public:
-		Contact(void);
-		~Contact(void);
+		Contact( void );
+		~Contact( void );
 
-		void addInfo(void);
+		void addInfo( void );
 		std::string getInfo(int n);
 
 	private:

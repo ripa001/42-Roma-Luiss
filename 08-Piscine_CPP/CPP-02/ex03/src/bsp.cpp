@@ -1,7 +1,6 @@
 #include "../include/Point.hpp"
 
-bool	bsp(Point const a, Point const b, Point const c, Point const point)
-{
+bool	bsp(Point const a, Point const b, Point const c, Point const point) {
 	bool	sign[3];
 
 	sign[0] = ((a.getX() - point.getX()) * (b.getY() - a.getY()) - (b.getX() - a.getX()) * (a.getY() - point.getY())) > 0;

@@ -1,6 +1,6 @@
-NAME = scavTrap
+NAME = diamondTrap
 CC = c++
-SRCS = $(addprefix src/, main.cpp ClapTrap.cpp ScavTrap.cpp)
+SRCS = $(addprefix src/, main.cpp ClapTrap.cpp ScavTrap.cpp FragTrap.cpp DiamondTrap.cpp)
 CFLAGS= -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)

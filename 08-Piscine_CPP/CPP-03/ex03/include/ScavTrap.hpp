@@ -4,9 +4,9 @@
 #include <iostream>
 #include "ClapTrap.hpp"
 
-class ScavTrap : public ClapTrap
+class ScavTrap : virtual public ClapTrap
 {
-	private:
+	protected:
 		bool				_isInKeeperMode;
 		static const int	_maxHitPoints = 100;
 		static const int	_maxEnergyPoints = 50;

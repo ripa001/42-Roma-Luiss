@@ -1,7 +1,6 @@
 # include "../include/Contact.hpp"
 
-Contact::Contact(void)
-{
+Contact::Contact( void ) {
 	info[0] = std::string("First name");
 	info[1] = std::string("Last name");
 	info[2] = std::string("Username");
@@ -10,13 +9,11 @@ Contact::Contact(void)
 	return ;
 }
 
-Contact::~Contact(void)
-{
+Contact::~Contact( void ) {
 	return ;
 }
 
-void Contact::addInfo(void)
-{
+void Contact::addInfo( void ) {
 	int i;
 	std::string str;
 
@@ -36,7 +33,6 @@ void Contact::addInfo(void)
 	}
 }
 
-std::string Contact::getInfo(int n)
-{
+std::string Contact::getInfo(int n) {
 	return (info[n]);
 }

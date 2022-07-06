@@ -10,7 +10,7 @@ class Fixed {
 		Fixed &operator= (const Fixed &obj);
 		Fixed(const int val);
 		Fixed(const float val);
-		Fixed(void);
+		Fixed( void );
 		Fixed(const Fixed &obj);
 		int getRawBits( void ) const;
 		void setRawBits( int const raw );
@@ -35,7 +35,7 @@ class Fixed {
 		Fixed &operator++ ();
 		Fixed &operator-- ();
 
-		~Fixed(void);
+		~Fixed( void );
 
 	private:
 		int					_numberValue;
