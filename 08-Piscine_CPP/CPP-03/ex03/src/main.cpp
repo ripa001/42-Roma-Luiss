@@ -1,20 +1,6 @@
 #include "../include/DiamondTrap.hpp"
 
 int	main() {
-	// DiamondTrap	DT1("Pippo"), DT2("Pluto"), DT3("Gigi"), def;
-
-	// DT1 = DT2;
-
-	// DT1.attack("Pluto");
-	// DT2.takeDamage(100);
-	// DT3.beRepaired(42);
-
-	// DT3 = DiamondTrap("Gigi");
-	// DT3.guardGate();
-	// DT1.highFivesGuys();
-
-	// DT2.whoAmI();
-
 	std::cout << "------- FragTrap | Max 100HP - 100 energy Points  -------" << std::endl;
 	ScavTrap a("Pippo");
 	ScavTrap b;
