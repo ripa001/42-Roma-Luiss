@@ -1,0 +1,51 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/18 12:06:22 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/07/19 20:37:06 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../include/Ice.hpp"
+#include "../include/Character.hpp"
+#include "../include/Cure.hpp"
+#include "../include/MateriaSource.hpp"
+
+int main()
+{
+	IMateriaSource* src = new MateriaSource();
+
+	src->learnMateria(new Ice());
+	src->learnMateria(new Cure());
+
+	ICharacter* me = new Character("me");
+	AMateria* tmp;
+	AMateria* tmp2;
+
+	tmp = src->createMateria("ice");
+	me->equip(tmp);
+	tmp = src->createMateria("cure");
+	me->equip(tmp);
+	tmp2 = src->createMateria("cure");
+	me->equip(tmp2);
+	tmp = src->createMateria("ice");
+	me->equip(tmp);
+	tmp = src->createMateria("cure");
+	me->equip(tmp);
+	me->unequip(2);
+	me->equip(tmp);
+	delete tmp2;
+	ICharacter* bob = new Character("bob");
+	
+	me->use(0, *bob);
+	me->use(1, *bob);
+
+	delete bob;
+	delete me;
+	delete src;
+	return 0;
+}
