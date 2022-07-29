@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ClapTrap.cpp                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/29 12:20:48 by dripanuc          #+#    #+#             */
+/*   Updated: 2022/07/29 12:20:50 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/ClapTrap.hpp"
 
 ClapTrap::ClapTrap( void ) : _name("Default"), _hitPoints(this->_maxHitPoints), _energyPoints(this->_maxEnergyPoints), _attackDamage(this->_maxAttackDamage) {
