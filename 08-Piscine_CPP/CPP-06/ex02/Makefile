@@ -1,6 +1,6 @@
-NAME = bureaucrat
+NAME = identifier
 CC = c++
-SRCS = $(addprefix src/, main.cpp Bureaucrat.cpp Form.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp ShrubberyCreationForm.cpp Intern.cpp)
+SRCS = $(addprefix src/, main.cpp)
 CFLAGS= -Wall -Wextra -Werror -std=c++98
 
 all: $(NAME)
@@ -9,6 +9,6 @@ $(NAME): $(SRCS)
 	@$(CC) $(CFLAGS) -o $@ $^
 clean:
 fclean: clean
-	rm -rf $(NAME) default_shrubbery Maison_shrubbery
+	rm -rf $(NAME)
 re: fclean all
 .PHONY: all clean fclean re
