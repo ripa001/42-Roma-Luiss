@@ -23,7 +23,7 @@ class Array
 		T*				_array;
 		unsigned int	_nElements;
 	public:
-		unsigned int	getSize();
+		unsigned int	size();
 
 		Array();
 		Array(unsigned int n);
@@ -90,7 +90,7 @@ T&	Array<T>::operator[](int i) const
 }
 
 template <typename T>
-unsigned int	Array<T>::getSize()
+unsigned int	Array<T>::size()
 {
 	return (this->_nElements);
 }

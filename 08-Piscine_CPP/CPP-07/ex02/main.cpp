@@ -84,12 +84,12 @@ int			main(void)
 	tab[4] = 4;
 	
 	std::cout << CYAN << "--- Test 1 ---" << NONE << std::endl;
-	std::cout << "size: " << tab.getSize() << std::endl;
-	for (i = 0; i < (int)tab.getSize(); i++)
+	std::cout << "size: " << tab.size() << std::endl;
+	for (i = 0; i < (int)tab.size(); i++)
 	{
 		if (i == 0)
 			std::cout << "value: [";
-		if (i >= 0 && i < (int)(tab.getSize() - 1))
+		if (i >= 0 && i < (int)(tab.size() - 1))
 			std::cout << tab[i] << ", ";
 		else
 			std::cout << tab[i] << "]" << std::endl;
@@ -110,12 +110,12 @@ int			main(void)
 	tab_char[2] = 'c';
 	std::cout << std::endl << std::endl;
 	std::cout << CYAN << "--- Test 2 tab_char---" << NONE << std::endl;
-	std::cout << "size: " << (int)tab_char.getSize() << std::endl;
-	for (i = 0; i < (int)tab_char.getSize(); i++)
+	std::cout << "size: " << (int)tab_char.size() << std::endl;
+	for (i = 0; i < (int)tab_char.size(); i++)
 	{
 		if (i == 0)
 			std::cout << "value: [";
-		if (i >= 0 && i < (int)(tab_char.getSize() - 1))
+		if (i >= 0 && i < (int)(tab_char.size() - 1))
 			std::cout << tab_char[i] << ", ";
 		else
 			std::cout << tab_char[i] << "]" << std::endl;
@@ -142,11 +142,11 @@ int			main(void)
 	std::cout << CYAN << "--- Test 4 ---" << NONE << std::endl;
 	std::cout << "assignation (=) tab_char2 = tab_char" << std::endl;
 	tab_char2 = tab_char;
-	for (i = 0; i < (int)tab_char2.getSize(); i++)
+	for (i = 0; i < (int)tab_char2.size(); i++)
 	{
 		if (i == 0)
 			std::cout << "value: [";
-		if (i >= 0 && i < (int)(tab_char2.getSize() - 1))
+		if (i >= 0 && i < (int)(tab_char2.size() - 1))
 			std::cout << tab_char2[i] << ", ";
 		else
 			std::cout << tab_char2[i] << "]" << std::endl;
@@ -156,11 +156,11 @@ int			main(void)
 	std::cout << CYAN << "--- Test 5 ---" << NONE << std::endl;
 	std::cout << "constructor copy tab_char3(tab_char2)" << std::endl;
 	Array<char>		tab_char3(tab_char2);
-	for (i = 0; i < (int)tab_char3.getSize(); i++)
+	for (i = 0; i < (int)tab_char3.size(); i++)
 	{
 		if (i == 0)
 			std::cout << "value: [";
-		if (i >= 0 && i < (int)(tab_char3.getSize() - 1))
+		if (i >= 0 && i < (int)(tab_char3.size() - 1))
 			std::cout << tab_char3[i] << ", ";
 		else
 			std::cout << tab_char3[i] << "]" << std::endl;
