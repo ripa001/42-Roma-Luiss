@@ -15,21 +15,21 @@ namespace ft{
 		public:
 			typedef T value_type;
 			typedef Alloc allocator_type;
-			typedef allocator_type::size_type								size_type;
-			typedef allocator_type::difference_type							difference_type;
-			typedef allocator_type::reference								reference;
-			typedef allocator_type::const_reference							const_reference;
-			typedef allocator_type::pointer									pointer;
-			typedef allocator_type::const_pointer							const_pointer;
-			typedef ft::random_access_iterator<value_type>					iterator;
-			typedef ft::random_access_iterator<value_type>					const_iterator;
-			typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef typename allocator_type::size_type								size_type;
+			typedef typename allocator_type::difference_type							difference_type;
+			typedef typename allocator_type::reference								reference;
+			typedef typename allocator_type::const_reference							const_reference;
+			typedef typename allocator_type::pointer									pointer;
+			typedef typename allocator_type::const_pointer							const_pointer;
+			typedef ft::random_access_iterator<value_type>							iterator;
+			typedef ft::random_access_iterator<value_type>							const_iterator;
+			// typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			// typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			
 
 			explicit vector(allocator_type const &alloc = allocator_type()) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {};
 			explicit vector(size_type n, value_type const &val = value_type(), allocator_type const &alloc = allocator_type()) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {
-				if (n > 0 && _begin != NULL && _end != NULL && n < this->max_size())
+				if (n > 0 && n < this->max_size())
 				{
 					_size = n;
 					_capacity = n;
@@ -41,19 +41,41 @@ namespace ft{
 				else
 					throw std::length_error("vector");
 			};
+			template <class InputIterator>
+			explicit vector(InputIterator first, InputIterator last, allocator_type const &alloc = allocator_type(), typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = 0) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {
+				bool is_valid = ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::value;
+				if (is_valid)
+				{
+					size_type	n = ft::distance(first, last);
+					if (n > 0 && n < this->max_size())
+					{
+						_size = n;
+						_capacity = n;
+						_begin = _alloc.allocate(_capacity);
+						_end = _begin + n;
+						for (size_type i = 0; i < n; i++)
+							_alloc.construct(_begin + i, *first++);
+					}
+					else
+						throw std::length_error("vector");
+				}
+				else
+					throw ft::InvalidIteratorException<typename ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::type>();
+			};
+			
 
 			vector &operator=(vector const &x) {
 				if (this != &x)
 				{
-					this.clear();
+					this->clear();
 					if (this->capacity())
 					{
-						this._alloc.deallocate(this._begin, this._capacity);
-						this._begin = this._alloc.allocate(x.capacity());
-						this._capacity = x._size;
-						this._end = this._begin + x._size;
+						this->_alloc.deallocate(this->_begin, this->_capacity);
+						this->_begin = this->_alloc.allocate(x.capacity());
+						this->_capacity = x._size;
+						this->_end = this->_begin + x._size;
 					}
-					this->insert(this->end(), other.begin(), other.end())
+					this->insert(this->end(), x.begin(), x.end());
 				}
 				return (*this);
 			};
@@ -152,12 +174,24 @@ namespace ft{
 					throw std::out_of_range("vector::out_of_range");
 				return (_begin[n]);
 			};
+
+			// front and back
 			reference		front() { return (*_begin); };
 			const_reference	front() const { return (*_begin); };
 			reference		back() { return (*(_end - 1)); };
 			const_reference	back() const { return (*(_end - 1)); };
+		
+			// write iterators for vector
+			iterator		begin() { return (iterator(_begin)); };
+			const_iterator	begin() const { return (const_iterator(_begin)); };
+			iterator		end() { return (iterator(_end)); };
+			const_iterator	end() const { return (const_iterator(_end)); };
+			// reverse_iterator		rbegin() { return (reverse_iterator(_end)); };
+			// const_reverse_iterator	rbegin() const { return (const_reverse_iterator(_end)); };
+			// reverse_iterator		rend() { return (reverse_iterator(_begin)); };
+			// const_reverse_iterator	rend() const { return (const_reverse_iterator(_begin)); };
 
-			virtual	~vector();
+			virtual	~vector(){};
 		private:
 			size_type		_size;
 			size_type		_capacity;

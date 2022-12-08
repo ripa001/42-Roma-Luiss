@@ -1,14 +1,24 @@
-NAME = containers
-CC = c++
-SRCS = $(addprefix src/, vector.cpp)
-CFLAGS= -Wall -Wextra -Werror -std=c++98
+NAME	=	containers
+SRCS	=	main.cpp
+OBJS	=	${SRCS:.cpp=.o}
+CC		=	c++
+FLAGS	=	-Wall -Werror -Wextra -std=c++98
 
-all: $(NAME)
-$(NAME): $(SRCS)
+$(NAME) : $(OBJS)
 	@printf "\e[92mSto compilando $@\e[39m\n"
-	@$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(FLAGS) $(SRCS) -o $(NAME)
+
+%.o : %.cpp
+	$(CC) $(FLAGS) $< -o $@ 
+
+all : $(NAME)
+
 clean:
+	rm -f $(OBJS)
+
 fclean: clean
-	rm -rf $(NAME)
+	rm -f $(NAME)
+
 re: fclean all
+
 .PHONY: all clean fclean re

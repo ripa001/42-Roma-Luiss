@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 20:03:04 by ddelladi          #+#    #+#             */
-/*   Updated: 2022/12/07 19:30:31 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/12/08 15:37:18 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,5 +140,22 @@ namespace ft
 	template <>
 	struct is_ft_iterator_tagged< ::std::output_iterator_tag> : public valid_iterator_tag_res<true, ::std::output_iterator_tag> {};
 
+	template <bool Cond, class T = void>
+	struct enable_if {};
+
+	template <class T>
+	struct enable_if<true, T> { typedef T type; };
 	
+	template <typename T>
+	class InvalidIteratorException : public std::exception
+	{
+		private:
+		
+		public:
+			InvalidIteratorException() throw() {}
+			InvalidIteratorException(InvalidIteratorException const &src) throw() { *this = src; }
+			virtual ~InvalidIteratorException() throw() {}
+			InvalidIteratorException &operator=(InvalidIteratorException const &rhs) throw() { (void)rhs; return *this; }
+			virtual const char *what() const throw() { return "Invalid iterator"; }
+	};
 }

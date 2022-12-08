@@ -41,18 +41,13 @@ namespace ft {
 		typedef typename ft::iterator<ft::forward_iterator_tag, T>::pointer				pointer;
 		typedef typename ft::iterator<ft::forward_iterator_tag, T>::reference			reference;
 		typedef T																		iterator_type;
-	};
-
-	// template <class T>
-	// class bidirectional_operator(){
-	// }
-		
+	};		
 
 	template <class T>
 	class random_access_iterator : ft::iterator<ft::random_access_iterator_tag, T> {
 		public:
 			typedef std::random_access_iterator_tag												iterator_category;
-			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::type				value_type;
+			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::value_type		value_type;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::pointer			pointer;
 			typedef typename ft::iterator<ft::random_access_iterator_tag, T>::reference			reference;
 			typedef std::ptrdiff_t																difference_type;
@@ -91,6 +86,51 @@ namespace ft {
 			pointer _pointed;
 			T		_value;
 
+	};
+
+	template <class InputIterator>
+	class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type> {
+		public:
+			typedef typename InputIterator::iterator_category	iterator_category;
+			typedef typename InputIterator::value_type			value_type;
+			typedef typename InputIterator::difference_type		difference_type;
+			typedef typename InputIterator::pointer				pointer;
+			typedef typename InputIterator::reference			reference;
+			typedef InputIterator								iterator_type;
+			typedef reverse_iterator<iterator_type>				iterator;
+
+			reverse_iterator() : _pointed(NULL), _value(value_type()) {}
+			reverse_iterator(pointer p) : _pointed(p), _value(value_type()) {}
+			reverse_iterator(const reverse_iterator &other) : _value(value_type()) { this->_pointed = other.pointed(); }
+			reverse_iterator &operator=(const reverse_iterator &other) {
+				if (this != &other)
+					this->_pointed = other.pointed();
+				return *this;
+			}
+			pointer 				pointed() const { return this->_pointed; }
+			pointer					operator->() const { return this->_pointed; }
+			reference				operator*() const { return *this->_pointed; }
+			reverse_iterator		operator+(difference_type n) const { return reverse_iterator(this->_pointed + n); }
+			reverse_iterator		operator-(difference_type n) const { return reverse_iterator(this->_pointed - n); }
+			reverse_iterator		&operator++() { this->_pointed++; return *this; }
+			reverse_iterator		&operator--() { this->_pointed--; return *this; }
+			reverse_iterator		operator++(int) { reverse_iterator tmp(*this); this->_pointed++; return tmp; }
+			reverse_iterator		operator--(int) { reverse_iterator tmp(*this); this->_pointed--; return tmp; }
+			reverse_iterator		&operator+=(difference_type n) { this->_pointed += n; return *this; }
+			reverse_iterator		&operator-=(difference_type n) { this->_pointed -= n; return *this; }
+			reference				operator[](difference_type n) const { return this->_pointed[n]; }
+			bool					operator==(const reverse_iterator &other) const { return this->_pointed == other.pointed(); }
+			bool					operator!=(const reverse_iterator &other) const { return this->_pointed != other.pointed(); }
+			bool					operator<(const reverse_iterator &other) const { return this->_pointed < other.pointed(); }		
+			bool					operator<=(const reverse_iterator &other) const { return this->_pointed <= other.pointed(); }
+			bool					operator>(const reverse_iterator &other) const { return this->_pointed > other.pointed(); }
+			bool					operator>=(const reverse_iterator &other) const { return this->_pointed >= other.pointed(); }
+			difference_type			operator-(const reverse_iterator &other) const { return this->_pointed - other.pointed(); }
+			difference_type			operator+(const reverse_iterator &other) const { return this->_pointed + other.pointed(); }
+			virtual	~reverse_iterator() {}
+		private:
+			pointer			_pointed;
+			InputIterator	_value;
 	};
 
 	template <class InputIterator1, class InputIterator2>
