@@ -13,10 +13,11 @@
 
 int main()
 {
+	std::cout << "************** TESTING VECTOR **************" << std::endl;
 	std::ofstream fileout ("mine.txt");
-	fileout << "************** TESTING VECTOR **************\n" << std::endl;
 
 	ft::vector<int> vec1(5,100);
+
 	int arr[10] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 	ft::vector<int> vec2(arr, arr+10);
 
@@ -42,23 +43,21 @@ int main()
 	fileout << "max_size : " << vec3.max_size() << std::endl;
 	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
 		fileout << "[vec3] : " << *it1 << std::endl;
-
 	
 	fileout << "\n\nTESTING ASSIGN\n" << std::endl;
-	// vec2.assign(20, 20);
+	vec2.assign(20, 20);
 	fileout << "Printing content: \n";
 	fileout << "size : " << vec2.size() << std::endl;
 	fileout << "max_size : " << vec2.max_size() << std::endl;
 	for(it1 = vec2.begin(); it1 != vec2.end(); ++it1)
 		fileout << "[vec2] : " << *it1 << std::endl;
-
-// 	fileout << "\n\nTESTING ERASE\n" << std::endl;
-// 	vec3.erase(++(++(++vec3.begin())), --(--(--vec3.end())));
-// 	fileout << "Printing content: \n";
-// 	fileout << "size : " << vec3.size() << std::endl;
-// 	fileout << "max_size : " << vec3.max_size() << std::endl;
-// 	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
-// 		fileout << "[vec3] : " << *it1 << std::endl;
+	fileout << "\n\nTESTING ERASE\n" << std::endl;
+	vec3.erase(++(++(++vec3.begin())), --(--(--vec3.end())));
+	fileout << "Printing content: \n";
+	fileout << "size : " << vec3.size() << std::endl;
+	fileout << "max_size : " << vec3.max_size() << std::endl;
+	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
+		fileout << "[vec3] : " << *it1 << std::endl;
 
 	
 // 	fileout << "\n\nTESTING INSERT\n" << std::endl;

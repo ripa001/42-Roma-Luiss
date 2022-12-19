@@ -2,8 +2,8 @@ NAME	=	containers
 SRCS	=	main.cpp
 OBJS	=	${SRCS:.cpp=.o}
 CC		=	c++
-FLAGS	=	-Wall -Werror -Wextra -std=c++98
-
+# FLAGS	=	-Wall -Werror -Wextra -std=c++98
+FLAGS	=	-Wall -Werror -Wextra -std=c++11
 $(NAME) : $(OBJS)
 	@printf "\e[92mSto compilando $@\e[39m\n"
 	$(CC) $(FLAGS) $(SRCS) -o $(NAME)

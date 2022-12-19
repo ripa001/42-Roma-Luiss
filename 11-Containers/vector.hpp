@@ -8,9 +8,9 @@
 #include "iterator.hpp"
 
 namespace ft{
+
 	template <class T, class Alloc = std::allocator<T> >
 	class vector{
-
 
 		public:
 			typedef T value_type;
@@ -26,7 +26,7 @@ namespace ft{
 			// typedef ft::reverse_iterator<iterator>							reverse_iterator;
 			// typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			
-
+			// Constructors
 			explicit vector(allocator_type const &alloc = allocator_type()) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {};
 			explicit vector(size_type n, value_type const &val = value_type(), allocator_type const &alloc = allocator_type()) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {
 				if (n > 0 && n < this->max_size())
@@ -63,6 +63,9 @@ namespace ft{
 					throw ft::InvalidIteratorException<typename ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::type>();
 			};
 			
+			explicit vector(const vector &x) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(x._alloc) {
+				*this = x;
+			};
 
 			vector &operator=(vector const &x) {
 				if (this != &x)
@@ -78,6 +81,19 @@ namespace ft{
 					this->insert(this->end(), x.begin(), x.end());
 				}
 				return (*this);
+			};
+
+			iterator	insert(iterator position, const value_type &val) {
+				size_type	positionDist = position - this->begin();
+				if(this->size() == this->capacity())
+					this->reserve(this->capacity() ? this->capacity() * 2 : 1);
+				position = this->begin() + positionDist;
+				size_type	endDist = this->end() - position;
+				while(endDist--)
+					_begin[endDist + 1] = _begin[endDist];
+				*position = val;
+				_size++;
+				return (position);
 			};
 
 			template <class InputIterator>
@@ -121,6 +137,21 @@ namespace ft{
 					throw ft::InvalidIteratorException<typename ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::type>();
 			}
 
+			void insert(iterator position, size_type n, const value_type &val) {
+				size_type	positionDist = position - this->begin();
+				size_type	finalSize = this->size() + n;
+				if (finalSize > this->capacity())
+					this->reserve(finalSize);
+				position = this->begin() + positionDist;
+				_end = _begin + finalSize;
+				size_type	toMove = ft::distance(position, this->end());
+				while(toMove--)
+					_begin[finalSize - toMove] = _begin[positionDist + toMove];
+				while (n--)
+					_begin[positionDist++] = val;
+				_size = finalSize;
+			}
+
 			void reserve(size_type n)
 			{
 				pointer 	prev_begin = _begin;
@@ -146,6 +177,61 @@ namespace ft{
 						_alloc.deallocate(tmp_begin, prev_capacity);
 				}
 			};
+
+			void	assign(size_type n, const value_type &val) {
+				this->clear();
+				if (n > this->capacity())
+					this->reserve(n);
+				this->insert(this->begin(), n, val);
+			};
+
+			template <class InputIterator>
+			void assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value, InputIterator>::type * = 0) {
+				bool is_valid = ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::value;
+				if (is_valid)
+				{
+					this->clear();
+					size_type count = ft::distance(first, last);
+					if (count > this->capacity())
+						this->reserve(count);
+					this->insert(this->begin(), first, last);
+				}
+				else
+					throw ft::InvalidIteratorException<typename ft::is_ft_iterator_tagged<typename ft::iterator_traits<InputIterator>::iterator_category>::type>();
+			};
+
+			void clear() {
+				pointer tmp = _begin;
+				while (tmp != _end)
+					_alloc.destroy(tmp++);
+				_end = _begin;
+				_size = 0;
+			};
+
+			iterator	erase(iterator position) {
+				size_type idx = position - this->begin();
+				size_type toMove = _end - position;
+				while (toMove--)
+					_begin[idx + toMove] = _begin[idx + toMove + 1];
+				_alloc.destroy(_end--);
+				_size--;
+				return (this->begin() + idx);
+			};
+
+			iterator	erase(iterator first, iterator last) {
+				size_type idx = first - this->begin();
+				size_type toMove = ft::distance(first, last);
+				while (toMove--)
+					_begin[idx + toMove] = _begin[idx + toMove + ft::distance(first, last)];
+				while (first != last)
+				{
+					_alloc.destroy(_end--);
+					_size--;
+					first++;
+				}
+				return (this->begin() + idx);
+			};
+			// element access
 
 			size_type		max_size() const { return (allocator_type().max_size()); };
 			size_type		capacity() const { return (_capacity); };
