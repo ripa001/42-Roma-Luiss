@@ -1,7 +1,7 @@
 #include "vector.hpp"
 #include "iterator.hpp"
 // #include "map.hpp"
-// #include "stack.hpp"
+#include "stack.hpp"
 // #include "set.hpp"
 #include <fstream>
 #include <sstream>
@@ -69,36 +69,36 @@ int main()
 		fileout << "[vec3] : " << *it1 << std::endl;
 
 
-// 	fileout << "\n\nTESTING OPERATORS\n" << std::endl;
-// 	fileout << "vec3 at(5) = " << vec3.at(5) << std::endl;
-// 	fileout << "vec3 [9] = " << vec3[9] << std::endl;
-// 	fileout << "vec3 front = " << vec3.front() << std::endl;
-// 	fileout << "vec3 back = " << vec3.back() << std::endl;
+	fileout << "\n\nTESTING OPERATORS\n" << std::endl;
+	fileout << "vec3 at(5) = " << vec3.at(5) << std::endl;
+	fileout << "vec3 [9] = " << vec3[9] << std::endl;
+	fileout << "vec3 front = " << vec3.front() << std::endl;
+	fileout << "vec3 back = " << vec3.back() << std::endl;
 
-// 	fileout << "\n\nTESTING SWAP\n" << std::endl;
-// 	vec2.swap(vec3);
-// 	fileout << "Printing content: \n";
-// 	fileout << "size : " << vec2.size() << std::endl;
-// 	fileout << "max_size : " << vec2.max_size() << std::endl;
-// 	for(it1 = vec2.begin(); it1 != vec2.end(); ++it1)
-// 		fileout << "[vec2] : " << *it1 << std::endl;
-// 	fileout << "\n\n";
-// 	fileout << "size : " << vec3.size() << std::endl;
-// 	fileout << "max_size : " << vec3.max_size() << std::endl;
-// 	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
-// 		fileout << "[vec3] : " << *it1 << std::endl;
+	fileout << "\n\nTESTING SWAP\n" << std::endl;
+	vec2.swap(vec3);
+	fileout << "Printing content: \n";
+	fileout << "size : " << vec2.size() << std::endl;
+	fileout << "max_size : " << vec2.max_size() << std::endl;
+	for(it1 = vec2.begin(); it1 != vec2.end(); ++it1)
+		fileout << "[vec2] : " << *it1 << std::endl;
+	fileout << "\n\n";
+	fileout << "size : " << vec3.size() << std::endl;
+	fileout << "max_size : " << vec3.max_size() << std::endl;
+	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
+		fileout << "[vec3] : " << *it1 << std::endl;
 
 
-// 	fileout << "\n\n************** TESTING STACK **************\n" << std::endl;
-// 	ft::stack<int, ft::vector<int> > stack1 (vec2);
+	fileout << "\n\n************** TESTING STACK **************\n" << std::endl;
+	ft::stack<int, ft::vector<int> > stack1 (vec2);
 
-// 	fileout << "Printing content: \n";
-// 	fileout << "size : " << stack1.size() << std::endl;
-// 	while(stack1.size() != 0)
-// 	{
-// 		fileout << "[stack1] : " << stack1.top() << std::endl;
-// 		stack1.pop();
-// 	}
+	fileout << "Printing content: \n";
+	fileout << "size : " << stack1.size() << std::endl;
+	while(stack1.size() != 0)
+	{
+		fileout << "[stack1] : " << stack1.top() << std::endl;
+		stack1.pop();
+	}
 	
 // 	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
 // 	ft::map<int, std::string> map1;

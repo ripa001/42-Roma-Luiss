@@ -17,7 +17,7 @@ clean:
 	rm -f $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	rm -f $(NAME) main.o mine.txt
 
 re: fclean all
 

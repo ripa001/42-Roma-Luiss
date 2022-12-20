@@ -231,6 +231,44 @@ namespace ft{
 				}
 				return (this->begin() + idx);
 			};
+
+			void	swap(vector &x) {
+				pointer		tmp_begin = this->_begin;
+				pointer		tmp_end = this->_end;
+				size_type	tmp_capacity = this->_capacity;
+				size_type	tmp_size = this->_size;
+
+				this->_begin = x._begin;
+				this->_end = x._end;
+				this->_capacity = x._capacity;
+				this->_size = x._size;
+
+				x._begin = tmp_begin;
+				x._end = tmp_end;
+				x._capacity = tmp_capacity;
+				x._size = tmp_size;
+			};
+
+			void push_back(const value_type &val) {
+				if (_size == _capacity && _capacity + 1 > this->max_size())
+					throw std::length_error("vector::push_back");
+				if (this->empty())
+					this->reserve(1);
+				else if (_size == _capacity)
+					this->reserve(_capacity * 2);
+				_alloc.construct(_end++, val);
+				_size++;
+			}
+
+			void pop_back()	{
+				if (this->empty())
+					return;
+				iterator iter = this->end() - 1;
+				_alloc.destroy(&(*iter));
+				_size--;
+				_end--;
+			}
+
 			// element access
 
 			size_type		max_size() const { return (allocator_type().max_size()); };
