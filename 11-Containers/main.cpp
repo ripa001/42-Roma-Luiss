@@ -60,13 +60,13 @@ int main()
 		fileout << "[vec3] : " << *it1 << std::endl;
 
 	
-// 	fileout << "\n\nTESTING INSERT\n" << std::endl;
-// 	vec3.insert(++(++(++vec3.begin())), vec2.begin(), vec2.begin()+4);
-// 	fileout << "Printing content: \n";
-// 	fileout << "size : " << vec3.size() << std::endl;
-// 	fileout << "max_size : " << vec3.max_size() << std::endl;
-// 	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
-// 		fileout << "[vec3] : " << *it1 << std::endl;
+	fileout << "\n\nTESTING INSERT\n" << std::endl;
+	vec3.insert(++(++(++vec3.begin())), vec2.begin(), vec2.begin()+4);
+	fileout << "Printing content: \n";
+	fileout << "size : " << vec3.size() << std::endl;
+	fileout << "max_size : " << vec3.max_size() << std::endl;
+	for(it1 = vec3.begin(); it1 != vec3.end(); ++it1)
+		fileout << "[vec3] : " << *it1 << std::endl;
 
 
 // 	fileout << "\n\nTESTING OPERATORS\n" << std::endl;
