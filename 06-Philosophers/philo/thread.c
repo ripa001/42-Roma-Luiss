@@ -6,7 +6,7 @@
 /*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/02 02:18:59 by dripanuc          #+#    #+#             */
-/*   Updated: 2022/04/03 18:22:40 by dripanuc         ###   ########.fr       */
+/*   Updated: 2022/12/10 00:11:58 by dripanuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	my_eat(t_philo *philo)
 		if (++philo->data->n_finished == philo->data->n)
 			my_exit(1, "Tutti i filosofi hanno finito di mangiare");
 	philo->last_meal = get_time() - philo->data->time;
-	pthread_mutex_unlock(&philo->data->is_eating);
 	my_sleep(philo->data->time_eat, philo->data);
+	pthread_mutex_unlock(&philo->data->is_eating);
 	pthread_mutex_unlock(&philo->data->forks[philo->left_fork]);
 	pthread_mutex_unlock(&philo->data->forks[philo->right_fork]);
 	philo->eating = 0;
