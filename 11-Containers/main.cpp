@@ -90,7 +90,9 @@ int main()
 
 
 	fileout << "\n\n************** TESTING STACK **************\n" << std::endl;
+	std::cout << "\n\n************** TESTING STACK **************\n" << std::endl;
 	ft::stack<int, ft::vector<int> > stack1 (vec2);
+	ft::stack<int, ft::vector<int> > stack2 (vec3);
 
 	fileout << "Printing content: \n";
 	fileout << "size : " << stack1.size() << std::endl;
@@ -99,9 +101,14 @@ int main()
 		fileout << "[stack1] : " << stack1.top() << std::endl;
 		stack1.pop();
 	}
+	if (stack1 != stack2)
+	{
+		fileout << "stack1 != stack2" << std::endl;
+	}
+	// std::cout << (stack1 != stack2) << std::endl;
 	
-// 	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
-// 	ft::map<int, std::string> map1;
+	// fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
+	// ft::map<int, std::string> map1;
 // 	map1.insert(ft::pair<int, std::string>(1, "a"));
 // 	map1.insert(ft::pair<int, std::string>(2, "b"));
 // 	map1.insert(ft::pair<int, std::string>(3, "c"));

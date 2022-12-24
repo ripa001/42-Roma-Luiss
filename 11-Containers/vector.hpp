@@ -4,7 +4,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
-#include "utility.hpp"
+#include "asserts.hpp"
+#include "utils.hpp"
 #include "iterator.hpp"
 
 namespace ft{
@@ -299,6 +300,8 @@ namespace ft{
 				return (_begin[n]);
 			};
 
+			// const	operator!= (const vector &rhs) const { return (!(*this == rhs)); };
+			
 			// front and back
 			reference		front() { return (*_begin); };
 			const_reference	front() const { return (*_begin); };
@@ -324,4 +327,52 @@ namespace ft{
 			allocator_type	_alloc;
 			
 		};
+
+		template <class T, class Alloc>
+		bool operator==(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			if (lhs.size() != rhs.size())
+				return (false);
+			typename vector<T>::const_iterator iter = lhs.begin();
+			typename vector<T>::const_iterator iter2 = rhs.begin();
+			while (iter != lhs.end())
+			{
+				if (iter2 == rhs.end() || *iter != *iter2)
+					return (false);
+				iter++;
+				iter2++;
+			}
+			return (true);
+		}
+
+
+		template <class T, class Alloc>
+		bool operator!=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (!(lhs == rhs));
+		}
+	
+		template <class T, class Alloc>
+		bool operator<(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+		}
+	
+		template <class T, class Alloc>
+		bool operator<=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (!(rhs < lhs));
+		}
+	
+		template <class T, class Alloc>
+		bool operator>(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (rhs < lhs);
+		}
+	
+		template <class T, class Alloc>
+		bool operator>=(const ft::vector<T, Alloc> &lhs, const ft::vector<T, Alloc> &rhs)
+		{
+			return (!(rhs > lhs));
+		}
 };

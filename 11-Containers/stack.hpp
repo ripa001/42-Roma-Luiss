@@ -31,11 +31,18 @@ namespace ft{
 
 			void			push(const value_type &value){ c.push_back(value); };
 			void 			pop(){ c.pop_back(); };
+
+			// Overloads
+
+			friend bool		operator==(stack const & lhs, stack const & rhs) { return lhs.c == rhs.c; };
+			friend bool		operator!=(stack const & lhs, stack const & rhs) { return lhs.c != rhs.c; };
+			friend bool		operator<(stack const & lhs, stack const & rhs) { return lhs.c < rhs.c; };
+			friend bool		operator<=(stack const & lhs, stack const & rhs) { return lhs.c <= rhs.c; };
+			friend bool		operator>(stack const & lhs, stack const & rhs) { return lhs.c > rhs.c; };
+			friend bool		operator>=(stack const & lhs, stack const & rhs) { return lhs.c >= rhs.c; };
 			
-
-
-		protected:
-			Container c;
+			protected:
+				Container c;
 
 	};
 }
