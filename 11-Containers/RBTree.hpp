@@ -210,6 +210,8 @@ namespace ft {
 			allocator_type2	_alloc2;
 			Compare			_c;
 
+		
+
 	};
 	
 	

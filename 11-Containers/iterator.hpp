@@ -85,8 +85,126 @@ namespace ft {
 		private:
 			pointer _pointed;
 			T		_value;
-
 	};
+
+	template <typename T, class Compare, class NodeType>
+	class RBIterator {
+		public:
+			typedef T								value_type;
+			typedef T								&reference;
+			typedef T								*pointer;
+			typedef std::ptrdiff_t					difference_type;
+			typedef std::bidirectional_iterator_tag	iterator_category;
+			typedef NodeType*						node_type;
+
+			node_type	_node;
+			node_type	_sentinel;
+			node_type	_root;
+			node_type	_begin;
+			node_type	_end;
+			Compare		_comp;
+
+			RBIterator() : _node(NULL), _sentinel(NULL), _comp(Compare()) {};
+
+			RBIterator(NodeType* start) : 
+				node(start),
+				_sentinel(findSentinel()),
+				root(findRoot()),
+				minNode(min(root)),
+				maxNode(max(root)),
+				c(Compare()) {};
+			RBIterator(node_type node, node_type _sentinel, node_type root, node_type begin, node_type end, Compare comp) : _node(node), _sentinel(_sentinel), _root(root), _begin(begin), _end(end), _comp(comp) {};
+		private:
+
+			node_type	min(){
+				node_type*	node = &root;
+
+				if (!(*node) || (*node) == _sentinel)
+					return (_sentinel);
+
+				while ((*node)->child[0] && (*node)->child[0] != _sentinel)
+					node = &(*node)->child[0];
+				return (*node);
+			}
+			
+			node_type	min(node_type& node) {
+				node_type*	tmp = &node;
+
+				if (!(*tmp) || !tmp)
+					return (NULL);
+
+				while (*tmp != _sentinel && (*tmp)->child[0] != _sentinel)
+					tmp = &((*tmp)->child[0]);
+				return (*tmp);
+			}
+			
+			node_type	max() {
+				node_type*	node = &root;
+
+				if (!node || !(*node) || (*node) == _sentinel)
+					return (_sentinel);
+
+				while ((*node)->child[1] && (*node)->child[1] != _sentinel)
+					node = &(*node)->child[1];
+				return (*node);
+			}
+			
+			node_type	max(node_type& node) {
+				node_type*	tmp = &node;
+
+				if (!tmp || !(*tmp))
+					return (NULL);
+
+				while (*tmp != _sentinel && (*tmp)->child[1] != _sentinel)
+					tmp = &((*tmp)->child[1]);
+				return (*tmp);
+			}
+
+			node_type	findSentinel() {
+				node_type tmp = _node;
+				if (!tmp)
+					return NULL;
+				while (tmp->color != 2)
+					tmp = tmp->CHILD[1];
+				return tmp;
+			}
+
+			node_type	findRoot() {
+				node_type tmp = _node;
+				if (!tmp)
+					return NULL;
+				while (tmp != _sentinel && tmp->parent != _sentinel)
+					tmp = tmp->parent;
+				return tmp;
+			}
+			
+			nodePointer	getSuccessor(nodePointer & node) {
+				nodePointer*	tmp = &node;
+
+				if (node == sentinel || \
+					node == max(sentinel->parent) || \
+					(node->parent == sentinel && node->child[0] == sentinel && node->child[1] == sentinel))
+					return (sentinel);
+				else if ((*tmp)->child[1] != sentinel)
+					return (min((*tmp)->child[1]));
+				else
+				{
+					while ((*tmp)->parent != sentinel)
+					{
+						if ((*tmp)->parent->child[0] == *tmp)
+						{
+							tmp = &(*tmp)->parent;
+							break ;
+						}
+						tmp = &(*tmp)->parent;
+					}
+					return (*tmp);
+				}
+			}
+
+
+
+	}
 
 	template <class InputIterator>
 	class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type> {
