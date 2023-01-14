@@ -47,11 +47,13 @@ namespace ft {
 		public:
 			typedef NodeRB2<Key>											originalNode;
 			typedef Key														key_type;
+			typedef Key														value_type;
+
 			typedef NodeType												node_type;
 			typedef Iterator												iterator;
 			typedef ConstIterator											const_iterator;
-			typedef ReverseIterator<iterator>								reverse_iterator;
-			typedef ReverseIterator<ConstIterator>							const_reverse_iterator;
+			// typedef ReverseIterator<iterator>								reverse_iterator;
+			// typedef ReverseIterator<ConstIterator>							const_reverse_iterator;
 			typedef Compare													key_compare;
 			typedef Compare													value_compare;
 			typedef typename Alloc::template rebind<node_type>::other		allocator_type;
@@ -87,18 +89,18 @@ namespace ft {
 				return *this;
 			};
 			allocator_type getAllocator() const {return _alloc;};
-			bool empty() const {(!this->_size) ? true : false;};
+			bool empty() const {return ((!this->_size) ? true : false);};
 			size_type size() const {return this->_size;};
-			size_type max_size() const {return allocator_type2.maxSize();};
+			size_type max_size() const {return _alloc2.maxSize();};
 
-			iterator				begin(){iterator(min(), _sentinel)}
+			iterator				begin(){iterator(min(), _sentinel);};
 			const_iterator			begin() const {return const_iterator(min(), _sentinel);};
-			iterator				end(){return iterator(_sentinel, _sentinel);};
+			iterator				end(){ return iterator(_sentinel, _sentinel);};
 			const_iterator			end() const {return const_iterator(_sentinel, _sentinel);};
-			reverse_iterator		rbegin(){return reverse_iterator(end());};
-			reverse_iterator		rend(){return reverse_iterator(begin());};
-			const_reverse_iterator	rbegin() const {return const_reverse_iterator(end());};
-			const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};	
+			// reverse_iterator		rbegin(){return reverse_iterator(end());};
+			// reverse_iterator		rend(){return reverse_iterator(begin());};
+			// const_reverse_iterator	rbegin() const {return const_reverse_iterator(end());};
+			// const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};	
 
 			virtual iterator					findPointer(pointer &start, Key const &val) const = 0;
 			virtual iterator					erase_deep(Key const &val) = 0;

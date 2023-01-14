@@ -1,6 +1,6 @@
 #include "vector.hpp"
 #include "iterator.hpp"
-// #include "map.hpp"
+#include "map.hpp"
 #include "stack.hpp"
 // #include "set.hpp"
 #include <fstream>
@@ -105,10 +105,10 @@ int main()
 	{
 		fileout << "stack1 != stack2" << std::endl;
 	}
-	// std::cout << (stack1 != stack2) << std::endl;
+	std::cout << (stack1 != stack2) << std::endl;
 	
-	// fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
-	// ft::map<int, std::string> map1;
+	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
+	ft::map<int, std::string> map1;
 // 	map1.insert(ft::pair<int, std::string>(1, "a"));
 // 	map1.insert(ft::pair<int, std::string>(2, "b"));
 // 	map1.insert(ft::pair<int, std::string>(3, "c"));

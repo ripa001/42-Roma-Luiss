@@ -1,8 +1,10 @@
 #pragma once
 
-#include "vector.hpp"
+#include <algorithm>
 #include "utils.hpp"
+#include "vector.hpp"
 #include "RBTree.hpp"
+#include "iterator.hpp"
 
 namespace ft {
 	
@@ -10,6 +12,7 @@ namespace ft {
 	class map : public RBTree<ft::pair<const Key, T>, Node<ft::pair<const Key, T> >,  RBIterator<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, RBIteratorConst<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, Compare, Allocator> {
 		public:
 			typedef Key																	key_type;
+
 			typedef	T																	mapped_type;
 			typedef ft::pair<const Key, T>												value_type;
 			typedef typename ft::pair<const Key, T>										Pair;
@@ -21,15 +24,16 @@ namespace ft {
 			typedef typename allocator_type::const_pointer								const_pointer;
 			typedef typename allocator_type::size_type									size_type;
 			typedef RBIterator<value_type, Compare, Node<value_type> >					iterator;
-			typedef RBIteratorConst<value_type, Compare, Node<value_type> >				const_iterator;
-			typedef Compare						
+			// typedef RBIteratorConst<value_type, Compare, Node<value_type> >				const_iterator;
+			typedef Compare																key_compare;
 
 			map(void) {};
 			explicit map(const Compare& comp, const Allocator& alloc = Allocator())	{
 				(void)comp;
 				(void)alloc;
 			};
-			map(inputIterator first, inputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator()) {
+			template <class InputIterator>
+			map(InputIterator first, InputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator()) {
 				this->insert(first, last);
 				(void)comp;
 				(void)alloc;
@@ -57,10 +61,6 @@ namespace ft {
 			// 	assign(x.begin(), x.end());
 			// };
 
-		private:
-			allocator_type	_alloc;
-			rb_tree			_tree;
-			key_compare	_comp;
 		};
 
 
