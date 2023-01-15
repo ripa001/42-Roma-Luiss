@@ -109,13 +109,13 @@ int main()
 	
 	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
 	ft::map<int, std::string> map1;
-// 	map1.insert(ft::pair<int, std::string>(1, "a"));
-// 	map1.insert(ft::pair<int, std::string>(2, "b"));
-// 	map1.insert(ft::pair<int, std::string>(3, "c"));
-// 	map1.insert(ft::pair<int, std::string>(4, "d"));
-// 	map1.insert(ft::pair<int, std::string>(5, "e"));
-// 	map1.insert(ft::pair<int, std::string>(6, "f"));
-// 	map1.insert(ft::pair<int, std::string>(7, "g"));
+	map1.insert(ft::pair<int, std::string>(1, "a"));
+	map1.insert(ft::pair<int, std::string>(2, "b"));
+	map1.insert(ft::pair<int, std::string>(3, "c"));
+	map1.insert(ft::pair<int, std::string>(4, "d"));
+	map1.insert(ft::pair<int, std::string>(5, "e"));
+	map1.insert(ft::pair<int, std::string>(6, "f"));
+	map1.insert(ft::pair<int, std::string>(7, "g"));
 // 	fileout << "Printing content: \n";
 // 	fileout << "size : " << map1.size() << std::endl;
 // 	fileout << "max_size : " << map1.max_size() << std::endl;

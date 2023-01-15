@@ -26,7 +26,8 @@ namespace ft {
 	{
 		node_color	color;
 		Node		*child[2];
-		T			*data; 
+		Node		*parent;
+		T			data; 
 
 		template <class U, class V>
 		Node(ft::pair<U, V> *data) : data(data) {}
@@ -41,7 +42,7 @@ namespace ft {
 		int						color;
 	};
 
-	template <class Key, class NodeType, class Iterator, class ConstIterator, class Compare=ft::less<Key>, class Alloc=std::allocator<Key>>
+	template <class Key, class NodeType, class Iterator, class ConstIterator, class Compare=std::less<Key>, class Alloc=std::allocator<Key>>
 	class RBTree
 	{
 		public:
@@ -103,10 +104,10 @@ namespace ft {
 			// const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};	
 
 			virtual iterator					findPointer(pointer &start, Key const &val) const = 0;
-			virtual iterator					erase_deep(Key const &val) = 0;
-			virtual ft::pair<iterator, bool>	insert(Key const &val) = 0;
-			virtual ft::pair<iterator, bool>	insertNode(pointer &start, pointer &node, pointer &parent, int flag) = 0;
-			virtual void 						clear() = 0;
+			// virtual iterator					erase_deep(Key const &val) = 0;
+			// virtual ft::pair<iterator, bool>	insert(Key const &val) = 0;
+			// virtual ft::pair<iterator, bool>	insertNode(pointer &start, pointer &node, pointer &parent, int flag) = 0;
+			// virtual void 						clear() = 0;
 
 			
 			pointer	min() const
@@ -210,7 +211,7 @@ namespace ft {
 			size_type		_size;
 			allocator_type	_alloc;
 			allocator_type2	_alloc2;
-			Compare			_c;
+			Compare			_comp;
 
 		
 

@@ -114,10 +114,19 @@ namespace ft {
 				_begin(min(_root)),
 				_end(max(_root)),
 				_comp(Compare()) {};
+
+			RBIterator(NodeType* start, NodeType* end):
+				_node(start),
+				_sentinel(end),
+				_root(findRoot()),
+				_begin(min(_root)),
+				_end(max),
+				_comp(Compare()) {};
+
 			RBIterator(node_type node, node_type _sentinel, node_type root, node_type begin, node_type end, Compare comp) : _node(node), _sentinel(_sentinel), _root(root), _begin(begin), _end(end), _comp(comp) {};
 		private:
 
-			node_type	min(){
+			node_type	min() {
 				node_type*	node = &_root;
 
 				if (!(*node) || (*node) == _sentinel)

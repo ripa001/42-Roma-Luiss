@@ -1,3 +1,5 @@
+#pragma once
+
 namespace ft {
 
 
@@ -33,10 +35,10 @@ namespace ft {
 			pair& operator=(const pair& pr)
 			{
 				if (this == &pr)
-					return *this;
+					return (*this);
 				first_one = pr.first;
 				second_one = pr.second;
-				return *this;
+				return (*this);
 			}
 
 	};
