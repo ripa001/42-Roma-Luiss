@@ -70,6 +70,35 @@ namespace ft {
 				else
 					return (iterator(start, this->_sentinel));
 			}
+			
+
+			ft::pair<iterator, bool> insertNode(pointer &start, pointer &node, pointer& parent, int flag) {
+				ft::pair<iterator, bool>	ret;
+				
+				if (!start || start == this->_sentinel)
+				{
+					node->parent = parent;
+					if (this->_comp(node->data.first, parent->data.first))
+						parent->child[LEFT] = node;
+					else
+						parent->child[RIGHT] = node;
+					start = node;
+					if (flag)
+						this->_size++;
+					this->balanceInsert(start);
+					ret.first = iterator(node, this->_sentinel);
+					ret.second = true;
+					return (ret);
+				}
+				if (this->_comp(node->data.first, start->data.first))
+					return (insertNode(start->child[LEFT], node, start, flag));
+				else if (this->_comp(start->data.first, node->data.first))
+					return (insertNode(start->child[RIGHT], node, start, flag));
+				ret.first = find(node->data.first);
+				delete node;
+				ret.second = false;
+				return (ret);
+			}
 
 			ft::pair<iterator, bool>	insert(ft::pair<const Key, T> const & val) {
 				ft::pair<iterator, bool>	ret;
@@ -97,6 +126,8 @@ namespace ft {
 				}
 	
 			};
+
+
 			// void	erase(iterator pos)
 			// {
 			// 	this->erase_deep(*pos);

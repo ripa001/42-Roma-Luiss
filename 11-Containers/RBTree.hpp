@@ -213,9 +213,141 @@ namespace ft {
 			allocator_type2	_alloc2;
 			Compare			_comp;
 
-		
+			pointer*	rotateRight(pointer & node)
+			{
+				pointer		toHandle;
+				pointer*	tmp = &node;
+				pointer*	ret;
 
+				if ((*tmp) && (*tmp)->child[LEFT] != _sentinel && (*tmp)->child[LEFT]->child[RIGHT] != _sentinel)
+					toHandle = (*tmp)->child[LEFT]->child[RIGHT];
+				else
+					toHandle = NULL;
+				if ((*tmp) == _root)
+				{
+					_root = (*tmp)->child[LEFT];
+					_sentinel->parent = _root;
+					(*tmp)->child[LEFT]->parent = _sentinel;
+				}
+				else
+				{
+					(*tmp)->child[LEFT]->parent = (*tmp)->parent;
+					if ((*tmp)->parent->child[RIGHT] == *tmp)
+						(*tmp)->parent->child[RIGHT] = (*tmp)->child[LEFT];
+					else
+						(*tmp)->parent->child[LEFT] = (*tmp)->child[LEFT];
+				}
+				(*tmp)->parent = (*tmp)->child[LEFT];
+				(*tmp)->child[LEFT]->child[RIGHT] = (*tmp);
+				(*tmp)->child[LEFT] = _sentinel;
+				if (toHandle)
+					insertNode((*tmp), toHandle, (*tmp), 0);
+				ret = &(*tmp)->child[RIGHT];
+				return (ret);
+			}
+
+			void	balanceInsert(pointer & node)
+			{
+				pointer*	tmp = &node;
+				pointer		parent = node->parent;
+				pointer		grandParent;
+				pointer		uncle;
+
+				while (1 && *tmp && *tmp != _sentinel)
+				{
+					parent = (*tmp)->parent;
+					getRelatives(parent, grandParent, uncle);
+					if (!parent || parent == _sentinel)
+					{
+						(*tmp)->color = BLACK;
+						break ;
+					}
+					else if (parent->color == BLACK)
+						break ;
+					else if (uncle && (*tmp)->color == RED && parent->color == RED && uncle->color == RED)
+					{
+						parent->color = BLACK;
+						uncle->color = BLACK;
+						grandParent->color = RED;
+						tmp = &(*tmp)->parent->parent;
+					}
+					else if ((*tmp)->color == RED && parent->color == RED)
+					{
+						if (parent->child[RIGHT] == (*tmp) && grandParent->child[LEFT] == parent)
+							tmp = rotateLeft(parent);
+						else if (parent->child[LEFT] == (*tmp) && grandParent->child[RIGHT] == parent)
+							tmp = rotateRight(parent);
+						else if (parent->child[LEFT] == (*tmp) && grandParent->child[LEFT] == parent)
+						{
+							parent->color = BLACK;
+							grandParent->color = RED;
+							rotateRight(grandParent);
+							break ;
+						}
+						else if (parent->child[RIGHT] == (*tmp) && grandParent->child[RIGHT] == parent)
+						{
+							parent->color = BLACK;
+							grandParent->color = RED;
+							rotateLeft(grandParent);
+							break ;
+						}
+					}
+					else
+						break ;
+				}
+			}
+
+			void	getRelatives2(pointer & node, pointer & sibling, pointer & leftNephew, pointer & rightNephew)
+			{
+				if (node->parent->child[LEFT] != _sentinel && node->parent->color != SENTINEL && node->parent->child[LEFT] == node && node->parent->child[RIGHT] && node->parent->child[RIGHT] != _sentinel)
+					sibling = node->parent->child[RIGHT];
+				else if (node->parent->child[RIGHT] != _sentinel && node->parent->color != SENTINEL && node->parent->child[LEFT] && node->parent->child[LEFT] != _sentinel)
+					sibling = node->parent->child[LEFT];
+				else
+				{
+					sibling = NULL;
+					leftNephew = NULL;
+					rightNephew = NULL;
+					return ;
+				}
+				if (sibling && sibling->child[LEFT] && sibling->child[LEFT] != _sentinel)
+					leftNephew = sibling->child[LEFT];
+				else
+					leftNephew = NULL;
+				if (sibling && sibling->child[RIGHT] && sibling->child[RIGHT] != _sentinel)
+					rightNephew = sibling->child[RIGHT];
+				else
+					rightNephew = NULL;
+			}
+
+			void	getRelatives(pointer & parent, pointer & grandParent, pointer & uncle)
+			{
+				if (parent != _sentinel)
+					grandParent = parent->parent;
+				else
+					grandParent = NULL;
+				if (grandParent != _sentinel && grandParent)
+				{
+					if (grandParent->child[LEFT] == parent && grandParent->child[RIGHT] != _sentinel)
+						uncle = grandParent->child[RIGHT];
+					else if (grandParent->child[RIGHT] == parent && grandParent->child[LEFT] != _sentinel)
+						uncle = grandParent->child[LEFT];
+					else
+						uncle = NULL;
+				}
+				else
+					uncle = NULL;
+			}
+
+			pointer	getSibling(pointer & node)
+			{
+				if (node->parent == _sentinel)
+					return (NULL);
+				if (node->parent->child[LEFT] != _sentinel && node->parent->child[LEFT] == node)
+					return (node->parent->child[RIGHT]);
+				else if (node->parent->child[RIGHT] != _sentinel && node->parent->child[RIGHT] == node)
+					return (node->parent->child[LEFT]);
+				return (NULL);
+			}
 	};
-	
-	
 }
