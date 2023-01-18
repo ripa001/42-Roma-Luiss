@@ -31,7 +31,7 @@ namespace ft {
 			pair(const first& a, const second& b) : first_one(a), second_one(b) {}
 			
 			template <class U, class V>
-			pair(const pair<U, V>& pr) : first_one(pr.first), second_one(pr.second) {}
+			pair(const pair<U, V>& pr) : first_one(pr.first_one), second_one(pr.second_one) {}
 			pair& operator=(const pair& pr)
 			{
 				if (this == &pr)
@@ -40,7 +40,6 @@ namespace ft {
 				second_one = pr.second;
 				return (*this);
 			}
-
 	};
 
 	template <class InputIterator1, class InputIterator2>

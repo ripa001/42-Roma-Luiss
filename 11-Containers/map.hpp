@@ -56,7 +56,7 @@ namespace ft {
 
 				if (!node || node == this->_sentinel)
 					return (iterator(this->_sentinel, this->_sentinel));
-				return (this->findPointer(key));
+				return (this->findPointer(node, pair));
 			};
 
 			iterator	findPointer(pointer& start, ft::pair<const Key, T> const & val) const
@@ -78,7 +78,7 @@ namespace ft {
 				if (!start || start == this->_sentinel)
 				{
 					node->parent = parent;
-					if (this->_comp(node->data.first, parent->data.first))
+					if (this->_comp(node->data.first_one, parent->data.first_one))
 						parent->child[LEFT] = node;
 					else
 						parent->child[RIGHT] = node;
@@ -86,17 +86,17 @@ namespace ft {
 					if (flag)
 						this->_size++;
 					this->balanceInsert(start);
-					ret.first = iterator(node, this->_sentinel);
-					ret.second = true;
+					ret.first_one = iterator(node, this->_sentinel);
+					ret.second_one = true;
 					return (ret);
 				}
-				if (this->_comp(node->data.first, start->data.first))
+				if (this->_comp(node->data.first_one, start->data.first_one))
 					return (insertNode(start->child[LEFT], node, start, flag));
-				else if (this->_comp(start->data.first, node->data.first))
+				else if (this->_comp(start->data.first_one, node->data.first_one))
 					return (insertNode(start->child[RIGHT], node, start, flag));
-				ret.first = find(node->data.first);
+				ret.first_one = find(node->data.first_one);
 				delete node;
-				ret.second = false;
+				ret.second_one = false;
 				return (ret);
 			}
 
@@ -104,7 +104,7 @@ namespace ft {
 				ft::pair<iterator, bool>	ret;
 				pointer node = new Node<value_type>(val);
 
-				node->color = RED;
+				node->color = YELLOW;
 				
 				node->parent = this->_sentinel;
 				node->child[LEFT] = this->_sentinel;
@@ -116,13 +116,24 @@ namespace ft {
 					this->_sentinel->parent = node;
 					node->color = BLACK;
 					this->_size++;
-					ret.first = iterator(node, this->_sentinel);
-					ret.second = true;
+					ret.first_one = iterator(node, this->_sentinel);
+					ret.second_one = true;
 					return (ret);
 				}
 				else
 				{
-					
+					ret.first_one = iterator(node, this->_sentinel);
+					ret.second_one = false;
+					if (this->_comp(val.first_one, this->_root->data.first_one) && this->_root->data.first_one != val.first_one)
+						return (insertNode(this->_root->child[LEFT], node, this->_root, 1));
+					else if (this->_comp(this->_root->data.first_one, val.first_one) && this->_root->data.first_one != val.first_one)
+						return (insertNode(this->_root->child[RIGHT], node, this->_root, 1));
+					else
+					{
+						delete node;
+						ret.first_one = find(node->data.first_one);
+						return (ret);
+					}
 				}
 	
 			};

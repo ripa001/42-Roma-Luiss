@@ -120,7 +120,7 @@ namespace ft {
 				_sentinel(end),
 				_root(findRoot()),
 				_begin(min(_root)),
-				_end(max),
+				_end(end),
 				_comp(Compare()) {};
 
 			RBIterator(node_type node, node_type _sentinel, node_type root, node_type begin, node_type end, Compare comp) : _node(node), _sentinel(_sentinel), _root(root), _begin(begin), _end(end), _comp(comp) {};

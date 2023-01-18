@@ -31,6 +31,8 @@ namespace ft {
 
 		template <class U, class V>
 		Node(ft::pair<U, V> *data) : data(data) {}
+		Node() : data() {}
+		Node(T data) : data(data) {}
 	};
 
 	template <class Pair>
@@ -105,8 +107,8 @@ namespace ft {
 
 			virtual iterator					findPointer(pointer &start, Key const &val) const = 0;
 			// virtual iterator					erase_deep(Key const &val) = 0;
-			// virtual ft::pair<iterator, bool>	insert(Key const &val) = 0;
-			// virtual ft::pair<iterator, bool>	insertNode(pointer &start, pointer &node, pointer &parent, int flag) = 0;
+			virtual ft::pair<iterator, bool>	insert(Key const &val) = 0;
+			virtual ft::pair<iterator, bool>	insertNode(pointer &start, pointer &node, pointer &parent, int flag) = 0;
 			// virtual void 						clear() = 0;
 
 			
@@ -246,6 +248,39 @@ namespace ft {
 				return (ret);
 			}
 
+			pointer* rotateLeft(pointer &node)
+			{
+				pointer		toHandle;
+				pointer*	tmp = &node;
+				pointer*	ret;
+
+				if ((*tmp) && (*tmp)->child[RIGHT] != _sentinel && (*tmp)->child[RIGHT]->child[LEFT] != _sentinel)
+					toHandle = (*tmp)->child[RIGHT]->child[LEFT];
+				else
+					toHandle = NULL;
+				if ((*tmp) == _root)
+				{
+					_root = (*tmp)->child[RIGHT];
+					_sentinel->parent = _root;
+					(*tmp)->child[RIGHT]->parent = _sentinel;
+				}
+				else
+				{
+					(*tmp)->child[RIGHT]->parent = (*tmp)->parent;
+					if ((*tmp)->parent->child[RIGHT] == *tmp)
+						(*tmp)->parent->child[RIGHT] = (*tmp)->child[RIGHT];
+					else
+						(*tmp)->parent->child[LEFT] = (*tmp)->child[RIGHT];
+				}
+				(*tmp)->parent = (*tmp)->child[RIGHT];
+				(*tmp)->child[RIGHT]->child[LEFT] = (*tmp);
+				(*tmp)->child[RIGHT] = _sentinel;
+				if (toHandle)
+					insertNode((*tmp), toHandle, (*tmp), 0);
+				ret = &(*tmp)->child[LEFT];
+				return (ret);
+			}
+
 			void	balanceInsert(pointer & node)
 			{
 				pointer*	tmp = &node;
@@ -264,14 +299,14 @@ namespace ft {
 					}
 					else if (parent->color == BLACK)
 						break ;
-					else if (uncle && (*tmp)->color == RED && parent->color == RED && uncle->color == RED)
+					else if (uncle && (*tmp)->color == YELLOW && parent->color == YELLOW && uncle->color == YELLOW)
 					{
 						parent->color = BLACK;
 						uncle->color = BLACK;
-						grandParent->color = RED;
+						grandParent->color = YELLOW;
 						tmp = &(*tmp)->parent->parent;
 					}
-					else if ((*tmp)->color == RED && parent->color == RED)
+					else if ((*tmp)->color == YELLOW && parent->color == YELLOW)
 					{
 						if (parent->child[RIGHT] == (*tmp) && grandParent->child[LEFT] == parent)
 							tmp = rotateLeft(parent);
@@ -280,14 +315,14 @@ namespace ft {
 						else if (parent->child[LEFT] == (*tmp) && grandParent->child[LEFT] == parent)
 						{
 							parent->color = BLACK;
-							grandParent->color = RED;
+							grandParent->color = YELLOW;
 							rotateRight(grandParent);
 							break ;
 						}
 						else if (parent->child[RIGHT] == (*tmp) && grandParent->child[RIGHT] == parent)
 						{
 							parent->color = BLACK;
-							grandParent->color = RED;
+							grandParent->color = YELLOW;
 							rotateLeft(grandParent);
 							break ;
 						}
@@ -299,9 +334,9 @@ namespace ft {
 
 			void	getRelatives2(pointer & node, pointer & sibling, pointer & leftNephew, pointer & rightNephew)
 			{
-				if (node->parent->child[LEFT] != _sentinel && node->parent->color != SENTINEL && node->parent->child[LEFT] == node && node->parent->child[RIGHT] && node->parent->child[RIGHT] != _sentinel)
+				if (node->parent->child[LEFT] != _sentinel && node->parent->color != NIL && node->parent->child[LEFT] == node && node->parent->child[RIGHT] && node->parent->child[RIGHT] != _sentinel)
 					sibling = node->parent->child[RIGHT];
-				else if (node->parent->child[RIGHT] != _sentinel && node->parent->color != SENTINEL && node->parent->child[LEFT] && node->parent->child[LEFT] != _sentinel)
+				else if (node->parent->child[RIGHT] != _sentinel && node->parent->color != NIL && node->parent->child[LEFT] && node->parent->child[LEFT] != _sentinel)
 					sibling = node->parent->child[LEFT];
 				else
 				{
@@ -339,15 +374,15 @@ namespace ft {
 					uncle = NULL;
 			}
 
-			pointer	getSibling(pointer & node)
-			{
-				if (node->parent == _sentinel)
-					return (NULL);
-				if (node->parent->child[LEFT] != _sentinel && node->parent->child[LEFT] == node)
-					return (node->parent->child[RIGHT]);
-				else if (node->parent->child[RIGHT] != _sentinel && node->parent->child[RIGHT] == node)
-					return (node->parent->child[LEFT]);
-				return (NULL);
-			}
+			// pointer	getSibling(pointer & node)
+			// {
+			// 	if (node->parent == _sentinel)
+			// 		return (NULL);
+			// 	if (node->parent->child[LEFT] != _sentinel && node->parent->child[LEFT] == node)
+			// 		return (node->parent->child[RIGHT]);
+			// 	else if (node->parent->child[RIGHT] != _sentinel && node->parent->child[RIGHT] == node)
+			// 		return (node->parent->child[LEFT]);
+			// 	return (NULL);
+			// }
 	};
 }
