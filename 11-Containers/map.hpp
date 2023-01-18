@@ -70,7 +70,29 @@ namespace ft {
 				else
 					return (iterator(start, this->_sentinel));
 			}
-			
+
+			T&	operator[](const Key& key)
+			{
+				try
+				{
+					return at(key);
+				}
+				catch(const std::exception& e)
+				{
+					ft::pair<key_type, mapped_type>	ret(key, mapped_type());
+					insert(ret);
+					return (at(key));
+				}
+			}
+
+			T&	at(const Key& key)
+			{
+				iterator	tmp = find(key);
+
+				if (tmp._node == this->_sentinel)
+					throw std::out_of_range("map: at");
+				return ((*tmp).second_one);
+			}
 
 			ft::pair<iterator, bool> insertNode(pointer &start, pointer &node, pointer& parent, int flag) {
 				ft::pair<iterator, bool>	ret;

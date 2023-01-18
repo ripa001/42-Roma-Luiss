@@ -59,8 +59,10 @@ namespace ft {
 			// typedef ReverseIterator<ConstIterator>							const_reverse_iterator;
 			typedef Compare													key_compare;
 			typedef Compare													value_compare;
-			typedef typename Alloc::template rebind<node_type>::other		allocator_type;
+			typedef typename Alloc::template rebind<NodeType>::other		allocator_type;
 			typedef typename Alloc::template rebind<originalNode>::other	allocator_type2;
+			// typedef typename Alloc::template rebind<node_type>::other		allocator_type;
+			// typedef typename Alloc::template rebind<originalNode>::other	allocator_type2;
 			typedef typename allocator_type::reference						reference;
 			typedef typename allocator_type::const_reference				const_reference;
 			typedef typename allocator_type::pointer 						pointer;
@@ -94,9 +96,9 @@ namespace ft {
 			allocator_type getAllocator() const {return _alloc;};
 			bool empty() const {return ((!this->_size) ? true : false);};
 			size_type size() const {return this->_size;};
-			size_type max_size() const {return _alloc2.maxSize();};
+			size_type max_size() const {return _alloc2.max_size();};
 
-			iterator				begin(){iterator(min(), _sentinel);};
+			iterator				begin(){return iterator(min(), _sentinel);};
 			const_iterator			begin() const {return const_iterator(min(), _sentinel);};
 			iterator				end(){ return iterator(_sentinel, _sentinel);};
 			const_iterator			end() const {return const_iterator(_sentinel, _sentinel);};

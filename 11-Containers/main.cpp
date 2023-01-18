@@ -109,17 +109,17 @@ void testing()
 	map1.insert(ft::pair<int, std::string>(5, "e"));
 	map1.insert(ft::pair<int, std::string>(6, "f"));
 	map1.insert(ft::pair<int, std::string>(7, "g"));
-	// fileout << "Printing content: \n";
-	// fileout << "size : " << map1.size() << std::endl;
-	// fileout << "max_size : " << map1.max_size() << std::endl;
-	// ft::map<int, std::string>::iterator it;
-	// for(it = map1.begin(); it != map1.end(); ++it)
-	// 	fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
+	fileout << "Printing content: \n";
+	fileout << "size : " << map1.size() << std::endl;
+	fileout << "max_size : " << map1.max_size() << std::endl;
+	ft::map<int, std::string>::iterator it;
+	for(it = map1.begin(); it != map1.end(); ++it)
+		fileout << "[map1] key = " << it->first_one << "  value = " << it->second_one << std::endl;
 	
-	// fileout << "\n\n TESTING OPERATOR[] \n" << std::endl;
-	// map1[6] = "changed";
-	// map1[2] = "changed";
-	// map1[10] = "added with operator[]";
+	fileout << "\n\n TESTING OPERATOR[] \n" << std::endl;
+	map1[6] = "changed";
+	map1[2] = "changed";
+	map1[10] = "added with operator[]";
 	// for(it = map1.begin(); it != map1.end(); ++it)
 	// 	fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
 

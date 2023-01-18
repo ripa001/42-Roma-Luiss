@@ -124,6 +124,65 @@ namespace ft {
 				_comp(Compare()) {};
 
 			RBIterator(node_type node, node_type _sentinel, node_type root, node_type begin, node_type end, Compare comp) : _node(node), _sentinel(_sentinel), _root(root), _begin(begin), _end(end), _comp(comp) {};
+
+			RBIterator&	operator++()
+			{
+				this->_node = getSuccessor(this->_node);
+				return (*this);
+			};
+			
+			RBIterator	operator++(int)
+			{
+				RBIterator	ret(*this);
+
+				++(*this);
+				return (ret);
+			};
+			
+			RBIterator&	operator--()
+			{
+				this->_node = getPredecessor(this->_node);
+				return (*this);
+			};
+			
+			RBIterator	operator--(int)
+			{
+				RBIterator	ret(*this);
+
+				--(*this);
+				return (ret);
+			};
+
+			RBIterator	operator-(difference_type n) const
+			{
+				RBIterator	ret(*this);
+				for (int i = 0; i < n; i++)
+					ret--;
+				return (ret);
+			}
+			
+			RBIterator	operator+(difference_type n) const
+			{
+				RBIterator	ret(*this);
+				for (int i = 0; i < n; i++)
+					ret++;
+				return (ret);
+			}
+
+			reference			operator*() const { return (this->_node->data); }
+			pointer				operator->() const { return &(this->_node->data); }
+			bool				operator==(RBIterator const & rhs) { return ((this->_node == rhs._node) ? true : false); }
+			
+			bool				operator!=(RBIterator const & rhs)
+			{
+				if ((this->_node && !rhs._node) || (!this->_node && rhs._node))
+					return (true);
+				else if (!this->_node && !rhs._node)
+					return (false);
+				return ((this->_node == rhs._node) ? false : true);
+			}
+		
+		
 		private:
 
 			node_type	min() {
