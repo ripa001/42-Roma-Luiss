@@ -122,6 +122,17 @@ namespace ft {
 				return (ret);
 			}
 
+			iterator	insert(iterator position, ft::pair<const Key, T> const & val) {
+				(void)position;
+				return (insert(val).first_one);
+			}
+
+			template <class InputIterator>
+			void insert(InputIterator first, InputIterator last) {
+				while (first != last)
+					insert(*first++);
+			}
+
 			ft::pair<iterator, bool>	insert(ft::pair<const Key, T> const & val) {
 				ft::pair<iterator, bool>	ret;
 				pointer node = new Node<value_type>(val);
@@ -157,8 +168,8 @@ namespace ft {
 						return (ret);
 					}
 				}
-	
 			};
+
 
 
 			// void	erase(iterator pos)

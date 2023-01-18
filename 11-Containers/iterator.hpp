@@ -362,10 +362,64 @@ namespace ft {
 
 			
 			// Overloads
+			// Overloads
 
 			reference			operator*() const { return (this->_node->data); }
 			pointer				operator->() const { return &(this->_node->data); }
 			bool				operator==(RBIteratorConst const & rhs) { return ((this->_node == rhs._node) ? true : false); }
+			
+			bool				operator!=(RBIteratorConst const & rhs)
+			{
+				if ((this->_node && !rhs._node) || (!this->_node && rhs._node))
+					return (true);
+				else if (!this->_node && !rhs._node)
+					return (false);
+				return ((this->_node == rhs._node) ? false : true);
+			}
+			
+			RBIteratorConst&	operator++()
+			{
+				this->_node = getSuccessor(this->_node);
+				return (*this);
+			};
+			
+			RBIteratorConst	operator++(int)
+			{
+				RBIteratorConst	ret(*this);
+
+				++(*this);
+				return (ret);
+			};
+			
+			RBIteratorConst&	operator--()
+			{
+				this->_node = getPredecessor(this->_node);
+				return (*this);
+			};
+			
+			RBIteratorConst	operator--(int)
+			{
+				RBIteratorConst	ret(*this);
+
+				--(*this);
+				return (ret);
+			};
+
+			RBIteratorConst	operator-(difference_type n) const
+			{
+				RBIteratorConst	ret(*this);
+				for (int i = 0; i < n; i++)
+					ret--;
+				return (ret);
+			}
+			
+			RBIteratorConst	operator+(difference_type n) const
+			{
+				RBIteratorConst	ret(*this);
+				for (int i = 0; i < n; i++)
+					ret++;
+				return (ret);
+			}
 			
 		private:
 			node_type	min()
