@@ -2,7 +2,7 @@
 
 Printing content: 
 size : 5
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec1] : 100
 [vec1] : 100
 [vec1] : 100
@@ -10,7 +10,7 @@ max_size : 4611686018427387903
 [vec1] : 100
 
 size : 10
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec2] : 1
 [vec2] : 2
 [vec2] : 3
@@ -27,7 +27,7 @@ TESTING COPY COSTRUCTOR
 
 Printing content: 
 size : 10
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec3] : 1
 [vec3] : 2
 [vec3] : 3
@@ -44,7 +44,7 @@ TESTING ASSIGN
 
 Printing content: 
 size : 20
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec2] : 20
 [vec2] : 20
 [vec2] : 20
@@ -71,7 +71,7 @@ TESTING ERASE
 
 Printing content: 
 size : 6
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec3] : 1
 [vec3] : 2
 [vec3] : 3
@@ -84,7 +84,7 @@ TESTING INSERT
 
 Printing content: 
 size : 10
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec3] : 1
 [vec3] : 2
 [vec3] : 3
@@ -109,7 +109,7 @@ TESTING SWAP
 
 Printing content: 
 size : 10
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec2] : 1
 [vec2] : 2
 [vec2] : 3
@@ -123,7 +123,7 @@ max_size : 4611686018427387903
 
 
 size : 20
-max_size : 4611686018427387903
+max_size : 2305843009213693951
 [vec3] : 20
 [vec3] : 20
 [vec3] : 20
@@ -166,7 +166,7 @@ size : 10
 
 Printing content: 
 size : 7
-max_size : 288230376151711743
+max_size : 128102389400760775
 [map1] key = 1  value = a
 [map1] key = 2  value = b
 [map1] key = 3  value = c
@@ -192,7 +192,7 @@ max_size : 288230376151711743
 
 Printing content: 
 size : 8
-max_size : 288230376151711743
+max_size : 128102389400760775
 [map2] key = 1  value = a
 [map2] key = 2  value = changed
 [map2] key = 3  value = c
@@ -207,7 +207,7 @@ max_size : 288230376151711743
 
 Printing content: 
 size : 6
-max_size : 288230376151711743
+max_size : 128102389400760775
 [map1] key = 3  value = c
 [map1] key = 4  value = d
 [map1] key = 5  value = e
@@ -242,7 +242,7 @@ Printing content:
 
 Printing content: 
 size : 7
-max_size : 576460752303423487
+max_size : 230584300921369395
 [set1] = 100
 [set1] = 200
 [set1] = 300
@@ -256,7 +256,7 @@ max_size : 576460752303423487
 
 Printing content: 
 size : 7
-max_size : 576460752303423487
+max_size : 230584300921369395
 [set2] = 100
 [set2] = 200
 [set2] = 300
@@ -270,7 +270,7 @@ max_size : 576460752303423487
 
 Printing content: 
 size : 5
-max_size : 576460752303423487
+max_size : 230584300921369395
 [set1] = 300
 [set1] = 400
 [set1] = 500
@@ -282,7 +282,7 @@ max_size : 576460752303423487
 
 Printing content: 
 size : 7
-max_size : 576460752303423487
+max_size : 230584300921369395
 [set2] = 1
 [set2] = 2
 [set2] = 3

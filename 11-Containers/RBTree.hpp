@@ -3,7 +3,7 @@
 #include <memory>
 #include <utility>
 #include <iostream>
-#include <limits>
+#include <limits.h>
 #include "utils.hpp"
 
 namespace ft {
@@ -30,9 +30,9 @@ namespace ft {
 		T			data; 
 
 		template <class U, class V>
-		Node(ft::pair<U, V> *data) : data(data) {}
+		Node(ft::pair<U, V> const &data) : data(data) {}
 		Node() : data() {}
-		Node(T data) : data(data) {}
+		// Node(T data) : data(data) {}
 	};
 
 	template <class Pair>

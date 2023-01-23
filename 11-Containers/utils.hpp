@@ -20,26 +20,32 @@ namespace ft {
 		}
 	};
 
-	template <class first, class second>
+	template <class K, class V>
 	struct pair{
 		public:
-			typedef first first_type;
-			typedef second second_type;
-			first_type first_one;
-			second_type second_one;
-			pair() : first_one(), second_one() {}
-			pair(const first& a, const second& b) : first_one(a), second_one(b) {}
+			typedef K first_type;
+			typedef V second_type;
+			first_type first;
+			second_type second;
+			pair() : first(), second() {}
+			pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 			
-			template <class U, class V>
-			pair(const pair<U, V>& pr) : first_one(pr.first_one), second_one(pr.second_one) {}
-			pair& operator=(const pair& pr)
+			// template <class U, class V>
+			// pair(const pair<U, V>& pr) : first(pr.first), second(pr.second) {}
+
+			template <class U1, class U2>
+			pair(pair<U1, U2> const & p) : first(p.first), second(p.second) {}
+
+			template <class U1, class U2>
+			pair<U1, U2>&	operator=(pair<U1, U2> const & rhs)
 			{
-				if (this == &pr)
+				if (this == &rhs)
 					return (*this);
-				first_one = pr.first;
-				second_one = pr.second;
+				first = rhs.first;
+				second = rhs.second;
 				return (*this);
 			}
+			~pair() {};
 	};
 
 	template <class InputIterator1, class InputIterator2>

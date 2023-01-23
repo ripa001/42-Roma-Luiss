@@ -8,6 +8,9 @@
 
 namespace ft {
 	
+	// 		template <class Key, class T, class Compare = std::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
+	// class map : public RBTree<ft::pair<const Key, T>, in<ft::pair<const Key, T> >,  RBIterator<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, RBIteratorConst<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, Compare, Allocator>
+	// {
 	template <class Key, class T, class Compare = ft::less<Key>, class Allocator = std::allocator<ft::pair<const Key, T> > >
 	class map : public RBTree<ft::pair<const Key, T>, Node<ft::pair<const Key, T> >,  RBIterator<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, RBIteratorConst<ft::pair<const Key, T>, Compare, Node<ft::pair<const Key, T> > >, Compare, Allocator> {
 		public:
@@ -63,9 +66,9 @@ namespace ft {
 			{
 				if (!start || start->color == NIL)
 					return (iterator(this->_sentinel, this->_sentinel));
-				if (this->_comp(val.first_one, start->data.first_one) && start->data.first_one != val.first_one)
+				if (this->_comp(val.first, start->data.first) && start->data.first != val.first)
 					return (findPointer(start->child[LEFT], val));
-				else if (this->_comp(start->data.first_one, val.first_one) && start->data.first_one != val.first_one)
+				else if (this->_comp(start->data.first, val.first) && start->data.first != val.first)
 					return (findPointer(start->child[RIGHT], val));
 				else
 					return (iterator(start, this->_sentinel));
@@ -91,7 +94,7 @@ namespace ft {
 
 				if (tmp._node == this->_sentinel)
 					throw std::out_of_range("map: at");
-				return ((*tmp).second_one);
+				return ((*tmp).second);
 			}
 
 			ft::pair<iterator, bool> insertNode(pointer &start, pointer &node, pointer& parent, int flag) {
@@ -100,7 +103,7 @@ namespace ft {
 				if (!start || start == this->_sentinel)
 				{
 					node->parent = parent;
-					if (this->_comp(node->data.first_one, parent->data.first_one))
+					if (this->_comp(node->data.first, parent->data.first))
 						parent->child[LEFT] = node;
 					else
 						parent->child[RIGHT] = node;
@@ -108,23 +111,23 @@ namespace ft {
 					if (flag)
 						this->_size++;
 					this->balanceInsert(start);
-					ret.first_one = iterator(node, this->_sentinel);
-					ret.second_one = true;
+					ret.first = iterator(node, this->_sentinel);
+					ret.second = true;
 					return (ret);
 				}
-				if (this->_comp(node->data.first_one, start->data.first_one))
+				if (this->_comp(node->data.first, start->data.first))
 					return (insertNode(start->child[LEFT], node, start, flag));
-				else if (this->_comp(start->data.first_one, node->data.first_one))
+				else if (this->_comp(start->data.first, node->data.first))
 					return (insertNode(start->child[RIGHT], node, start, flag));
-				ret.first_one = find(node->data.first_one);
+				ret.first = find(node->data.first);
 				delete node;
-				ret.second_one = false;
+				ret.second = false;
 				return (ret);
 			}
 
 			iterator	insert(iterator position, ft::pair<const Key, T> const & val) {
 				(void)position;
-				return (insert(val).first_one);
+				return (insert(val).first);
 			}
 
 			template <class InputIterator>
@@ -149,22 +152,22 @@ namespace ft {
 					this->_sentinel->parent = node;
 					node->color = BLACK;
 					this->_size++;
-					ret.first_one = iterator(node, this->_sentinel);
-					ret.second_one = true;
+					ret.first = iterator(node, this->_sentinel);
+					ret.second = true;
 					return (ret);
 				}
 				else
 				{
-					ret.first_one = iterator(node, this->_sentinel);
-					ret.second_one = false;
-					if (this->_comp(val.first_one, this->_root->data.first_one) && this->_root->data.first_one != val.first_one)
+					ret.first = iterator(node, this->_sentinel);
+					ret.second = false;
+					if (this->_comp(val.first, this->_root->data.first) && this->_root->data.first != val.first)
 						return (insertNode(this->_root->child[LEFT], node, this->_root, 1));
-					else if (this->_comp(this->_root->data.first_one, val.first_one) && this->_root->data.first_one != val.first_one)
+					else if (this->_comp(this->_root->data.first, val.first) && this->_root->data.first != val.first)
 						return (insertNode(this->_root->child[RIGHT], node, this->_root, 1));
 					else
 					{
 						delete node;
-						ret.first_one = find(node->data.first_one);
+						ret.first = find(node->data.first);
 						return (ret);
 					}
 				}
