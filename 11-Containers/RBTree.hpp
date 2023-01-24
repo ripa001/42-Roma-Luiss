@@ -376,6 +376,58 @@ namespace ft {
 					uncle = NULL;
 			}
 
+			void balanceDelete(pointer & node)
+			{
+				pointer*	tmp = &node;
+				pointer		sibling;
+				pointer		leftNephew;
+				pointer		rightNephew;
+
+				while (*tmp && *tmp != _sentinel && (*tmp)->color == BLACK)
+				{
+					getRelatives2(*tmp, sibling, leftNephew, rightNephew);
+					if (sibling && sibling->color == YELLOW)
+					{
+						if (sibling->child[LEFT] == *tmp)
+						{
+							sibling->color = BLACK;
+							sibling->parent->color = YELLOW;
+							rotateRight(sibling->parent);
+						}
+						else if (sibling->child[RIGHT] == *tmp)
+						{
+							sibling->color = BLACK;
+							sibling->parent->color = YELLOW;
+							rotateLeft(sibling->parent);
+						}
+					}
+					else if (sibling && sibling->color == BLACK)
+					{
+						if (leftNephew && leftNephew->color == YELLOW)
+						{
+							leftNephew->color = BLACK;
+							sibling->color = YELLOW;
+							rotateRight(sibling);
+						}
+						else if (rightNephew && rightNephew->color == YELLOW)
+						{
+							rightNephew->color = BLACK;
+							sibling->color = YELLOW;
+							rotateLeft(sibling);
+						}
+						else if (leftNephew && leftNephew->color == BLACK && rightNephew && rightNephew->color == BLACK)
+						{
+							sibling->color = YELLOW;
+							*tmp = (*tmp)->parent;
+						}
+					}
+					else
+						*tmp = (*tmp)->parent;
+				}
+
+				
+			}
+
 			// pointer	getSibling(pointer & node)
 			// {
 			// 	if (node->parent == _sentinel)
