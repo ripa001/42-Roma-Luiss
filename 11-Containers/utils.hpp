@@ -21,32 +21,51 @@ namespace ft {
 	};
 
 	template <class K, class V>
-	struct pair{
+	class pair{
 		public:
 			typedef K first_type;
 			typedef V second_type;
+
 			first_type first;
 			second_type second;
-			pair() : first(), second() {}
-			pair(const first_type& a, const second_type& b) : first(a), second(b) {}
-			
-			// template <class U, class V>
-			// pair(const pair<U, V>& pr) : first(pr.first), second(pr.second) {}
 
-			template <class U1, class U2>
-			pair(pair<U1, U2> const & p) : first(p.first), second(p.second) {}
+			pair(void) : first(void), second(void) {}
+			pair(const first_type x, const second_type y) : first(x), second(y) {}
 
-			template <class U1, class U2>
-			pair<U1, U2>&	operator=(pair<U1, U2> const & rhs)
+			template <class U, class W>
+			pair(const pair<U, W>& pr) : first(pr.first), second(pr.second) {}
+
+			pair& operator=(const pair& pr)
 			{
-				if (this == &rhs)
-					return (*this);
-				first = rhs.first;
-				second = rhs.second;
+				if (this != &pr)
+				{
+					first = pr.first;
+					second = pr.second;
+				}
 				return (*this);
 			}
-			~pair() {};
 	};
+
+	template < typename T1, typename T2 >
+	pair< T1, T2 > make_pair ( T1 x, T2 y )										{	return pair< T1, T2 >( x, y );	}
+
+	template < typename T1, typename T2 >
+	bool	operator == ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return l.first == r.first && l.second == r.second; }
+
+	template < typename T1, typename T2 >
+	bool	operator != ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return !(l == r); }
+
+	template < typename T1, typename T2 >
+	bool	operator < ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return l.first < r.first || (!(r.first < l.first) && l.second < r.second); }
+
+	template < typename T1, typename T2 >
+	bool	operator <= ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return !(r < l); }
+
+	template < typename T1, typename T2 >
+	bool	operator > ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return r < l; }
+
+	template < typename T1, typename T2 >
+	bool	operator >= ( const pair< T1, T2 > & l, const pair< T1, T2 > & r )	{ return !(l < r); }
 
 	template <class InputIterator1, class InputIterator2>
 	bool lexicographical_compare (InputIterator1 first1, InputIterator1 last1,

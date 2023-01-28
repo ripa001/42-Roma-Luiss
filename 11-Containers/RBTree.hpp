@@ -1,442 +1,167 @@
-#pragma once
+# pragma once
 
-#include <memory>
-#include <utility>
+#include <string>
 #include <iostream>
-#include <limits.h>
+#include <cmath>	
 #include "utils.hpp"
 
+
 namespace ft {
+	enum        nodeColor {        RED, BLACK      };
 
-	enum node_color
-	{
-		YELLOW,
-		BLACK,
-		NIL
+	template < typename T >
+	struct node {
+	    typedef T           value_type;
+	    value_type          value;
+		node                *parent, *left, *right;
+		bool                color;
+	    int                 leaf;
+
+	    node( void )    :   value(0), parent (0), left(0), 
+	                        right(0), color( RED )                                              {};
+	    node( T const& value, node *parent, int leaf )   :      value(value),
+	                                                            parent (parent), left(0), right(0),
+	                                                            color( RED ), leaf(leaf)        {};
+	    node( node const& t )   :   value(t.value),
+	                                parent (t.parent), left(t.left), right(t.right),
+	                                color( t.color ), leaf(t.leaf)                              {};
+	    node&     operator = ( node const& t )
+	    {
+	        this->value = t.value;
+	        this->parent = t.parent;
+	        this->left = t.left;
+	        this->right = t.right;
+	        this->color = t.color;
+	        this->leaf = t.leaf;
+	        return *this;
+	    }
+	    ~node () {};
 	};
 
-	enum branch
-	{
-		LEFT,
-		RIGHT
-	};
-
-	template <class T>
-	struct Node
-	{
-		node_color	color;
-		Node		*child[2];
-		Node		*parent;
-		T			data; 
-
-		template <class U, class V>
-		Node(ft::pair<U, V> const &data) : data(data) {}
-		Node() : data() {}
-		// Node(T data) : data(data) {}
-	};
-
-	template <class Pair>
-	struct NodeRB2 {
-		NodeRB2					*parent;
-		NodeRB2 				*left;
-		NodeRB2 				*right;
-		Pair					data;
-		int						color;
-	};
-
-	template <class Key, class NodeType, class Iterator, class ConstIterator, class Compare=std::less<Key>, class Alloc=std::allocator<Key>>
-	class RBTree
-	{
+	template < class T, class Compare = std::less< T >, class Alloc = std::allocator<T> >
+	class RBTree {
 		public:
-			typedef NodeRB2<Key>											originalNode;
-			typedef Key														key_type;
-			typedef Key														value_type;
+			typedef T															value_type;
+			typedef Alloc														allocator_type;
+			typedef Compare														value_compare;
+			typedef typename allocator_type::pointer				            pointer;
+        	typedef typename allocator_type::const_pointer			            const_pointer;
+        	typedef typename allocator_type::reference				            reference;
+        	typedef typename allocator_type::const_reference		            const_reference;
+        	typedef treeIterator< T >									        iterator;
+        	typedef treeIterator< const T >								        const_iterator;
+        	typedef ft::reverse_iterator< iterator >				            reverse_iterator;
+        	typedef ft::reverse_iterator< const_iterator >			            const_reverse_iterator;
+        	typedef std::size_t										            size_type;
+        	typedef node< value_type >                                          treeNode;
+        	typedef typename Alloc::template rebind< treeNode >::other	        node_allocator;
 
-			typedef NodeType												node_type;
-			typedef Iterator												iterator;
-			typedef ConstIterator											const_iterator;
-			// typedef ReverseIterator<iterator>								reverse_iterator;
-			// typedef ReverseIterator<ConstIterator>							const_reverse_iterator;
-			typedef Compare													key_compare;
-			typedef Compare													value_compare;
-			typedef typename Alloc::template rebind<NodeType>::other		allocator_type;
-			typedef typename Alloc::template rebind<originalNode>::other	allocator_type2;
-			// typedef typename Alloc::template rebind<node_type>::other		allocator_type;
-			// typedef typename Alloc::template rebind<originalNode>::other	allocator_type2;
-			typedef typename allocator_type::reference						reference;
-			typedef typename allocator_type::const_reference				const_reference;
-			typedef typename allocator_type::pointer 						pointer;
-			typedef typename allocator_type::const_pointer					const_pointer;
-			typedef typename allocator_type::size_type						size_type;
-
-
-			RBTree() :	_root(NULL), _size(0), _alloc(allocator_type()){
-				_sentinel = _alloc.allocate(1);
-				_sentinel->color = NIL;
-				_root = _sentinel;
-				_sentinel->parent = _root;
-			};
-
-			RBTree(const RBTree &x) : _root(NULL), _size(0), _alloc(allocator_type()){
-				*this = x;
-			};
-
-			RBTree &operator=(RBTree const &x) {
-				if (this != &x) {
-					_key_type = x.getAllocator();
-					_sentinel = _alloc.allocate(1);
-					_sentinel->color = NIL;
-					_root = _sentinel;
-					_sentinel->parent = _root;
-					_size = 0;
-					this->insert(x.begin(), x.end());
-				}
-				return *this;
-			};
-			allocator_type getAllocator() const {return _alloc;};
-			bool empty() const {return ((!this->_size) ? true : false);};
-			size_type size() const {return this->_size;};
-			size_type max_size() const {return _alloc2.max_size();};
-
-			iterator				begin(){return iterator(min(), _sentinel);};
-			const_iterator			begin() const {return const_iterator(min(), _sentinel);};
-			iterator				end(){ return iterator(_sentinel, _sentinel);};
-			const_iterator			end() const {return const_iterator(_sentinel, _sentinel);};
-			// reverse_iterator		rbegin(){return reverse_iterator(end());};
-			// reverse_iterator		rend(){return reverse_iterator(begin());};
-			// const_reverse_iterator	rbegin() const {return const_reverse_iterator(end());};
-			// const_reverse_iterator	rend() const {return const_reverse_iterator(begin());};	
-
-			virtual iterator					findPointer(pointer &start, Key const &val) const = 0;
-			// virtual iterator					erase_deep(Key const &val) = 0;
-			virtual ft::pair<iterator, bool>	insert(Key const &val) = 0;
-			virtual ft::pair<iterator, bool>	insertNode(pointer &start, pointer &node, pointer &parent, int flag) = 0;
-			// virtual void 						clear() = 0;
-
-			
-			pointer	min() const
-			{
-				const pointer*	node = &_root;
-
-				if (!(*node) || (*node) == _sentinel)
-					return (_sentinel);
-				while ((*node)->child[LEFT] && (*node)->child[LEFT] != _sentinel)
-					node = &(*node)->child[LEFT];
-				return (*node);
-			}
-
-			pointer	min(pointer const & node) const
-			{
-				const pointer*	tmp = &node;
-
-				if (!(*tmp) || (*tmp) == _sentinel)
-					return (_sentinel);
-				while ((*tmp)->child[LEFT] && (*tmp)->child[LEFT] != _sentinel)
-					tmp = &(*tmp)->child[LEFT];
-				return (*tmp);
-			}
-
-			pointer	max() const
-			{
-				pointer	node = _root;
-
-				if (!node || node == _sentinel)
-					return (_sentinel);
-				while (node->child[RIGHT] && node->child[RIGHT] != _sentinel)
-					node = node->child[RIGHT];
-				return (node);
-			}
-
-			pointer	max(pointer const & node) const
-			{
-				pointer	tmp = node;
-
-				if (!node || node == _sentinel)
-					return (_sentinel);
-				while (tmp->child[RIGHT] != _sentinel)
-					tmp = tmp->child[RIGHT];
-				return (tmp);
-			}
-
-			pointer	getSuccessor(pointer const & node) const
-			{
-				pointer	tmp = node;
-				
-				if (node == max())
-					return (_sentinel);
-				if (tmp->child[RIGHT] != _sentinel)
-					return (min(tmp->child[RIGHT]));
-				else
-				{
-					while (tmp->parent != _sentinel)
-					{
-						if (tmp->parent->child[LEFT] == tmp)
-						{
-							tmp = tmp->parent;
-							break ;
-						}
-						tmp = tmp->parent;
-					}
-				}
-			}
-
-			pointer getPrecessor(pointer const & node) const
-			{
-				pointer	tmp = node;
-
-				if (node == min())
-					return (_sentinel);
-				if (tmp->child[LEFT] != _sentinel)
-					return (max(tmp->child[LEFT]));
-				else
-				{
-					while (tmp->parent != _sentinel)
-					{
-						if (tmp->parent->child[RIGHT] == tmp)
-						{
-							tmp = tmp->parent;
-							break ;
-						}
-						tmp = tmp->parent;
-					}
-				}
-			}
-
-			~RBTree() {_alloc.deallocate(_sentinel, 1);};
-
-		
-		protected:
-			key_type		_key_type;
-			value_type		_value_type;
-			key_compare		_key_compare;
-			value_compare	_value_compare;
-			pointer			_root;
-			pointer			_sentinel;
-			size_type		_size;
-			allocator_type	_alloc;
-			allocator_type2	_alloc2;
+		private:
+			treeNode		*_NIL;
+			treeNode		*_root;
+			size_type		_height;
 			Compare			_comp;
+			node_allocator	_node_alloc;
+			allocator_type	_alloc;
 
-			pointer*	rotateRight(pointer & node)
-			{
-				pointer		toHandle;
-				pointer*	tmp = &node;
-				pointer*	ret;
+		public:
+			explicit RBTree(const value_compare &comp, const allocator_type &alloc) : _NIL(nilNode()), _height(0), _comp(comp), _alloc(alloc) {
+				_NIL->color = BLACK;
+				_root = _NIL;
+			}
+ 			RBTree( RBTree const &t ) : _NIL(nilNode()), _root(_NIL), _comp(t._comp), _alloc(t._alloc) { insert(t.begin(), t.end()); };
 
-				if ((*tmp) && (*tmp)->child[LEFT] != _sentinel && (*tmp)->child[LEFT]->child[RIGHT] != _sentinel)
-					toHandle = (*tmp)->child[LEFT]->child[RIGHT];
-				else
-					toHandle = NULL;
-				if ((*tmp) == _root)
-				{
-					_root = (*tmp)->child[LEFT];
-					_sentinel->parent = _root;
-					(*tmp)->child[LEFT]->parent = _sentinel;
+			RBTree& operator=(const RBTree &t) {
+				if (this != &t) {
+					clear();
+					insert(t.begin(), t.end());
+					_comp = t._comp;
+					_alloc = t._alloc;
 				}
-				else
+				return *this
+			}
+			~RBTree(void) {
+				clear(_root);
+				delNilNode(_NIL);
+			};
+
+			treeNode	*nilNode() {
+				treeNode    *nilnode = _node_alloc.allocate(1);
+
+            	nilnode->left  = _NIL;
+            	nilnode->right = _NIL;
+            	nilnode->parent = 0;
+            	nilnode->color = BLACK;
+            	nilnode->leaf = 0;
+				return (nilnode);
+			}
+
+			void        clear(treeNode *root) {
+        		if (root && root->leaf)
+        	    {
+        	        clear(root->left);
+        	        clear(root->right);
+        	        delNode(root);
+        	    }
+        	    _root = _NIL;            
+        	}
+
+			ft::pair<iterator, bool> insert(value_type const &value) {
+				if (_root == NIL) {
+					_root = newNode(value, _NIL, 2);
+					_root->color = BLACK;
+					return ft::make_pair(iterator(_root), true);
+				}
+				treeNode	*parent = _NIL;
+				treeNode	*curr = _root;
+				while (curr != _NIL)
 				{
-					(*tmp)->child[LEFT]->parent = (*tmp)->parent;
-					if ((*tmp)->parent->child[RIGHT] == *tmp)
-						(*tmp)->parent->child[RIGHT] = (*tmp)->child[LEFT];
+					parent = curr;
+					if (_comp(value, curr->value))
+						curr = curr->left;
+					else if(_comp(curr->value, value))
+						curr = curr->right;
 					else
-						(*tmp)->parent->child[LEFT] = (*tmp)->child[LEFT];
+						ft::make_pair(iterator(curr), false)
 				}
-				(*tmp)->parent = (*tmp)->child[LEFT];
-				(*tmp)->child[LEFT]->child[RIGHT] = (*tmp);
-				(*tmp)->child[LEFT] = _sentinel;
-				if (toHandle)
-					insertNode((*tmp), toHandle, (*tmp), 0);
-				ret = &(*tmp)->child[RIGHT];
-				return (ret);
+				curr = newNode(value, parent, 1);
+				if (_comp(value, parent->value))             parent->left = curr;
+            	else                                         parent->right = curr;
+				curr->left->parent = curr;
+				curr->right->parent = curr;
+				// TODO Balancing
+            	// rebalanceTree4insert(curr);
+            	return ft::make_pair(iterator(curr), true);
 			}
+		
+		private:
 
-			pointer* rotateLeft(pointer &node)
-			{
-				pointer		toHandle;
-				pointer*	tmp = &node;
-				pointer*	ret;
+        	treeNode                    *newNode( value_type const& value, treeNode *parent, int leaf ) {
+        	    treeNode    *newnode = _node_alloc.allocate(1);
+        	    _alloc.construct(&(newnode->value), value);
+        	    newnode->left  = _NIL;
+        	    newnode->right = _NIL;
+        	    newnode->parent = parent;
+        	    newnode->color = RED;
+        	    newnode->leaf = leaf;
+        	    _height++;
+				return newnode;
+        	};
 
-				if ((*tmp) && (*tmp)->child[RIGHT] != _sentinel && (*tmp)->child[RIGHT]->child[LEFT] != _sentinel)
-					toHandle = (*tmp)->child[RIGHT]->child[LEFT];
-				else
-					toHandle = NULL;
-				if ((*tmp) == _root)
-				{
-					_root = (*tmp)->child[RIGHT];
-					_sentinel->parent = _root;
-					(*tmp)->child[RIGHT]->parent = _sentinel;
-				}
-				else
-				{
-					(*tmp)->child[RIGHT]->parent = (*tmp)->parent;
-					if ((*tmp)->parent->child[RIGHT] == *tmp)
-						(*tmp)->parent->child[RIGHT] = (*tmp)->child[RIGHT];
-					else
-						(*tmp)->parent->child[LEFT] = (*tmp)->child[RIGHT];
-				}
-				(*tmp)->parent = (*tmp)->child[RIGHT];
-				(*tmp)->child[RIGHT]->child[LEFT] = (*tmp);
-				(*tmp)->child[RIGHT] = _sentinel;
-				if (toHandle)
-					insertNode((*tmp), toHandle, (*tmp), 0);
-				ret = &(*tmp)->child[LEFT];
-				return (ret);
-			}
+        	void        delNode(treeNode *node) {              
+        	    _alloc.destroy(&(node->value));  
+        	    _node_alloc.deallocate(node, 1); 
+        	    _height--;
+        	}
 
-			void	balanceInsert(pointer & node)
-			{
-				pointer*	tmp = &node;
-				pointer		parent = node->parent;
-				pointer		grandParent;
-				pointer		uncle;
+        	void        delnilNode(treeNode *node) {
+        	    _node_alloc.deallocate(node, 1); 
+        	    _height--; 
+        	}
 
-				while (1 && *tmp && *tmp != _sentinel)
-				{
-					parent = (*tmp)->parent;
-					getRelatives(parent, grandParent, uncle);
-					if (!parent || parent == _sentinel)
-					{
-						(*tmp)->color = BLACK;
-						break ;
-					}
-					else if (parent->color == BLACK)
-						break ;
-					else if (uncle && (*tmp)->color == YELLOW && parent->color == YELLOW && uncle->color == YELLOW)
-					{
-						parent->color = BLACK;
-						uncle->color = BLACK;
-						grandParent->color = YELLOW;
-						tmp = &(*tmp)->parent->parent;
-					}
-					else if ((*tmp)->color == YELLOW && parent->color == YELLOW)
-					{
-						if (parent->child[RIGHT] == (*tmp) && grandParent->child[LEFT] == parent)
-							tmp = rotateLeft(parent);
-						else if (parent->child[LEFT] == (*tmp) && grandParent->child[RIGHT] == parent)
-							tmp = rotateRight(parent);
-						else if (parent->child[LEFT] == (*tmp) && grandParent->child[LEFT] == parent)
-						{
-							parent->color = BLACK;
-							grandParent->color = YELLOW;
-							rotateRight(grandParent);
-							break ;
-						}
-						else if (parent->child[RIGHT] == (*tmp) && grandParent->child[RIGHT] == parent)
-						{
-							parent->color = BLACK;
-							grandParent->color = YELLOW;
-							rotateLeft(grandParent);
-							break ;
-						}
-					}
-					else
-						break ;
-				}
-			}
-
-			void	getRelatives2(pointer & node, pointer & sibling, pointer & leftNephew, pointer & rightNephew)
-			{
-				if (node->parent->child[LEFT] != _sentinel && node->parent->color != NIL && node->parent->child[LEFT] == node && node->parent->child[RIGHT] && node->parent->child[RIGHT] != _sentinel)
-					sibling = node->parent->child[RIGHT];
-				else if (node->parent->child[RIGHT] != _sentinel && node->parent->color != NIL && node->parent->child[LEFT] && node->parent->child[LEFT] != _sentinel)
-					sibling = node->parent->child[LEFT];
-				else
-				{
-					sibling = NULL;
-					leftNephew = NULL;
-					rightNephew = NULL;
-					return ;
-				}
-				if (sibling && sibling->child[LEFT] && sibling->child[LEFT] != _sentinel)
-					leftNephew = sibling->child[LEFT];
-				else
-					leftNephew = NULL;
-				if (sibling && sibling->child[RIGHT] && sibling->child[RIGHT] != _sentinel)
-					rightNephew = sibling->child[RIGHT];
-				else
-					rightNephew = NULL;
-			}
-
-			void	getRelatives(pointer & parent, pointer & grandParent, pointer & uncle)
-			{
-				if (parent != _sentinel)
-					grandParent = parent->parent;
-				else
-					grandParent = NULL;
-				if (grandParent != _sentinel && grandParent)
-				{
-					if (grandParent->child[LEFT] == parent && grandParent->child[RIGHT] != _sentinel)
-						uncle = grandParent->child[RIGHT];
-					else if (grandParent->child[RIGHT] == parent && grandParent->child[LEFT] != _sentinel)
-						uncle = grandParent->child[LEFT];
-					else
-						uncle = NULL;
-				}
-				else
-					uncle = NULL;
-			}
-
-			void balanceDelete(pointer & node)
-			{
-				pointer*	tmp = &node;
-				pointer		sibling;
-				pointer		leftNephew;
-				pointer		rightNephew;
-
-				while (*tmp && *tmp != _sentinel && (*tmp)->color == BLACK)
-				{
-					getRelatives2(*tmp, sibling, leftNephew, rightNephew);
-					if (sibling && sibling->color == YELLOW)
-					{
-						if (sibling->child[LEFT] == *tmp)
-						{
-							sibling->color = BLACK;
-							sibling->parent->color = YELLOW;
-							rotateRight(sibling->parent);
-						}
-						else if (sibling->child[RIGHT] == *tmp)
-						{
-							sibling->color = BLACK;
-							sibling->parent->color = YELLOW;
-							rotateLeft(sibling->parent);
-						}
-					}
-					else if (sibling && sibling->color == BLACK)
-					{
-						if (leftNephew && leftNephew->color == YELLOW)
-						{
-							leftNephew->color = BLACK;
-							sibling->color = YELLOW;
-							rotateRight(sibling);
-						}
-						else if (rightNephew && rightNephew->color == YELLOW)
-						{
-							rightNephew->color = BLACK;
-							sibling->color = YELLOW;
-							rotateLeft(sibling);
-						}
-						else if (leftNephew && leftNephew->color == BLACK && rightNephew && rightNephew->color == BLACK)
-						{
-							sibling->color = YELLOW;
-							*tmp = (*tmp)->parent;
-						}
-					}
-					else
-						*tmp = (*tmp)->parent;
-				}
-
-				
-			}
-
-			// pointer	getSibling(pointer & node)
-			// {
-			// 	if (node->parent == _sentinel)
-			// 		return (NULL);
-			// 	if (node->parent->child[LEFT] != _sentinel && node->parent->child[LEFT] == node)
-			// 		return (node->parent->child[RIGHT]);
-			// 	else if (node->parent->child[RIGHT] != _sentinel && node->parent->child[RIGHT] == node)
-			// 		return (node->parent->child[LEFT]);
-			// 	return (NULL);
-			// }
+			// min, max
+        	treeNode    *min(treeNode* node) const      {       while (node->left != _NIL)       {   node = node->left;      }    return node;        };
+        	treeNode    *max(treeNode* node) const      {       while (node && node->leaf)      {   node = node->right;     }    return node;        };
+	
 	};
-}
+}; 
