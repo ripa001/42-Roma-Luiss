@@ -130,9 +130,49 @@ namespace ft {
 				curr->left->parent = curr;
 				curr->right->parent = curr;
 				// TODO Balancing
-            	// rebalanceTree4insert(curr);
+            	rebalanceTreeinsert(curr);
             	return ft::make_pair(iterator(curr), true);
 			}
+
+
+			void 				erase(treeNode *node)
+			{
+					treeNode    *to_del = node;
+					treeNode    *to_fix;
+					int originColor = node->color;
+					if (node->left == NIL)
+					{
+						to_fix = node->right;
+						transplantNode(node, node->right);
+					}
+					else if (node->right == NIL)
+					{
+						to_fix = node->left;
+						transplantNode(node, node->left);
+					}
+					else
+					{
+						to_del = min(node->right); //min
+						originColor = to_del->color;
+						to_fix = to_del->right;
+						if (to_del->parent == node) to_fix->parent = to_del; // to check
+						else
+						{
+							transplantNode(to_del, to_del->right);
+							to_del->right = node->right;
+							to_del->right->parent = to_del;
+						}
+						transplantNode(node, to_del);
+						to_del->left = node->left;
+						to_del->left->parent = to_del;
+						to_del->color = node->color;
+					}
+					if (originColor == BLACK)
+						rebalanceTree4erase(to_fix);
+					delNode(node);
+			};
+			void 					erase(iterator first, iterator last)                    {       while (first != last)   erase(*first++);	        };
+
 		
 		private:
 
@@ -163,5 +203,108 @@ namespace ft {
         	treeNode    *min(treeNode* node) const      {       while (node->left != _NIL)       {   node = node->left;      }    return node;        };
         	treeNode    *max(treeNode* node) const      {       while (node && node->leaf)      {   node = node->right;     }    return node;        };
 	
+			treeNode grandparent(treeNode *n) {
+				return n->parent->parent;
+			}
+
+			treeNode uncle(treeNode *n) {
+				if (n->parent == grandparent(n)->left)
+					return grandparent(n)->right;
+				else
+					return grandparent(n)->left;
+			}
+
+			void rebalanceTreeInsert(treeNode *node) {
+				insertCase1(node)
+			}
+			
+			void insertCase1(treeNode *n) {
+			    if (n == _root || n->parent == NULL)
+			        n->color = BLACK;
+			    else
+			        insertCase2(n);
+			}
+
+			void insertCase2(treeNode *n) {
+				if (n->parent->color == BLACK)
+					return; /* Tree is still valid */
+				else
+					insertCase3(n);
+			}
+
+			void insertCase3(treeNode *n) {
+				if (uncle(n) != NULL && uncle(n)->color == RED) {
+					n->parent->color = BLACK;
+					uncle(n)->color = BLACK;
+					grandparent(n)->color = RED;
+					insertCase1(grandparent(n));
+				}
+				else
+					insertCase4(n);
+			}
+
+			void insertCase4(treeNode *n) {
+				if (n == n->parent->right && n->parent == grandparent(n)->left) {
+					leftRotate(n->parent);
+					n = n->left;
+				} else if (n == n->parent->left && n->parent == grandparent(n)->right) {
+					rightRotate(n->parent);
+					n = n->right;
+				}
+				insertCase5(n);
+			}
+
+			void insertCase5(treeNode *n) {
+				n->parent->color = BLACK;
+				grandparent(n)->color = RED;
+				if (n == n->parent->left && n->parent == grandparent(n)->left) {
+					rightRotate(grandparent(n));
+				} else {
+					/* Here, n == n->parent->right && n->parent == grandparent(n)->right */
+					leftRotate(grandparent(n));
+				}
+			}
+
+			void    leftRotate(treeNode    *node) {
+        	    treeNode    *tmp = node->right;
+        	    node->right = tmp->left;
+        	    if (tmp->left != NIL)
+        	        tmp->left->parent = node;
+        	    tmp->parent = node->parent;
+        	    if (node->parent == NIL)
+        	        _root = tmp;
+        	    else if (node == node->parent->left)
+        	        node = tmp;
+        	    else
+        	        node->parent->right = tmp;
+        	    tmp->left = node;
+        	    node->parent = tmp;
+        	}
+
+        	void    rightRotate(treeNode *node) {
+        	    treeNode    *tmp = node->left;
+        	    node->left = tmp->right;
+        	    if (tmp->right != NIL)
+        	        tmp->right->parent = node;
+        	    tmp->parent = node->parent;
+        	    if (node->parent == NIL)
+        	        _root = tmp;
+        	    else if (node == node->parent->right)
+        	        node = tmp;
+        	    else
+        	        node->parent->left = tmp;
+        	    tmp->right = node;
+        	    node->parent = tmp;
+        	}
+
+			void	transplantNode(treeNode *a, treeNode *b)
+			{
+				if (a->parent == NIL)       _root = b;
+				else if (a == a->parent->left)  a->parent->left = b;
+				else                            a->parent->right = b;
+				b->parent = a->parent;
+			};
+
 	};
+
 }; 
