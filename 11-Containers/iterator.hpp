@@ -148,15 +148,28 @@ namespace ft {
 	template< typename U >
 	class RBTIterator {
 		public:
-			typedef U	value_type;
-			typedef	U*	pointer;
-			typedef const U*	const_pointer;
-			typedef U&	reference;
-			typedef const U&	const_reference;
-			typedef std::ptrdiff_t	difference_type;
-			typedef std::bidirectional_iterator_tag	iterator_category;
-			typedef 
+    		typedef U								value_type;
+    		typedef U*								pointer;
+    		typedef const U*						const_pointer;
+    		typedef U&								reference;
+    		typedef const U&                        const_reference;
+    		typedef std::ptrdiff_t					difference_type;
+    		typedef std::bidirectional_iterator_tag	iterator_category;
+    		typedef node< value_type >              treeNode;
+    		typedef node< const value_type >        const_treeNode;
+    		typedef RBTIterator< U >               iterator;
+    		typedef RBTIterator< const U >         const_iterator;
 
+    		RBTIterator( void ) :  _node(NULL)                         {};
+    		RBTIterator( treeNode * current ) : _node(current)         {};
+    		RBTIterator( RBTIterator const& t ) : _node(t.base())     {};
+    		RBTIterator&		operator = ( RBTIterator const& t )    {       _node = t.base(); return *this;         };
+			
+	        operator            const_iterator() const                  {       return const_iterator(reinterpret_cast<const_treeNode *>(_node));    }
+			treeNode	*base( void ) {	return _node; }
+			
+		private:
+			treeNode	*_node;
 	};
 
 };

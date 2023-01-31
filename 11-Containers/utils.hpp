@@ -29,7 +29,7 @@ namespace ft {
 			first_type first;
 			second_type second;
 
-			pair(void) : first(void), second(void) {}
+			pair(void) {}
 			pair(const first_type x, const second_type y) : first(x), second(y) {}
 
 			template <class U, class W>

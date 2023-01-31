@@ -4,7 +4,7 @@
 #include <iostream>
 #include <cmath>	
 #include "utils.hpp"
-
+#include "iterator.hpp"
 
 namespace ft {
 	enum        nodeColor {        RED, BLACK      };
@@ -48,8 +48,8 @@ namespace ft {
         	typedef typename allocator_type::const_pointer			            const_pointer;
         	typedef typename allocator_type::reference				            reference;
         	typedef typename allocator_type::const_reference		            const_reference;
-        	typedef treeIterator< T >									        iterator;
-        	typedef treeIterator< const T >								        const_iterator;
+        	typedef RBTIterator< T >									        iterator;
+        	typedef RBTIterator< const T >								        const_iterator;
         	typedef ft::reverse_iterator< iterator >				            reverse_iterator;
         	typedef ft::reverse_iterator< const_iterator >			            const_reverse_iterator;
         	typedef std::size_t										            size_type;
@@ -78,7 +78,7 @@ namespace ft {
 					_comp = t._comp;
 					_alloc = t._alloc;
 				}
-				return *this
+				return *this;
 			}
 			~RBTree(void) {
 				clear(_root);
@@ -107,7 +107,7 @@ namespace ft {
         	}
 
 			ft::pair<iterator, bool> insert(value_type const &value) {
-				if (_root == NIL) {
+				if (_root == _NIL) {
 					_root = newNode(value, _NIL, 2);
 					_root->color = BLACK;
 					return ft::make_pair(iterator(_root), true);
@@ -122,7 +122,7 @@ namespace ft {
 					else if(_comp(curr->value, value))
 						curr = curr->right;
 					else
-						ft::make_pair(iterator(curr), false)
+						ft::make_pair(iterator(curr), false);
 				}
 				curr = newNode(value, parent, 1);
 				if (_comp(value, parent->value))             parent->left = curr;
@@ -140,12 +140,12 @@ namespace ft {
 					treeNode    *to_del = node;
 					treeNode    *to_fix;
 					int originColor = node->color;
-					if (node->left == NIL)
+					if (node->left == _NIL)
 					{
 						to_fix = node->right;
 						transplantNode(node, node->right);
 					}
-					else if (node->right == NIL)
+					else if (node->right == _NIL)
 					{
 						to_fix = node->left;
 						transplantNode(node, node->left);
@@ -171,7 +171,7 @@ namespace ft {
 						rebalanceTree4erase(to_fix);
 					delNode(node);
 			};
-			void 					erase(iterator first, iterator last)                    {       while (first != last)   erase(*first++);	        };
+			// void 					erase(iterator first, iterator last)                    {       while (first != last)   erase(*first++);	        };
 
 		
 		private:
@@ -215,7 +215,7 @@ namespace ft {
 			}
 
 			void rebalanceTreeInsert(treeNode *node) {
-				insertCase1(node)
+				insertCase1(node);
 			}
 			
 			void insertCase1(treeNode *n) {
@@ -268,10 +268,10 @@ namespace ft {
 			void    leftRotate(treeNode    *node) {
         	    treeNode    *tmp = node->right;
         	    node->right = tmp->left;
-        	    if (tmp->left != NIL)
+        	    if (tmp->left != _NIL)
         	        tmp->left->parent = node;
         	    tmp->parent = node->parent;
-        	    if (node->parent == NIL)
+        	    if (node->parent == _NIL)
         	        _root = tmp;
         	    else if (node == node->parent->left)
         	        node = tmp;
@@ -284,10 +284,10 @@ namespace ft {
         	void    rightRotate(treeNode *node) {
         	    treeNode    *tmp = node->left;
         	    node->left = tmp->right;
-        	    if (tmp->right != NIL)
+        	    if (tmp->right != _NIL)
         	        tmp->right->parent = node;
         	    tmp->parent = node->parent;
-        	    if (node->parent == NIL)
+        	    if (node->parent == _NIL)
         	        _root = tmp;
         	    else if (node == node->parent->right)
         	        node = tmp;
@@ -299,7 +299,7 @@ namespace ft {
 
 			void	transplantNode(treeNode *a, treeNode *b)
 			{
-				if (a->parent == NIL)       _root = b;
+				if (a->parent == _NIL)       _root = b;
 				else if (a == a->parent->left)  a->parent->left = b;
 				else                            a->parent->right = b;
 				b->parent = a->parent;
