@@ -148,25 +148,61 @@ namespace ft {
 	template< typename U >
 	class RBTIterator {
 		public:
-    		typedef U								value_type;
-    		typedef U*								pointer;
-    		typedef const U*						const_pointer;
-    		typedef U&								reference;
-    		typedef const U&                        const_reference;
-    		typedef std::ptrdiff_t					difference_type;
-    		typedef std::bidirectional_iterator_tag	iterator_category;
-    		typedef node< value_type >              treeNode;
-    		typedef node< const value_type >        const_treeNode;
-    		typedef RBTIterator< U >               iterator;
-    		typedef RBTIterator< const U >         const_iterator;
+			typedef U								value_type;
+			typedef U*								pointer;
+			typedef const U*						const_pointer;
+			typedef U&								reference;
+			typedef const U&						const_reference;
+			typedef std::ptrdiff_t					difference_type;
+			typedef std::bidirectional_iterator_tag	iterator_category;
+			typedef node< value_type >				treeNode;
+			typedef node< const value_type >		const_treeNode;
+			typedef RBTIterator< U >				iterator;
+			typedef RBTIterator< const U >			const_iterator;
 
-    		RBTIterator( void ) :  _node(NULL)                         {};
-    		RBTIterator( treeNode * current ) : _node(current)         {};
-    		RBTIterator( RBTIterator const& t ) : _node(t.base())     {};
-    		RBTIterator&		operator = ( RBTIterator const& t )    {       _node = t.base(); return *this;         };
+			RBTIterator( void ) :  _node(NULL) {};
+			RBTIterator( treeNode * current ) : _node(current) {};
+			RBTIterator( RBTIterator const& t ) : _node(t.base()) {};
+			RBTIterator&		operator = ( RBTIterator const& t )    {       _node = t.base(); return *this;         };
 			
-	        operator            const_iterator() const                  {       return const_iterator(reinterpret_cast<const_treeNode *>(_node));    }
-			treeNode	*base( void ) {	return _node; }
+			operator            const_iterator() const                  {       return const_iterator(reinterpret_cast<const_treeNode *>(_node));    }
+			treeNode	*base( void ) {	return _node; };
+			reference	operator*() { return _node->value; };
+			const_reference	operator*() const { return _node->value; };
+			pointer	operator->() { return &_node->value; };
+			const_pointer	operator->() const {return &_node->value;};
+
+			treeIterator&	operator++() {
+				if (!_node->leaf)
+					return *this;
+				if (_node && _node->right && _node->right->leaf)
+					for (_node = _node->right; _node->left && _node->left->leaf; _node = _node->left);
+				else {
+					treeNode *tmp = _node;
+					for (_node = _node->parent; _node && _node->right == tmp && _node->leaf; tmp = _node, _node = _node->parent);
+				}
+				return *this;
+			}
+
+			treeIterator& operator--() {
+				if (!_node->leaf)
+				{
+					while (_node->parent->leaf)
+						_node = _node->parent;
+					while (_node->right->leaf)
+						_node = _node->right;
+					return *this;
+				}
+				else if (_node->left && _node->left->leaf)
+					for (_node = _node->left; _node->right && _node->right->leaf; _node = _node->right);
+				else {
+					treeNode *tmp = _node;
+					for (_node = _node->parent; _node && _node->left == tmp && _node->leaf; tmp = _node, _node = _node->parent);
+				}
+			}
+
+
+
 			
 		private:
 			treeNode	*_node;
