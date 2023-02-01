@@ -8,11 +8,10 @@
 #include "utils.hpp"
 #include "iterator.hpp"
 
-namespace ft{
+namespace ft {
 
 	template <class T, class Alloc = std::allocator<T> >
-	class vector{
-
+	class vector {
 		public:
 			typedef T value_type;
 			typedef Alloc allocator_type;
@@ -24,8 +23,10 @@ namespace ft{
 			typedef typename allocator_type::const_pointer							const_pointer;
 			typedef ft::random_access_iterator<value_type>							iterator;
 			typedef ft::random_access_iterator<value_type>							const_iterator;
-			// typedef ft::reverse_iterator<iterator>							reverse_iterator;
-			// typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
+			typedef ft::treeRBIterator< T >											iterator_RB;
+			typedef ft::treeRBIterator< const T >									const_iterator_RB;
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 			
 			// Constructors
 			explicit vector(allocator_type const &alloc = allocator_type()) : _size(0), _capacity(0), _begin(NULL), _end(NULL), _alloc(alloc) {};

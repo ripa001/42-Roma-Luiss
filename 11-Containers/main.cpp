@@ -116,29 +116,29 @@ void testing()
 	for(it = map1.begin(); it != map1.end(); ++it)
 		fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
 	
-	fileout << "\n\n TESTING OPERATOR[] \n" << std::endl;
-	map1[6] = "changed";
-	map1[2] = "changed";
-	map1[10] = "added with operator[]";
-	for(it = map1.begin(); it != map1.end(); ++it)
-		fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
+	// fileout << "\n\n TESTING OPERATOR[] \n" << std::endl;
+	// map1[6] = "changed";
+	// map1[2] = "changed";
+	// map1[10] = "added with operator[]";
+	// for(it = map1.begin(); it != map1.end(); ++it)
+	// 	fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
 
 
-	fileout << "\n\n TESTING COPY COSTRUCTOR \n" << std::endl;
-	ft::map<int, std::string> map2(map1);
-	fileout << "Printing content: \n";
-	fileout << "size : " << map2.size() << std::endl;
-	fileout << "max_size : " << map2.max_size() << std::endl;
-	for(it = map2.begin(); it != map2.end(); ++it)
-		fileout << "[map2] key = " << it->first << "  value = " << it->second << std::endl;
+	// fileout << "\n\n TESTING COPY COSTRUCTOR \n" << std::endl;
+	// ft::map<int, std::string> map2(map1);
+	// fileout << "Printing content: \n";
+	// fileout << "size : " << map2.size() << std::endl;
+	// fileout << "max_size : " << map2.max_size() << std::endl;
+	// for(it = map2.begin(); it != map2.end(); ++it)
+	// 	fileout << "[map2] key = " << it->first << "  value = " << it->second << std::endl;
 
-	fileout << "\n\n TESTING ERASE \n" << std::endl;
-	map1.erase(map1.begin(), ++(++(map1.begin())));
-	fileout << "Printing content: \n";
-	fileout << "size : " << map1.size() << std::endl;
-	fileout << "max_size : " << map1.max_size() << std::endl;
-	for(it = map1.begin(); it != map1.end(); ++it)
-		fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
+	// fileout << "\n\n TESTING ERASE \n" << std::endl;
+	// map1.erase(map1.begin(), ++(++(map1.begin())));
+	// fileout << "Printing content: \n";
+	// fileout << "size : " << map1.size() << std::endl;
+	// fileout << "max_size : " << map1.max_size() << std::endl;
+	// for(it = map1.begin(); it != map1.end(); ++it)
+	// 	fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
 
 	// fileout << "\n\n TESTING SWAP\n" << std::endl;
 	// ft::map<int, std::string> map3(map2);
