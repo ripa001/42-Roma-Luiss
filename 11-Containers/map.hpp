@@ -76,7 +76,11 @@ namespace ft {
 			void clear() { _tree.clear(); };
 			void swap(map& x) { _tree.swap(x._tree); };
 			map& operator=(const map& x) { _tree = x._tree; return *this; };
+			mapped_type& 	operator[] ( const key_type& k )			{	
+				// print loop
+				return (*(insert(ft::make_pair( k, mapped_type() )).first)).second;			};
 
+			
 			void insert (iterator position, const value_type& val) { _tree.insert(position, val); };
 
 			template <class InputIterator>
@@ -84,6 +88,15 @@ namespace ft {
 
 			ft::pair<iterator,bool> insert (const value_type& val) { return _tree.insert(val); };
 
+			void erase (iterator position) { _tree.erase(position); };
+			size_type erase (const key_type& k) { return _tree.erase(get_valuetype(k)); };
+			void erase (iterator first, iterator last) { _tree.erase(first, last); };			
+
+			iterator find (const key_type& k) { return _tree.find(get_valuetype(k)); };
+			const_iterator find (const key_type& k) const { return _tree.find(get_valuetype(k)); };
+
+			iterator lower_bound (const key_type& k) { return _tree.lower_bound(get_valuetype(k)); };
+			const_iterator lower_bound (const key_type& k) const { return _tree.lower_bound(get_valuetype(k)); };
 			// class value_compare : public std::binary_function<value_type, value_type, bool> {
 			// 	friend class map;
 			// 	protected:
@@ -97,7 +110,10 @@ namespace ft {
 			// 			return comp(x.first, y.first);
 			// 		}
 			// };
-
+		private:
+			// [ HELPER FUNCTIONS ]
+			value_type				get_valuetype( const key_type& k ) const			{		return ft::make_pair( k, mapped_type() );					};
+			void					inorder( void ) const								{		_tree.inorder();											};
 
 	};
 	template <class T, class Alloc>

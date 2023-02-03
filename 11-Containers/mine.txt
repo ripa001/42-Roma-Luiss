@@ -174,3 +174,70 @@ max_size : 128102389400760775
 [map1] key = 5  value = e
 [map1] key = 6  value = f
 [map1] key = 7  value = g
+
+
+ TESTING OPERATOR[] 
+
+[map1] key = 1  value = a
+[map1] key = 2  value = changed
+[map1] key = 3  value = c
+[map1] key = 4  value = d
+[map1] key = 5  value = e
+[map1] key = 6  value = changed
+[map1] key = 7  value = g
+[map1] key = 9  value = added with operator[]
+[map1] key = 10  value = added with operator[]
+
+
+ TESTING COPY COSTRUCTOR 
+
+Printing content: 
+size : 9
+max_size : 128102389400760775
+[map2] key = 1  value = a
+[map2] key = 2  value = changed
+[map2] key = 3  value = c
+[map2] key = 4  value = d
+[map2] key = 5  value = e
+[map2] key = 6  value = changed
+[map2] key = 7  value = g
+[map2] key = 9  value = added with operator[]
+[map2] key = 10  value = added with operator[]
+
+
+ TESTING ERASE 
+
+Printing content: 
+size : 7
+max_size : 128102389400760775
+[map1] key = 3  value = c
+[map1] key = 4  value = d
+[map1] key = 5  value = e
+[map1] key = 6  value = changed
+[map1] key = 7  value = g
+[map1] key = 9  value = added with operator[]
+[map1] key = 10  value = added with operator[]
+
+
+ TESTING SWAP
+
+Printing content: 
+[map2] key = 1  value = a
+[map2] key = 2  value = changed
+[map2] key = 3  value = c
+[map2] key = 4  value = d
+[map2] key = 5  value = changed with find()
+[map2] key = 6  value = changed
+[map2] key = 7  value = g
+[map2] key = 9  value = changed with lower()
+[map2] key = 10  value = added with operator[]
+
+[map3] key = 1  value = a
+[map3] key = 2  value = changed
+[map3] key = 3  value = c
+[map3] key = 4  value = d
+[map3] key = 5  value = e
+[map3] key = 6  value = changed
+[map3] key = 7  value = g
+[map3] key = 9  value = added with operator[]
+[map3] key = 10  value = added with operator[]
