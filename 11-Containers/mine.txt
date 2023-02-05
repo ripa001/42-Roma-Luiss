@@ -185,14 +185,13 @@ max_size : 128102389400760775
 [map1] key = 5  value = e
 [map1] key = 6  value = changed
 [map1] key = 7  value = g
-[map1] key = 9  value = added with operator[]
 [map1] key = 10  value = added with operator[]
 
 
  TESTING COPY COSTRUCTOR 
 
 Printing content: 
-size : 9
+size : 140712892185184
 max_size : 128102389400760775
 [map2] key = 1  value = a
 [map2] key = 2  value = changed
@@ -201,21 +200,19 @@ max_size : 128102389400760775
 [map2] key = 5  value = e
 [map2] key = 6  value = changed
 [map2] key = 7  value = g
-[map2] key = 9  value = added with operator[]
 [map2] key = 10  value = added with operator[]
 
 
  TESTING ERASE 
 
 Printing content: 
-size : 7
+size : 6
 max_size : 128102389400760775
 [map1] key = 3  value = c
 [map1] key = 4  value = d
 [map1] key = 5  value = e
 [map1] key = 6  value = changed
 [map1] key = 7  value = g
-[map1] key = 9  value = added with operator[]
 [map1] key = 10  value = added with operator[]
 
 
@@ -229,8 +226,7 @@ Printing content:
 [map2] key = 5  value = changed with find()
 [map2] key = 6  value = changed
 [map2] key = 7  value = g
-[map2] key = 9  value = changed with lower()
-[map2] key = 10  value = added with operator[]
+[map2] key = 10  value = changed with lower()
 
 [map3] key = 1  value = a
 [map3] key = 2  value = changed
@@ -239,5 +235,66 @@ Printing content:
 [map3] key = 5  value = e
 [map3] key = 6  value = changed
 [map3] key = 7  value = g
-[map3] key = 9  value = added with operator[]
 [map3] key = 10  value = added with operator[]
+
+
+************** TESTING SET **************
+
+Printing content: 
+size : 7
+max_size : 230584300921369395
+[set1] = 100
+[set1] = 200
+[set1] = 300
+[set1] = 400
+[set1] = 500
+[set1] = 600
+[set1] = 700
+
+
+ TESTING COPY COSTRUCTOR 
+
+Printing content: 
+size : 7
+max_size : 230584300921369395
+[set2] = 100
+[set2] = 200
+[set2] = 300
+[set2] = 400
+[set2] = 500
+[set2] = 600
+[set2] = 700
+
+
+ TESTING ERASE 
+
+Printing content: 
+size : 5
+max_size : 230584300921369395
+[set1] = 300
+[set1] = 400
+[set1] = 500
+[set1] = 600
+[set1] = 700
+
+
+ TESTING SWAP
+
+Printing content: 
+size : 7
+max_size : 230584300921369395
+[set2] = 1
+[set2] = 2
+[set2] = 3
+[set2] = 4
+[set2] = 5
+[set2] = 6
+[set2] = 7
+
+[set3] = 100
+[set3] = 200
+[set3] = 300
+[set3] = 400
+[set3] = 500
+[set3] = 600
+[set3] = 700

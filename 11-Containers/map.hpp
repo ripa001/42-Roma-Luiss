@@ -31,8 +31,8 @@ namespace ft {
 			allocator_type													_alloc;
 
 		public:
-			typedef typename rbtree::iterator					iterator;
-			typedef typename rbtree::const_iterator				const_iterator;
+			typedef typename rbtree::iterator								iterator;
+			typedef typename rbtree::const_iterator							const_iterator;
 			typedef ft::reverse_iterator< iterator >						reverse_iterator;
 			typedef ft::reverse_iterator< const_iterator >					const_reverse_iterator;
 			typedef typename iterator_traits<iterator>::difference_type		difference_type;
@@ -47,7 +47,7 @@ namespace ft {
 					typedef bool 			result_type;
 					typedef value_type 		first_argument_type;
 					typedef value_type 		second_argument_type;
-					bool 	operator() ( const value_type& x, const value_type& y ) const 				{ 		return comp(x.first, y.first);			};
+					bool 	operator() ( const value_type& x, const value_type& y ) const 				{ 		return comp(x.first, y.first); 	};
 			};
 
 			// Constructors
@@ -58,27 +58,27 @@ namespace ft {
 				insert(first, last);
 			};
 			
-			map (const map& x) : _tree(x._tree), _compare(x._compare), _alloc(x._alloc) {};
+			map (map const& x) : _tree(x._tree), _compare(x._compare), _alloc(x._alloc) {};
 			~map() {};
 			
-			iterator 			begin()									{	return	_tree.begin();		};
-			const_iterator		begin() const							{	return	_tree.begin();		};
-			iterator 			end()									{	return	_tree.end();		};
-			const_iterator 		end() const								{	return	_tree.end();		};
-			reverse_iterator		rbegin()							{	return	_tree.rbegin();		};
-			const_reverse_iterator 	rbegin() const						{	return	_tree.rbegin();		};
-			reverse_iterator 		rend()								{	return	_tree.rend();		};
-			const_reverse_iterator 	rend() const						{	return	_tree.rend();		};
+			iterator 				begin() { return _tree.begin(); };
+			const_iterator			begin() const { return _tree.begin(); };
+			iterator 				end() { return _tree.end(); };
+			const_iterator 			end() const { return _tree.end(); };
+			reverse_iterator		rbegin() { return _tree.rbegin(); };
+			const_reverse_iterator 	rbegin() const { return _tree.rbegin(); };
+			reverse_iterator 		rend() { return _tree.rend(); };
+			const_reverse_iterator 	rend() const { return _tree.rend(); };
 
-			size_type 		size( void ) const							{	return	_tree.size();		};
-			size_type 		max_size() const							{	return	_tree.max_size();	};
+			size_type 				size( void ) const { return _tree.size(); };
+			size_type 				max_size() const { return _tree.max_size();	};
 
 			void clear() { _tree.clear(); };
 			void swap(map& x) { _tree.swap(x._tree); };
 			map& operator=(const map& x) { _tree = x._tree; return *this; };
-			mapped_type& 	operator[] ( const key_type& k )			{	
+			mapped_type& 	operator[] ( const key_type& k )			{ 
 				// print loop
-				return (*(insert(ft::make_pair( k, mapped_type() )).first)).second;			};
+				return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; 	};
 
 			
 			void insert (iterator position, const value_type& val) { _tree.insert(position, val); };
@@ -90,7 +90,7 @@ namespace ft {
 
 			void erase (iterator position) { _tree.erase(position); };
 			size_type erase (const key_type& k) { return _tree.erase(get_valuetype(k)); };
-			void erase (iterator first, iterator last) { _tree.erase(first, last); };			
+			void erase (iterator first, iterator last) { _tree.erase(first, last); }; 	
 
 			iterator find (const key_type& k) { return _tree.find(get_valuetype(k)); };
 			const_iterator find (const key_type& k) const { return _tree.find(get_valuetype(k)); };
@@ -112,18 +112,18 @@ namespace ft {
 			// };
 		private:
 			// [ HELPER FUNCTIONS ]
-			value_type				get_valuetype( const key_type& k ) const			{		return ft::make_pair( k, mapped_type() );					};
-			void					inorder( void ) const								{		_tree.inorder();											};
+			value_type				get_valuetype( const key_type& k ) const			{ 	return ft::make_pair( k, mapped_type() ); 			};
+			void					inorder( void ) const								{ 	_tree.inorder(); 									};
 
 	};
 	template <class T, class Alloc>
-	bool	operator !=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{	return !(l == r);	}
+	bool	operator !=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return !(l == r);	}
 
 	template <class T, class Alloc>
-	bool	operator >   ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{	return r < l;		}
+	bool	operator >   ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return r < l; }
 
 	template <class T, class Alloc>
-	bool	operator <=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{	return !(l > r);	}
+	bool	operator <=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return !(l > r);	}
 
 
 };

@@ -1,7 +1,7 @@
 #include "map.hpp"
 #include "vector.hpp"
 #include "stack.hpp"
-// #include "set.hpp"
+#include "set.hpp"
 #include <fstream>
 #include <sstream>
 #include <vector>
@@ -156,58 +156,58 @@ void testing()
 
 	
 
-	// fileout << "\n\n************** TESTING SET **************\n" << std::endl;
-	// ft::set<int> set1;
-	// set1.insert(100);
-	// set1.insert(200);
-	// set1.insert(300);
-	// set1.insert(400);
-	// set1.insert(500);
-	// set1.insert(600);
-	// set1.insert(700);
-	// fileout << "Printing content: \n";
-	// fileout << "size : " << set1.size() << std::endl;
-	// fileout << "max_size : " << set1.max_size() << std::endl;
-	// ft::set<int>::iterator ite;
-	// for(ite = set1.begin(); ite != set1.end(); ++ite)
-	// 	fileout << "[set1] = " << *ite << std::endl;
+	fileout << "\n\n************** TESTING SET **************\n" << std::endl;
+	ft::set<int> set1;
+	set1.insert(100);
+	set1.insert(200);
+	set1.insert(300);
+	set1.insert(400);
+	set1.insert(500);
+	set1.insert(600);
+	set1.insert(700);
+	fileout << "Printing content: \n";
+	fileout << "size : " << set1.size() << std::endl;
+	fileout << "max_size : " << set1.max_size() << std::endl;
+	ft::set<int>::iterator ite;
+	for(ite = set1.begin(); ite != set1.end(); ++ite)
+		fileout << "[set1] = " << *ite << std::endl;
 
 
-	// fileout << "\n\n TESTING COPY COSTRUCTOR \n" << std::endl;
-	// ft::set<int> set2(set1);
-	// fileout << "Printing content: \n";
-	// fileout << "size : " << set2.size() << std::endl;
-	// fileout << "max_size : " << set2.max_size() << std::endl;
-	// for(ite = set2.begin(); ite != set2.end(); ++ite)
-	// 	fileout << "[set2] = " << *ite << std::endl;
+	fileout << "\n\n TESTING COPY COSTRUCTOR \n" << std::endl;
+	ft::set<int> set2(set1);
+	fileout << "Printing content: \n";
+	fileout << "size : " << set2.size() << std::endl;
+	fileout << "max_size : " << set2.max_size() << std::endl;
+	for(ite = set2.begin(); ite != set2.end(); ++ite)
+		fileout << "[set2] = " << *ite << std::endl;
 
-	// fileout << "\n\n TESTING ERASE \n" << std::endl;
-	// set1.erase(set1.begin(), ++(++(set1.begin())));
-	// fileout << "Printing content: \n";
-	// fileout << "size : " << set1.size() << std::endl;
-	// fileout << "max_size : " << set1.max_size() << std::endl;
-	// for(ite = set1.begin(); ite != set1.end(); ++ite)
-	// 	fileout << "[set1] = " << *ite << std::endl;
+	fileout << "\n\n TESTING ERASE \n" << std::endl;
+	set1.erase(set1.begin(), ++(++(set1.begin())));
+	fileout << "Printing content: \n";
+	fileout << "size : " << set1.size() << std::endl;
+	fileout << "max_size : " << set1.max_size() << std::endl;
+	for(ite = set1.begin(); ite != set1.end(); ++ite)
+		fileout << "[set1] = " << *ite << std::endl;
 
-	// fileout << "\n\n TESTING SWAP\n" << std::endl;
-	// ft::set<int> set3;
-	// set3.insert(1);
-	// set3.insert(2);
-	// set3.insert(3);
-	// set3.insert(4);
-	// set3.insert(5);
-	// set3.insert(6);
-	// set3.insert(7);
-	// set3.swap(set2);
+	fileout << "\n\n TESTING SWAP\n" << std::endl;
+	ft::set<int> set3;
+	set3.insert(1);
+	set3.insert(2);
+	set3.insert(3);
+	set3.insert(4);
+	set3.insert(5);
+	set3.insert(6);
+	set3.insert(7);
+	set3.swap(set2);
 
-	// fileout << "Printing content: \n";
-	// fileout << "size : " << set2.size() << std::endl;
-	// fileout << "max_size : " << set2.max_size() << std::endl;
-	// for(ite = set2.begin(); ite != set2.end(); ++ite)
-	// 	fileout << "[set2] = " << *ite << std::endl;
-	// fileout << std::endl;
-	// for(ite = set3.begin(); ite != set3.end(); ++ite)
-	// 	fileout << "[set3] = " << *ite << std::endl;
+	fileout << "Printing content: \n";
+	fileout << "size : " << set2.size() << std::endl;
+	fileout << "max_size : " << set2.max_size() << std::endl;
+	for(ite = set2.begin(); ite != set2.end(); ++ite)
+		fileout << "[set2] = " << *ite << std::endl;
+	fileout << std::endl;
+	for(ite = set3.begin(); ite != set3.end(); ++ite)
+		fileout << "[set3] = " << *ite << std::endl;
 }
 
 
