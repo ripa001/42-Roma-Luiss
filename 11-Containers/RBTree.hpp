@@ -87,8 +87,6 @@ namespace ft {
         	    return 0;
         	}
 
-        // iterators
-
 			void        clear(treeNode *root) {
         		if (root && root->leaf)
         	    {
@@ -200,7 +198,7 @@ namespace ft {
 
 			iterator	end( void ) { return iterator(max(_root)); };
 			const_iterator	end( void ) const { return iterator(max(_root)); };
-			// void 					erase(iterator first, iterator last)                    {       while (first != last)   erase(*first++);	        };
+			// void 					erase(iterator first, iterator last) { while (first != last)   erase(*first++);	        };
 			void	swap( RBTree &t) {
 				ft::swap(_root, t._root);
 				ft::swap(_NIL, t._NIL);
@@ -247,7 +245,7 @@ namespace ft {
 				return newnode;
         	};
 
-        	void        delNode(treeNode *node) {              
+        	void        delNode(treeNode *node) {
         	    _alloc.destroy(&(node->value));  
         	    _node_alloc.deallocate(node, 1); 
         	    _height--;

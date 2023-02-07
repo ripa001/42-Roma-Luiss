@@ -7,7 +7,7 @@
 #include "iterator.hpp"
 
 namespace ft {
-	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<std::pair<const Key, T> > >
+	template <class Key, class T, class Compare = std::less<Key>, class Alloc = std::allocator<ft::pair<const Key, T> > >
 	class map {
 		public:
 			class 												value_compare; // defined on line 71
@@ -59,7 +59,7 @@ namespace ft {
 			};
 			
 			map (map const& x) : _tree(x._tree), _compare(x._compare), _alloc(x._alloc) {};
-			~map() {};
+			virtual ~map() {};
 			
 			iterator 				begin() { return _tree.begin(); };
 			const_iterator			begin() const { return _tree.begin(); };
