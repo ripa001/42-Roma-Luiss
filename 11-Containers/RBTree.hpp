@@ -73,16 +73,21 @@ namespace ft {
 				return (nilnode);
 			}
 
-			size_type   size( void )  const { return _height; };
-	    	size_type	max_size() const { return _node_alloc.max_size(); };
+
+			bool		empty( void ) const { return (_height == 0); };
+			size_type   size( void ) const { return (_height); };
+	    	size_type	max_size() const { return (_node_alloc.max_size()); };
 
 			treeNode*	search(treeNode* to_find, const value_type& val) const
         	{
         	    while (to_find != _NIL) 
         	    {
-        	        if (_comp(val, to_find->value))              	to_find = to_find->left;
-        	        else if (_comp(to_find->value, val))         	to_find = to_find->right;
-        	        else					                        return to_find;
+        	        if (_comp(val, to_find->value))
+						to_find = to_find->left;
+        	        else if (_comp(to_find->value, val))
+						to_find = to_find->right;
+        	        else
+						return (to_find);
         	    }
         	    return 0;
         	}
@@ -231,9 +236,25 @@ namespace ft {
 				return iterator(prev);
 			};
 
+			treeNode* upper_bound (const value_type& value) const
+        	{
+        	    treeNode*	node = _root;
+        	    treeNode*	upper = NIL;
+	
+        	    while (node != NIL)
+        	    {
+        	        if (_comp(value, node->value))
+        	            {       upper = node; node = node->left;        }
+        	        else        node = node->right;
+        	    }
+        	    return upper;
+        	};
+			
+			allocator_type	get_allocator( void ) { return (_alloc); };
+
 		private:
 
-        	treeNode                    *newNode( value_type const& value, treeNode *parent, int leaf ) {
+        	treeNode	*newNode( value_type const& value, treeNode *parent, int leaf ) {
         	    treeNode    *newnode = _node_alloc.allocate(1);
         	    _alloc.construct(&(newnode->value), value);
         	    newnode->left  = _NIL;
@@ -245,7 +266,7 @@ namespace ft {
 				return newnode;
         	};
 
-        	void        delNode(treeNode *node) {
+        	void	delNode(treeNode *node) {
         	    _alloc.destroy(&(node->value));  
         	    _node_alloc.deallocate(node, 1); 
         	    _height--;
@@ -266,7 +287,7 @@ namespace ft {
 					return grandparent(n)->left;
 			}
 
-			void rebalanceTreeInsert(treeNode *node) {
+			void	rebalanceTreeInsert(treeNode *node) {
 				insertCase1(node);
 			}
 			
@@ -357,7 +378,7 @@ namespace ft {
 				b->parent = a->parent;
 			};
 
-			void rebalanceTreeErase(treeNode *node) {
+			void	rebalanceTreeErase(treeNode *node) {
 				eraseCase1(node);
 			}
 			treeNode *sibling(treeNode *n) {
@@ -367,14 +388,14 @@ namespace ft {
 			        return n->parent->left;
 			}
 
-			void eraseCase1(treeNode *n) {
+			void	eraseCase1(treeNode *n) {
 			    if (n == _root || n->parent == NULL)
 			        return;
 			    else
 			        eraseCase2(n);
 			}
 
-			void eraseCase2(treeNode *n) {
+			void	eraseCase2(treeNode *n) {
     			if (sibling(n)->color == RED) {
     			    n->parent->color = RED;
     			    sibling(n)->color = BLACK;
@@ -386,7 +407,7 @@ namespace ft {
     			eraseCase3(n);
 			}
 
-			void eraseCase3(treeNode *n) {
+			void	eraseCase3(treeNode *n) {
     			if (n->parent->color == BLACK &&
     			    sibling(n)->color == BLACK &&
     			    sibling(n)->left->color == BLACK &&
@@ -399,7 +420,7 @@ namespace ft {
     			    eraseCase4(n);
 			}
 
-			void eraseCase4(treeNode *n) {
+			void	eraseCase4(treeNode *n) {
 			    if (n->parent->color == RED &&
 			        sibling(n)->color == BLACK &&
 			        sibling(n)->left->color == BLACK &&
@@ -412,21 +433,15 @@ namespace ft {
 			        eraseCase5(n);
 			}
 
-			void eraseCase5(treeNode *n) {
-			    if (n == n->parent->left &&
-			        sibling(n)->color == BLACK &&
-			        sibling(n)->left->color == RED &&
-			        sibling(n)->right->color == BLACK)
-			    {
+			void	eraseCase5(treeNode *n) {
+			    if (n == n->parent->left && sibling(n)->color == BLACK &&
+			        sibling(n)->left->color == RED && sibling(n)->right->color == BLACK) {
 			        sibling(n)->color = RED;
 			        sibling(n)->left->color = BLACK;
 			        rightRotate(sibling(n));
 			    }
-			    else if (n == n->parent->right &&
-			             sibling(n)->color == BLACK &&
-			             sibling(n)->right->color == RED &&
-			             sibling(n)->left->color == BLACK)
-			    {
+			    else if (n == n->parent->right && sibling(n)->color == BLACK &&
+			             sibling(n)->right->color == RED && sibling(n)->left->color == BLACK) {
 			        sibling(n)->color = RED;
 			        sibling(n)->right->color = BLACK;
 			        leftRotate(sibling(n));
@@ -442,14 +457,12 @@ namespace ft {
 			        sibling(n)->right->color = BLACK;
 			        leftRotate(n->parent);
 			    }
-			    else
-			    {
+			    else {
 			        /* Here, sibling(n)->left->color == RED */
 			        sibling(n)->left->color = BLACK;
 			        rightRotate(n->parent);
 			    }
 			}
-
 	};
 
 }; 

@@ -70,46 +70,37 @@ namespace ft {
 			reverse_iterator 		rend() { return _tree.rend(); };
 			const_reverse_iterator 	rend() const { return _tree.rend(); };
 
+			bool					empty( void ) const { return _tree.empty() }
 			size_type 				size( void ) const { return _tree.size(); };
 			size_type 				max_size() const { return _tree.max_size();	};
 
-			void clear() { _tree.clear(); };
-			void swap(map& x) { _tree.swap(x._tree); };
-			map& operator=(const map& x) { _tree = x._tree; return *this; };
-			mapped_type& 	operator[] ( const key_type& k )			{ 
-				// print loop
-				return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; 	};
-
+			void	clear() { _tree.clear(); };
+			void	swap(map& x) { _tree.swap(x._tree); };
+			map& 			operator=(const map& x) { _tree = x._tree; return *this; };
+			mapped_type& 	operator[] ( const key_type& k ) { return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; };
 			
-			void insert (iterator position, const value_type& val) { _tree.insert(position, val); };
-
-			template <class InputIterator>
-			void insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
-
+			void					insert (iterator position, const value_type& val) { _tree.insert(position, val); };
 			ft::pair<iterator,bool> insert (const value_type& val) { return _tree.insert(val); };
+			template <class InputIterator>
+			void					insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
 
-			void erase (iterator position) { _tree.erase(position); };
-			size_type erase (const key_type& k) { return _tree.erase(get_valuetype(k)); };
-			void erase (iterator first, iterator last) { _tree.erase(first, last); }; 	
+			void		erase (iterator position) { _tree.erase(position); };
+			size_type	erase (const key_type& k) { return _tree.erase(get_valuetype(k)); };
+			void		erase (iterator first, iterator last) { _tree.erase(first, last); }; 	
 
-			iterator find (const key_type& k) { return _tree.find(get_valuetype(k)); };
-			const_iterator find (const key_type& k) const { return _tree.find(get_valuetype(k)); };
+			iterator		find (const key_type& k) { return _tree.find(get_valuetype(k)); };
+			const_iterator	find (const key_type& k) const { return _tree.find(get_valuetype(k)); };
 
-			iterator lower_bound (const key_type& k) { return _tree.lower_bound(get_valuetype(k)); };
-			const_iterator lower_bound (const key_type& k) const { return _tree.lower_bound(get_valuetype(k)); };
-			// class value_compare : public std::binary_function<value_type, value_type, bool> {
-			// 	friend class map;
-			// 	protected:
-			// 		Compare comp;
-			// 		value_compare(Compare c) : comp(c) {}
-			// 	public:
-			// 		typedef bool result_type;
-			// 		typedef value_type first_argument_type;
-			// 		typedef value_type second_argument_type;
-			// 		bool operator()(const value_type& x, const value_type& y) const {
-			// 			return comp(x.first, y.first);
-			// 		}
-			// };
+			iterator		lower_bound (const key_type& k) { return _tree.lower_bound(get_valuetype(k)); };
+			const_iterator	lower_bound (const key_type& k) const { return _tree.lower_bound(get_valuetype(k)); };
+
+			iterator	upper_bound(key_type const & k) { return _tree.upper_bound(get_valuetype(k)); };
+			iterator	upper_bound(key_type const & k) const { return _tree.upper_bound(get_valuetype(k)); };
+
+			ft::pair< iterator, iterator >				equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
+			ft::pair< const_iterator, const_iterator >	equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
+
+			allocator_type get_allocator( void ) const { return _tree.get_allocator(); };
 		private:
 			// [ HELPER FUNCTIONS ]
 			value_type				get_valuetype( const key_type& k ) const			{ 	return ft::make_pair( k, mapped_type() ); 			};
