@@ -40,6 +40,7 @@ namespace ft {
 				_NIL->color = BLACK;
 				_root = _NIL;
 			}
+			
  			RBTree( RBTree const &t ) : _NIL(nilNode()), _root(_NIL), _comp(t._comp), _alloc(t._alloc) { insert(t.begin(), t.end()); };
 
 			RBTree& operator=(const RBTree &t) {
@@ -193,7 +194,7 @@ namespace ft {
 			};
 
 			const_iterator	begin( void ) const {
-				if (_root == _NIL)
+				if (_root == _NIL || !_root)
 					return iterator(_NIL);
 				treeNode	*curr = _root;
 				while (curr && curr->left != _NIL)
@@ -220,7 +221,7 @@ namespace ft {
 				return iterator(max(_root));
 			};
 
-			iterator	lower_bound( value_type const &val ) {
+			iterator	lower_bound( value_type const &val ) const {
 				treeNode	*curr = _root;
 				treeNode	*prev = _NIL;
 				while (curr != _NIL)
@@ -236,12 +237,11 @@ namespace ft {
 				return iterator(prev);
 			};
 
-			treeNode* upper_bound (const value_type& value) const
-        	{
+			treeNode* upper_bound (const value_type& value) const {
         	    treeNode*	node = _root;
-        	    treeNode*	upper = NIL;
+        	    treeNode*	upper = _NIL;
 	
-        	    while (node != NIL)
+        	    while (node != _NIL)
         	    {
         	        if (_comp(value, node->value))
         	            {       upper = node; node = node->left;        }

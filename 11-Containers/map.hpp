@@ -54,7 +54,7 @@ namespace ft {
 			explicit map (const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(comp, alloc), _compare(comp), _alloc(alloc) {};
 			
 			template <class InputIterator>
-			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(comp, alloc), _compare(comp), _alloc(alloc) {
+			map (InputIterator first, InputIterator last, const key_compare& comp = key_compare(), const allocator_type& alloc = allocator_type()) : _tree(comp, alloc), _compare(comp) {
 				insert(first, last);
 			};
 			
@@ -70,7 +70,7 @@ namespace ft {
 			reverse_iterator 		rend() { return _tree.rend(); };
 			const_reverse_iterator 	rend() const { return _tree.rend(); };
 
-			bool					empty( void ) const { return _tree.empty() }
+			bool					empty( void ) const { return _tree.empty(); }
 			size_type 				size( void ) const { return _tree.size(); };
 			size_type 				max_size() const { return _tree.max_size();	};
 
@@ -99,6 +99,9 @@ namespace ft {
 
 			ft::pair< iterator, iterator >				equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
 			ft::pair< const_iterator, const_iterator >	equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
+
+			key_compare		key_comp() const { return this->_compare; };
+			value_compare	value_comp() const { return value_compare(this->_compare); };
 
 			allocator_type get_allocator( void ) const { return _tree.get_allocator(); };
 		private:
