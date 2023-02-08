@@ -45,13 +45,14 @@ namespace ft {
 
 			RBTree& operator=(const RBTree &t) {
 				if (this != &t) {
-					clear();
+					clear(_root);
 					insert(t.begin(), t.end());
 					_comp = t._comp;
 					_alloc = t._alloc;
 				}
 				return *this;
 			}
+
 			void        delNilNode(treeNode *node)
         	{              
         	    _node_alloc.deallocate(node, 1); 
@@ -184,26 +185,28 @@ namespace ft {
 
 			void	erase(iterator first, iterator last) { while (first != last) erase(*first++); }
 
-			iterator	begin( void ) {
-				if (_root == _NIL)
-					return iterator(_NIL);
-				treeNode	*curr = _root;
-				while (curr && curr->left != _NIL)
-					curr = curr->left;
-				return iterator(curr);
-			};
+			iterator				begin( void )
+        	{
+        	    if (_root == _NIL)		return iterator(_NIL);
+        	    treeNode* first = _root;
+        	    while (first && first->left != _NIL) { first = first->left; }
+        	    return iterator(first);
+        	}
 
-			const_iterator	begin( void ) const {
-				if (_root == _NIL || !_root)
-					return iterator(_NIL);
-				treeNode	*curr = _root;
-				while (curr && curr->left != _NIL)
-					curr = curr->left;
-				return iterator(curr);
-			};
+        	const_iterator			begin( void ) const
+        	{
+        	    if (_root == _NIL || !_root)  return iterator(_NIL);
+        	    treeNode* first = _root;
+        	    while (first && first->left != _NIL) first = first->left;
+        	    return iterator(first);
+        	}
 
-			iterator	end( void ) { return iterator(max(_root)); };
-			const_iterator	end( void ) const { return iterator(max(_root)); };
+        	iterator				end() { return iterator(max(_root)); }
+        	const_iterator			end() const { return iterator(max(_root)); }
+        	reverse_iterator		rbegin() { return reverse_iterator(end()); }
+        	const_reverse_iterator	rbegin() const { return reverse_iterator(end()); }
+        	reverse_iterator		rend() { return reverse_iterator(begin()); }
+        	const_reverse_iterator	rend() const { return reverse_iterator(begin()); }
 			// void 					erase(iterator first, iterator last) { while (first != last)   erase(*first++);	        };
 			void	swap( RBTree &t) {
 				ft::swap(_root, t._root);
@@ -251,6 +254,8 @@ namespace ft {
         	};
 			
 			allocator_type	get_allocator( void ) { return (_alloc); };
+			treeNode    	*get_root() const { return (_root); };
+
 
 		private:
 

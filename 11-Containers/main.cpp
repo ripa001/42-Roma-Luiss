@@ -102,6 +102,7 @@ void testing()
 	
 	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
 	ft::map<int, std::string> map1;
+	ft::map<int, std::string> map111;
 	map1.insert(ft::pair<int, std::string>(1, "a"));
 	map1.insert(ft::pair<int, std::string>(2, "b"));
 	map1.insert(ft::pair<int, std::string>(3, "c"));
@@ -109,10 +110,11 @@ void testing()
 	map1.insert(ft::pair<int, std::string>(5, "e"));
 	map1.insert(ft::pair<int, std::string>(6, "f"));
 	map1.insert(ft::pair<int, std::string>(7, "g"));
+	map111 = map1;
 	fileout << "Printing content: \n";
 	fileout << "size : " << map1.size() << std::endl;
 	fileout << "max_size : " << map1.max_size() << std::endl;
-	ft::map<int, std::string>::iterator it;
+	ft::map<int, std::string>::iterator it = map1.begin();
 	for(it = map1.begin(); it != map1.end(); ++it)
 		fileout << "[map1] key = " << it->first << "  value = " << it->second << std::endl;
 	

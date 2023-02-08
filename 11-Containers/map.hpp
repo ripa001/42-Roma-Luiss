@@ -74,9 +74,16 @@ namespace ft {
 			size_type 				size( void ) const { return _tree.size(); };
 			size_type 				max_size() const { return _tree.max_size();	};
 
-			void	clear() { _tree.clear(); };
+			void	clear() { _tree.clear(_tree.get_root()); };
 			void	swap(map& x) { _tree.swap(x._tree); };
-			map& 			operator=(const map& x) { _tree = x._tree; return *this; };
+			map&			operator=(map const& x) { 
+				if (this != &x) {
+					_tree = x._tree;
+					_compare = x._compare;
+					_alloc = x._alloc;
+				}
+				return (*this);
+			 };
 			mapped_type& 	operator[] ( const key_type& k ) { return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; };
 			
 			void					insert (iterator position, const value_type& val) { _tree.insert(position, val); };
