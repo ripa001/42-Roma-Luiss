@@ -87,7 +87,5 @@ namespace	ft {
 			void swap (set& x) { _tree.swap(x._tree); };
 			size_type size() const { return _tree.size(); };
 			size_type max_size() const { return _tree.max_size(); };
-
-
 	};
 }
