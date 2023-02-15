@@ -91,7 +91,7 @@ namespace ft {
 			template <class InputIterator>
 			void					insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
 
-			void		erase (iterator position) { _tree.erase(position); };
+			void		erase (iterator position) { _tree.erase(position.base()); };
 			size_type	erase (const key_type& k) { return _tree.erase(get_valuetype(k)); };
 			void		erase (iterator first, iterator last) { _tree.erase(first, last); }; 	
 

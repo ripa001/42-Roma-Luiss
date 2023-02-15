@@ -1,0 +1,31 @@
+1,30d0
+< size: 5
+< max_size: 192153584101141162
+< 
+< Content is:
+< - key: -1.5 | value: 35
+< - key: -0.5 | value: 28
+< - key: 0.5 | value: 21
+< - key: 1.5 | value: 14
+< - key: 2.5 | value: 7
+< ###############################################
+< key: 1.5 | value: 14
+< key: 1.5 | value: 14
+< key: 0.5 | value: 21
+< key: -1.5 | value: 35
+< foo::m called [7]
+< foo::m const called [35]
+< key: 1.5 | value: 14
+< key: 1.5 | value: 14
+< key: 0.5 | value: 21
+< key: -1.5 | value: 35
+< key: -0.5 | value: 28
+< key: -0.5 | value: 28
+< key: 1.5 | value: 14
+< key: 1.5 | value: 14
+< foo::m called [35]
+< foo::m const called [7]
+< key: -0.5 | value: 28
+< key: -0.5 | value: 28
+< key: 0.5 | value: 21
+< key: 2.5 | value: 7

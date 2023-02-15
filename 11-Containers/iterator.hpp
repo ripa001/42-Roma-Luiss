@@ -258,6 +258,162 @@ namespace ft {
 		private:
 			iterator_type	_base;
 	};
+	
+	template <class InputIt>
+	random_access_iterator<InputIt>	operator+(int n, random_access_iterator<InputIt> const & rhs) { return rhs.pointed() + n; };
+
+	template <class InputIt>
+	random_access_iterator<InputIt>	operator-(int n, random_access_iterator<InputIt> const & rhs) { return rhs.pointed() - n; };
+
+	template <class InputIt>
+	reverse_iterator<InputIt>	operator+(int n, reverse_iterator<InputIt> const & rhs) { return reverse_iterator<InputIt>(rhs.base() - n); };
+
+	template <class InputIt>
+	reverse_iterator<InputIt>	operator-(int n, reverse_iterator<InputIt> const & rhs) { return reverse_iterator<InputIt>(rhs.base() + n); };
+
+	template <class InputIt>
+	bool	operator==(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() == rhs.pointed()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator==(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() == rhs.pointed()) ? true : false); };
+
+	template <class InputIt>
+	bool	operator!=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() == rhs.pointed()) ? false : true); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator!=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() == rhs.pointed()) ? false : true); };
+
+	template <class InputIt>
+	bool	operator<(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() < rhs.pointed()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator<(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() < rhs.pointed()) ? true : false); };
+
+	template <class InputIt>
+	bool	operator<=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() <= rhs.pointed()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator<=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() <= rhs.pointed()) ? true : false); };
+
+	template <class InputIt>
+	bool	operator>(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() > rhs.pointed()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator>(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() > rhs.pointed()) ? true : false); };
+	
+	template <class InputIt>
+	bool	operator>=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt> const & rhs) { return ((lhs.pointed() >= rhs.pointed()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator>=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() >= rhs.pointed()) ? true : false); };
+
+	template <class InputIt>
+	bool			operator==(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
+
+	template <class InputIt, class InputIt2>
+	bool			operator==(reverse_iterator<InputIt2> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
+
+	template <class InputIt>
+	bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
+
+	template <class InputIt, class InputIt2>
+	bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
+
+	template <class InputIt>
+	bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
+
+	template <class InputIt>
+	bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
+
+	template <class InputIt>
+	bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
+	
+	template <class InputIt>
+	bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
+
+	template <class InputIt, class InputIt2>
+	bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
+	
+	// template <class InputIterator>
+	// class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type>
+	// {
+	// 	public:
+	// 		typedef InputIterator													iterator_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::difference_type	difference_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::value_type			value_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::pointer			pointer;
+	// 		typedef typename ft::iterator_traits<InputIterator>::reference			reference;
+	// 		typedef typename ft::iterator_traits<InputIterator>::iterator_category	iterator_category;
+	// 		reverse_iterator() {};
+	// 		explicit reverse_iterator(iterator_type iter) : _base(iter) {};
+	// 		reverse_iterator&	operator=(reverse_iterator const & rhs)
+	// 		{
+	// 			if (this == &rhs)
+	// 				return (*this);
+	// 			this->_base = rhs.base();
+	// 			return (*this);
+	// 		}
+	// 		template <class ReverseIterator>
+	// 		reverse_iterator(reverse_iterator<ReverseIterator> const &rev_it) : _base(rev_it.base()){};
+	// 		virtual ~reverse_iterator() {};
+	// 		iterator_type base() const { return (_base); };
+	// 		reference			operator*() const { return (*(_base - 1)); };
+	// 		reverse_iterator	operator+(difference_type n) const
+	// 		{
+	// 			return reverse_iterator(_base - n);
+	// 		};
+	// 		reverse_iterator	operator-(difference_type n) const
+	// 		{
+	// 			return reverse_iterator(_base + n);
+	// 		};
+	// 		reverse_iterator&	operator++()
+	// 		{
+	// 			_base--;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator	operator++(int)
+	// 		{
+	// 			reverse_iterator ret(*this);
+	// 			this->_base--;
+	// 			return (ret);
+	// 		};
+	// 		reverse_iterator&	operator--()
+	// 		{
+	// 			_base++;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator	operator--(int)
+	// 		{
+	// 			reverse_iterator ret(*this);
+	// 			this->_base++;
+	// 			return (ret);
+	// 		};
+	// 		reverse_iterator&	operator+=(difference_type n)
+	// 		{
+	// 			_base -= n;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator&	operator-=(difference_type n)
+	// 		{
+	// 			_base += n;
+	// 			return (*this);
+	// 		};
+	// 		pointer				operator->() const { return &(*(_base - 1)); };
+	// 		reference			operator[](difference_type n) const { return (*(_base - n - 1)); };
+	// 		difference_type 	operator+(reverse_iterator const &rhs) const { return (this->base() + rhs.base()); }
+	// 		difference_type 	operator-(reverse_iterator const &rhs) const { return (rhs.base() - this->base()); }
+	// 	private:
+	// 		iterator_type	_base;
+	// };
 
 	enum	nodeColor { RED, BLACK };
 
@@ -344,6 +500,7 @@ namespace ft {
 					treeNode *tmp = _node;
 					for (_node = _node->parent; _node && _node->left == tmp && _node->leaf; tmp = _node, _node = _node->parent);
 				}
+				return *this;
 			}
 
 			treeRBIterator	operator++(int) {
