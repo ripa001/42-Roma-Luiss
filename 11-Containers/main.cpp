@@ -100,8 +100,9 @@ void testing()
 		stack1.pop();
 	}
 	
-	fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
+	// fileout << "\n\n************** TESTING MAP **************\n" << std::endl;
 	ft::map<int, std::string> map1;
+	// ft::map<int, std::string> map5;
 	map1.insert(ft::pair<int, std::string>(1, "a"));
 	map1.insert(ft::pair<int, std::string>(2, "b"));
 	map1.insert(ft::pair<int, std::string>(3, "c"));
@@ -109,6 +110,7 @@ void testing()
 	map1.insert(ft::pair<int, std::string>(5, "e"));
 	map1.insert(ft::pair<int, std::string>(6, "f"));
 	map1.insert(ft::pair<int, std::string>(7, "g"));
+	map1.insert(map1.begin(), ft::pair<int, std::string>(20, "g"));
 	fileout << "Printing content: \n";
 	fileout << "size : " << map1.size() << std::endl;
 	fileout << "max_size : " << map1.max_size() << std::endl;
@@ -133,7 +135,7 @@ void testing()
 		fileout << "[map2] key = " << it->first << "  value = " << it->second << std::endl;
 
 	fileout << "\n\n TESTING ERASE \n" << std::endl;
-	// map1.erase(map1.begin(), ++(++(map1.begin())));
+	map1.erase(map1.begin(), ++(++(map1.begin())));
 	map1.erase(--map1.end());
 	fileout << "Printing content: \n";
 	fileout << "size : " << map1.size() << std::endl;
@@ -143,11 +145,13 @@ void testing()
 
 	fileout << "\n\n TESTING SWAP\n" << std::endl;
 	ft::map<int, std::string> map3(map2);
+	ft::map<int, std::string>  const map4(map2.begin(), map2.end());
 	map3.find(5)->second = "changed with find()";
 	map3.lower_bound(9)->second = "changed with lower()";
 	map3.swap(map2);
 	fileout << "Printing content: \n";
 	it = map2.begin();
+	std::cout<< "const map.find(" << 42 << ")->second: [" << map4.find(3)->second << std::endl;
 	ft::map<int, std::string>::iterator it2;
 	for(it = map2.begin(); it != map2.end(); ++it)
 		fileout << "[map2] key = " << it->first << "  value = " << it->second << std::endl;
@@ -173,7 +177,7 @@ void testing()
 	for(ite = set1.begin(); ite != set1.end(); ++ite)
 		fileout << "[set1] = " << *ite << std::endl;
 
-
+	// printSize(mp);
 	fileout << "\n\n TESTING COPY COSTRUCTOR \n" << std::endl;
 	ft::set<int> set2(set1);
 	fileout << "Printing content: \n";
@@ -357,7 +361,7 @@ void testing_std()
 	for(it2 = map3.begin(); it2 != map3.end(); ++it2)	
 		fileout << "[map3] key = " << it2->first << "  value = " << it2->second << std::endl;
 
-	
+	map3 > map2;
 
 	fileout << "\n\n************** TESTING SET **************\n" << std::endl;
 	std::set<int> set1;

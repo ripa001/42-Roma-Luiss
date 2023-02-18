@@ -103,9 +103,10 @@ namespace ft {
         	    }
         	    _root = _NIL;            
         	}
+        	iterator	insert(iterator position, const value_type& value) { return insert(value).first; (void)position; };
 
 			template <class InputIterator>
-			void        insert(InputIterator first, InputIterator last) { while (first != last) insert(*first++); }
+			void	insert(InputIterator first, InputIterator last) { while (first != last) insert(*first++); }
 
 			ft::pair<iterator, bool> insert(value_type const &value) {
 				if (_root == _NIL) {
@@ -146,43 +147,42 @@ namespace ft {
 			    return 1;
         	}
 
-			void	erase(treeNode *node)
-			{
-			        treeNode    *to_del = node;
-			        treeNode    *to_fix;
-			        int originColor = node->color;
-			        if (node->left == _NIL)
-			        {
-			            to_fix = node->right;
-			            transplantNode(node, node->right);
-			        }
-			        else if (node->right == _NIL)
-			        {
-			            to_fix = node->left;
-			            transplantNode(node, node->left);
-			        }
-			        else
-			        {
-			            to_del = min(node->right); //min
-			            originColor = to_del->color;
-			            to_fix = to_del->right;
-			            if (to_del->parent == node) to_fix->parent = to_del; // to check
-			            else
-			            {
-			                transplantNode(to_del, to_del->right);
-			                to_del->right = node->right;
-			                to_del->right->parent = to_del;
-			            }
-			            transplantNode(node, to_del);
-			            to_del->left = node->left;
-			            to_del->left->parent = to_del;
-			            to_del->color = node->color;
-			        }
-			        if (originColor == BLACK)
-			            rebalanceTreeErase(to_fix);
-			        delNode(node);
-			};
-
+			void 				erase(treeNode *node)
+        	{
+                treeNode    *to_del = node;
+                treeNode    *to_fix;
+                int originColor = node->color;
+                if (node->left == _NIL)
+                {
+                    to_fix = node->right;
+                    transplantNode(node, node->right);
+                }
+                else if (node->right == _NIL)
+                {
+                    to_fix = node->left;
+                    transplantNode(node, node->left);
+                }
+                else
+                {
+                    to_del = min(node->right); //min
+                    originColor = to_del->color;
+                    to_fix = to_del->right;
+                    if (to_del->parent == node) to_fix->parent = to_del; // to check
+                    else
+                    {
+                        transplantNode(to_del, to_del->right);
+                        to_del->right = node->right;
+                        to_del->right->parent = to_del;
+                    }
+                    transplantNode(node, to_del);
+                    to_del->left = node->left;
+                    to_del->left->parent = to_del;
+                    to_del->color = node->color;
+                }
+                if (originColor == BLACK)
+                    rebalanceTreeErase(to_fix);
+                delNode(node);
+        };
 			void	erase(iterator first, iterator last) { while (first != last) erase(*first++); }
 
 			iterator				begin( void )
@@ -217,7 +217,7 @@ namespace ft {
 				ft::swap(_comp, t._comp);
 			};
 
-			iterator	find( value_type const &val ) {
+			iterator	find(const value_type &val ) const{
 				treeNode	*curr = search(_root, val);
 				if (curr)
 					return iterator(curr);
@@ -343,38 +343,39 @@ namespace ft {
 				}
 			}
 
-			void    leftRotate(treeNode    *node) {
-        	    treeNode    *tmp = node->right;
-        	    node->right = tmp->left;
-        	    if (tmp->left != _NIL)
-        	        tmp->left->parent = node;
-        	    tmp->parent = node->parent;
-        	    if (node->parent == _NIL)
-        	        _root = tmp;
-        	    else if (node == node->parent->left)
-        	        node = tmp;
-        	    else
-        	        node->parent->right = tmp;
-        	    tmp->left = node;
-        	    node->parent = tmp;
-        	}
+			void	leftRotate(treeNode *node)
+			{
+				treeNode    *tmp = node->right;
+				node->right = tmp->left;
+				if (tmp->left != _NIL)
+					tmp->left->parent = node;
+				tmp->parent = node->parent;
+				if (node->parent == _NIL)
+					_root = tmp;
+				else if (node == node->parent->left)
+					node->parent->left = tmp;
+				else
+					node->parent->right = tmp;
+				tmp->left = node;
+				node->parent = tmp;
+			}
 
-        	void    rightRotate(treeNode *node) {
-        	    treeNode    *tmp = node->left;
-        	    node->left = tmp->right;
-        	    if (tmp->right != _NIL)
-        	        tmp->right->parent = node;
-        	    tmp->parent = node->parent;
-        	    if (node->parent == _NIL)
-        	        _root = tmp;
-        	    else if (node == node->parent->right)
-        	        node = tmp;
-        	    else
-        	        node->parent->left = tmp;
-        	    tmp->right = node;
-        	    node->parent = tmp;
-        	}
-
+			void	rightRotate(treeNode *node)
+			{
+				treeNode    *tmp = node->left;
+				node->left = tmp->right;
+				if (tmp->right != _NIL)
+					tmp->right->parent = node;
+				tmp->parent = node->parent;
+				if (node->parent == _NIL)
+					_root = tmp;
+				else if (node == node->parent->right)
+					node->parent->right = tmp;
+				else
+					node->parent->left = tmp;
+				tmp->right = node;
+				node->parent = tmp;
+			}
 			void	transplantNode(treeNode *a, treeNode *b)
 			{
 				if (a->parent == _NIL)       _root = b;
@@ -383,91 +384,164 @@ namespace ft {
 				b->parent = a->parent;
 			};
 
-			void	rebalanceTreeErase(treeNode *node) {
-				eraseCase1(node);
-			}
-			treeNode *sibling(treeNode *n) {
-			    if (n == n->parent->left)
-			        return n->parent->right;
-			    else
-			        return n->parent->left;
-			}
+			 void    rebalanceTreeErase(treeNode *node)
+			{
+				while (node != _root && node->color == BLACK)
+				{
+					if( node == node->parent->left)
+					{
+						treeNode *sibling = node->parent->right;
+						if (sibling->color == RED)
+						{
+							recolorNode(sibling); //b
+							node->parent->color = RED; 
+							leftRotate(node->parent);
+							sibling = node->parent->right;
+						}
+						if (sibling->left->color == BLACK && sibling->right->color == BLACK)
+						{
+							sibling->color = RED;
+							node = node->parent;
+						}
+						else
+						{
+							if (sibling->right->color == BLACK)
+							{
+								sibling->left->color = BLACK;
+								sibling->color = RED;
+								rightRotate(sibling);
+								sibling = node->parent->right;
+							}
+							sibling->color = node->parent->color;
+							node->parent->color = BLACK;
+							sibling->right->color = BLACK;
+							leftRotate(node->parent);
+							node = _root;
+						}
+					}
+					else
+					{
+						treeNode *sibling = node->parent->left;
+						if (sibling->color == RED)
+						{
+							recolorNode(sibling);
+							node->parent->color = RED;
+							rightRotate(node->parent);
+							sibling = node->parent->left;
+						}
+						if (sibling->right->color == BLACK && sibling->left->color == BLACK)
+						{
+							sibling->color = RED;
+							node = node->parent;
+						}
+						else 
+						{
+							if (sibling->left->color == BLACK)
+							{
+								sibling->right->color = BLACK;
+								sibling->color = RED;
+								leftRotate(sibling);
+								sibling = node->parent->left;
+							}
+							sibling->color = node->parent->color;
+							node->parent->color = BLACK;
+							sibling->left->color = BLACK;
+							rightRotate(node->parent);
+							node = _root;
+						}
+					}
+				}
+				node->color = BLACK;
+			};
+		    void	recolorNode(treeNode *node) { node->color == RED ? node->color = BLACK : node->color = RED; };        
 
-			void	eraseCase1(treeNode *n) {
-			    if (n == _root || n->parent == NULL)
-			        return;
-			    else
-			        eraseCase2(n);
-			}
 
-			void	eraseCase2(treeNode *n) {
-    			if (sibling(n)->color == RED) {
-    			    n->parent->color = RED;
-    			    sibling(n)->color = BLACK;
-    			    if (n == n->parent->left)
-    			        leftRotate(n->parent);
-    			    else
-    			        rightRotate(n->parent);
-    			}
-    			eraseCase3(n);
-			}
+			// void	rebalanceTreeErase(treeNode *node) {
+			// 	eraseCase1(node);
+			// }
 
-			void	eraseCase3(treeNode *n) {
-    			if (n->parent->color == BLACK &&
-    			    sibling(n)->color == BLACK &&
-    			    sibling(n)->left->color == BLACK &&
-    			    sibling(n)->right->color == BLACK)
-    			{
-    			    sibling(n)->color = RED;
-    			    eraseCase1(n->parent);
-    			}
-    			else
-    			    eraseCase4(n);
-			}
+			// treeNode *sibling(treeNode *n) {
+			//     if (n == n->parent->left)
+			//         return n->parent->right;
+			//     else
+			//         return n->parent->left;
+			// }
 
-			void	eraseCase4(treeNode *n) {
-			    if (n->parent->color == RED &&
-			        sibling(n)->color == BLACK &&
-			        sibling(n)->left->color == BLACK &&
-			        sibling(n)->right->color == BLACK)
-			    {
-			        sibling(n)->color = RED;
-			        n->parent->color = BLACK;
-			    }
-			    else
-			        eraseCase5(n);
-			}
+			// void	eraseCase1(treeNode *n) {
+			//     if (n == _root || n->parent == NULL)
+			//         return;
+			//     else
+			//         eraseCase2(n);
+			// }
 
-			void	eraseCase5(treeNode *n) {
-			    if (n == n->parent->left && sibling(n)->color == BLACK &&
-			        sibling(n)->left->color == RED && sibling(n)->right->color == BLACK) {
-			        sibling(n)->color = RED;
-			        sibling(n)->left->color = BLACK;
-			        rightRotate(sibling(n));
-			    }
-			    else if (n == n->parent->right && sibling(n)->color == BLACK &&
-			             sibling(n)->right->color == RED && sibling(n)->left->color == BLACK) {
-			        sibling(n)->color = RED;
-			        sibling(n)->right->color = BLACK;
-			        leftRotate(sibling(n));
-			    }
-			    eraseCase6(n);
-			}
+			// void	eraseCase2(treeNode *n) {
+    		// 	if (sibling(n)->color == RED) {
+    		// 	    n->parent->color = RED;
+    		// 	    sibling(n)->color = BLACK;
+    		// 	    if (n == n->parent->left)
+    		// 	        leftRotate(n->parent);
+    		// 	    else
+    		// 	        rightRotate(n->parent);
+    		// 	}
+    		// 	eraseCase3(n);
+			// }
 
-			void eraseCase6(treeNode *n) {
-			    sibling(n)->color = n->parent->color;
-			    n->parent->color = BLACK;
-			    if (n == n->parent->left) {
-			        /* Here, sibling(n)->right->color == RED */
-			        sibling(n)->right->color = BLACK;
-			        leftRotate(n->parent);
-			    }
-			    else {
-			        /* Here, sibling(n)->left->color == RED */
-			        sibling(n)->left->color = BLACK;
-			        rightRotate(n->parent);
-			    }
-			}
+			// void	eraseCase3(treeNode *n) {
+    		// 	if (n->parent->color == BLACK &&
+    		// 	    sibling(n)->color == BLACK &&
+    		// 	    sibling(n)->left->color == BLACK &&
+    		// 	    sibling(n)->right->color == BLACK)
+    		// 	{
+    		// 	    sibling(n)->color = RED;
+    		// 	    eraseCase1(n->parent);
+    		// 	}
+    		// 	else
+    		// 	    eraseCase4(n);
+			// }
+
+			// void	eraseCase4(treeNode *n) {
+			//     if (n->parent->color == RED &&
+			//         sibling(n)->color == BLACK &&
+			//         sibling(n)->left->color == BLACK &&
+			//         sibling(n)->right->color == BLACK)
+			//     {
+			//         sibling(n)->color = RED;
+			//         n->parent->color = BLACK;
+			//     }
+			//     else
+			//         eraseCase5(n);
+			// }
+
+			// void	eraseCase5(treeNode *n) {
+			//     if (n == n->parent->left && sibling(n)->color == BLACK &&
+			//         sibling(n)->left->color == RED && sibling(n)->right->color == BLACK) {
+			//         sibling(n)->color = RED;
+			//         sibling(n)->left->color = BLACK;
+			//         rightRotate(sibling(n));
+			//     }
+			//     else if (n == n->parent->right && sibling(n)->color == BLACK &&
+			//              sibling(n)->right->color == RED && sibling(n)->left->color == BLACK) {
+			//         sibling(n)->color = RED;
+			//         sibling(n)->right->color = BLACK;
+			//         leftRotate(sibling(n));
+			//     }
+			//     eraseCase6(n);
+			// }
+
+			// void eraseCase6(treeNode *n) {
+			//     sibling(n)->color = n->parent->color;
+			//     n->parent->color = BLACK;
+			//     if (n == n->parent->left) {
+			//         /* Here, sibling(n)->right->color == RED */
+			//         sibling(n)->right->color = BLACK;
+			//         leftRotate(n->parent);
+			//     }
+			//     else {
+			//         /* Here, sibling(n)->left->color == RED */
+			//         sibling(n)->left->color = BLACK;
+			//         rightRotate(n->parent);
+			//     }
+			// }
 	};
 
 }; 

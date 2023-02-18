@@ -86,7 +86,7 @@ namespace ft {
 			 };
 			mapped_type& 	operator[] ( const key_type& k ) { return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; };
 			
-			void					insert (iterator position, const value_type& val) { _tree.insert(position, val); };
+			iterator				insert (iterator position, const value_type& val) { return _tree.insert(position, val); };
 			ft::pair<iterator,bool> insert (const value_type& val) { return _tree.insert(val); };
 			template <class InputIterator>
 			void					insert (InputIterator first, InputIterator last) { _tree.insert(first, last); };
@@ -104,6 +104,8 @@ namespace ft {
 			iterator	upper_bound(key_type const & k) { return _tree.upper_bound(get_valuetype(k)); };
 			iterator	upper_bound(key_type const & k) const { return _tree.upper_bound(get_valuetype(k)); };
 
+			size_type	count(key_type const & k) const	{	return _tree.search(_tree.get_root(), get_valuetype(k)) ? 1 : 0;	};
+
 			ft::pair< iterator, iterator >				equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
 			ft::pair< const_iterator, const_iterator >	equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
 
@@ -117,14 +119,29 @@ namespace ft {
 			void					inorder( void ) const								{ 	_tree.inorder(); 									};
 
 	};
-	template <class T, class Alloc>
-	bool	operator !=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return !(l == r);	}
 
 	template <class T, class Alloc>
-	bool	operator >   ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return r < l; }
+	bool	operator == ( const map< T, Alloc >& l, const map< T, Alloc >& r ) 
+	{
+		if (l.size() != r.size())	return false;
+		return ft::equal(l.begin(), l.end(), r.begin());
+	};
 
 	template <class T, class Alloc>
-	bool	operator <=  ( const map< T, Alloc >& l, const map< T, Alloc >& r )		{ return !(l > r);	}
+	bool	operator!=( const map< T, Alloc >& l, const map< T, Alloc >& r ) { return !(l == r); }
 
+	template <class T, class Alloc>
+	bool	operator<( const map< T, Alloc >& l, const map< T, Alloc >& r ) { return ft::lexicographical_compare(l.begin(), l.end(), r.begin(), r.end()); }
 
+	template <class T, class Alloc>
+	bool	operator<=( const map< T, Alloc >& l, const map< T, Alloc >& r ) { return !(r < l); }
+
+	template <class T, class Alloc>
+	bool	operator>( const map< T, Alloc >& l, const map< T, Alloc >& r ) { return r < l;	 }
+
+	template <class T, class Alloc>
+	bool	operator>=( const map< T, Alloc >& l, const map< T, Alloc >& r ) { return !(l < r); }
+
+	template <class T, class Alloc>
+	void	swap( map< T, Alloc >& x, map< T, Alloc >& y ) { x.swap(y); }
 };

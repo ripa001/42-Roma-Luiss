@@ -51,6 +51,7 @@ int		main(void)
 	printSize(mp);
 
 	TESTED_NAMESPACE::map<T1, T2> const c_map(mp.begin(), mp.end());
+
 	std::cout << "const map.find(" << 42 << ")->second: [" << c_map.find(42)->second << "]" << std::endl;
 	std::cout << "const map.count(" << 80 << "): [" << c_map.count(80) << "]" << std::endl;
 	return (0);

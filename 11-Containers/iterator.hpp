@@ -187,77 +187,119 @@ namespace ft {
 		typedef T																			iterator_type;
 	};
 
-	template <class InputIterator>
-	class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type>
+	// template <class InputIterator>
+	// class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type>
+	// {
+	// 	public:
+	// 		typedef InputIterator													iterator_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::difference_type	difference_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::value_type			value_type;
+	// 		typedef typename ft::iterator_traits<InputIterator>::pointer			pointer;
+	// 		typedef typename ft::iterator_traits<InputIterator>::reference			reference;
+	// 		typedef typename ft::iterator_traits<InputIterator>::iterator_category	iterator_category;
+	// 		reverse_iterator() {};
+	// 		explicit reverse_iterator(iterator_type iter) : _base(iter) {};
+	// 		reverse_iterator&	operator=(reverse_iterator const & rhs)
+	// 		{
+	// 			if (this == &rhs)
+	// 				return (*this);
+	// 			this->_base = rhs.base();
+	// 			return (*this);
+	// 		}
+	// 		template <class ReverseIterator>
+	// 		reverse_iterator(reverse_iterator<ReverseIterator> const &rev_it) : _base(rev_it.base()){};
+	// 		virtual ~reverse_iterator() {};
+	// 		iterator_type base() const { return (_base); };
+	// 		reference			operator*() const { return (*(_base - 1)); };
+	// 		reverse_iterator	operator+(difference_type n) const
+	// 		{
+	// 			return reverse_iterator(_base - n);
+	// 		};
+	// 		reverse_iterator	operator-(difference_type n) const
+	// 		{
+	// 			return reverse_iterator(_base + n);
+	// 		};
+	// 		reverse_iterator&	operator++()
+	// 		{
+	// 			_base--;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator	operator++(int)
+	// 		{
+	// 			reverse_iterator ret(*this);
+	// 			this->_base--;
+	// 			return (ret);
+	// 		};
+	// 		reverse_iterator&	operator--()
+	// 		{
+	// 			_base++;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator	operator--(int)
+	// 		{
+	// 			reverse_iterator ret(*this);
+	// 			this->_base++;
+	// 			return (ret);
+	// 		};
+	// 		reverse_iterator&	operator+=(difference_type n)
+	// 		{
+	// 			_base -= n;
+	// 			return (*this);
+	// 		};
+	// 		reverse_iterator&	operator-=(difference_type n)
+	// 		{
+	// 			_base += n;
+	// 			return (*this);
+	// 		};
+	// 		pointer				operator->() const { return &(*(_base - 1)); };
+	// 		reference			operator[](difference_type n) const { return (*(_base - n - 1)); };
+	// 		difference_type 	operator+(reverse_iterator const &rhs) const { return (this->base() + rhs.base()); }
+	// 		difference_type 	operator-(reverse_iterator const &rhs) const { return (rhs.base() - this->base()); }
+	// 	private:
+	// 		iterator_type	_base;
+	// };
+
+	template <class iterator>
+	class reverse_iterator
 	{
 		public:
-			typedef InputIterator													iterator_type;
-			typedef typename ft::iterator_traits<InputIterator>::difference_type	difference_type;
-			typedef typename ft::iterator_traits<InputIterator>::value_type			value_type;
-			typedef typename ft::iterator_traits<InputIterator>::pointer			pointer;
-			typedef typename ft::iterator_traits<InputIterator>::reference			reference;
-			typedef typename ft::iterator_traits<InputIterator>::iterator_category	iterator_category;
-			reverse_iterator() {};
-			explicit reverse_iterator(iterator_type iter) : _base(iter) {};
-			reverse_iterator&	operator=(reverse_iterator const & rhs)
-			{
-				if (this == &rhs)
-					return (*this);
-				this->_base = rhs.base();
-				return (*this);
-			}
-			template <class ReverseIterator>
-			reverse_iterator(reverse_iterator<ReverseIterator> const &rev_it) : _base(rev_it.base()){};
-			virtual ~reverse_iterator() {};
-			iterator_type base() const { return (_base); };
-			reference			operator*() const { return (*(_base - 1)); };
-			reverse_iterator	operator+(difference_type n) const
-			{
-				return reverse_iterator(_base - n);
-			};
-			reverse_iterator	operator-(difference_type n) const
-			{
-				return reverse_iterator(_base + n);
-			};
-			reverse_iterator&	operator++()
-			{
-				_base--;
-				return (*this);
-			};
-			reverse_iterator	operator++(int)
-			{
-				reverse_iterator ret(*this);
-				this->_base--;
-				return (ret);
-			};
-			reverse_iterator&	operator--()
-			{
-				_base++;
-				return (*this);
-			};
-			reverse_iterator	operator--(int)
-			{
-				reverse_iterator ret(*this);
-				this->_base++;
-				return (ret);
-			};
-			reverse_iterator&	operator+=(difference_type n)
-			{
-				_base -= n;
-				return (*this);
-			};
-			reverse_iterator&	operator-=(difference_type n)
-			{
-				_base += n;
-				return (*this);
-			};
-			pointer				operator->() const { return &(*(_base - 1)); };
-			reference			operator[](difference_type n) const { return (*(_base - n - 1)); };
-			difference_type 	operator+(reverse_iterator const &rhs) const { return (this->base() + rhs.base()); }
-			difference_type 	operator-(reverse_iterator const &rhs) const { return (rhs.base() - this->base()); }
+			typedef iterator												iterator_type;
+			typedef typename iterator_traits<iterator>::iterator_category	iterator_category;
+			typedef typename iterator_traits<iterator>::value_type			value_type;
+			typedef typename iterator_traits<iterator>::difference_type		difference_type;
+			typedef typename iterator_traits<iterator>::pointer				pointer;
+			typedef typename iterator_traits<iterator>::reference			reference;
+
 		private:
-			iterator_type	_base;
+			iterator _it;
+
+		public:
+			reverse_iterator()										:	_it() 					{};
+			reverse_iterator(iterator_type it)						:	_it(it) 				{};
+			template <class Iter>
+			reverse_iterator(const reverse_iterator<Iter> & rev_it)	:	_it(rev_it.base()) 		{};
+
+			template <class Iter>
+			reverse_iterator&	operator = (const reverse_iterator<Iter>& other)			{		_it = other.base(); return  *this;		};
+			~reverse_iterator()																{};
+
+			iterator_type		base() const 												{ 		return _it; 							};
+
+			reverse_iterator	operator + (difference_type n) const 			{ 		return  reverse_iterator(_it - n); 							};
+			reverse_iterator&	operator ++ ()									{		--_it;	return  *this;										};
+			reverse_iterator	operator ++ (int)								{		reverse_iterator tmp = *this; --_it; return  tmp;			};
+			reverse_iterator&	operator += (difference_type n)					{		_it -= n;	return  *this;									};
+			reverse_iterator	operator - (difference_type n) const 			{		return  reverse_iterator(_it + n); 							};
+			reverse_iterator&	operator -- ()									{		++_it;	return  *this;										};
+			reverse_iterator	operator -- (int)								{		reverse_iterator tmp = *this; ++_it; return  tmp;			};
+			reverse_iterator	operator -= (difference_type n)					{		_it += n;	return  *this;									};
+
+			reference			operator*() const								{		iterator_type	tmp = _it;	return *(--tmp);				};
+			pointer				operator->() const 								{		return &(operator*());										};
+			reference			operator[] (difference_type n) const 			{		return  base()[-n - 1];										};
+
 	};
+
 	
 	template <class InputIt>
 	random_access_iterator<InputIt>	operator+(int n, random_access_iterator<InputIt> const & rhs) { return rhs.pointed() + n; };
@@ -307,42 +349,74 @@ namespace ft {
 	template <class InputIt, class InputIt2>
 	bool	operator>=(random_access_iterator<InputIt> const & lhs, random_access_iterator<InputIt2> const & rhs) { return ((lhs.pointed() >= rhs.pointed()) ? true : false); };
 
-	template <class InputIt>
-	bool			operator==(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
+	// template <class InputIt>
+	// bool			operator==(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
 
-	template <class InputIt, class InputIt2>
-	bool			operator==(reverse_iterator<InputIt2> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
+	// template <class InputIt, class InputIt2>
+	// bool			operator==(reverse_iterator<InputIt2> const & lhs, reverse_iterator<InputIt> const & rhs) { return (lhs.base() == rhs.base()); }
 
-	template <class InputIt>
-	bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
+	// template <class InputIt>
+	// bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
 
-	template <class InputIt, class InputIt2>
-	bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
+	// template <class InputIt, class InputIt2>
+	// bool			operator!=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() == rhs.base()) ? false : true); }
 
-	template <class InputIt>
-	bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
+	// template <class InputIt>
+	// bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
 
-	template <class InputIt, class InputIt2>
-	bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
+	// template <class InputIt, class InputIt2>
+	// bool	operator<(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() > rhs.base()) ? true : false); };
 
-	template <class InputIt>
-	bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
+	// template <class InputIt>
+	// bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
 
-	template <class InputIt, class InputIt2>
-	bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
+	// template <class InputIt, class InputIt2>
+	// bool	operator<=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() >= rhs.base()) ? true : false); };
 
-	template <class InputIt>
-	bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
+	// template <class InputIt>
+	// bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
 
-	template <class InputIt, class InputIt2>
-	bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
+	// template <class InputIt, class InputIt2>
+	// bool	operator>(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() < rhs.base()) ? true : false); };
 	
-	template <class InputIt>
-	bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
+	// template <class InputIt>
+	// bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
 
-	template <class InputIt, class InputIt2>
-	bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
+	// template <class InputIt, class InputIt2>
+	// bool	operator>=(reverse_iterator<InputIt> const & lhs, reverse_iterator<InputIt2> const & rhs) { return ((lhs.base() <= rhs.base()) ? true : false); };
 	
+	template <class Iter1, class Iter2>
+	bool	operator == ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r ) 				{	return  l.base() == r.base();	};
+
+	template <class Iter1, class Iter2>
+	bool	operator != ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r )				{	return  l.base() != r.base();	};
+
+	template <class Iter1, class Iter2>
+	bool	operator < ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r ) 				{	return  l.base() > r.base();	};
+
+	template <class Iter1, class Iter2>
+	bool	operator <= ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r ) 				{	return  l.base() >= r.base();	};
+
+	template <class Iter1, class Iter2>
+	bool	operator > ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r ) 				{	return  l.base() < r.base();	};
+
+	template <class Iter1, class Iter2>
+	bool 	operator >= ( const reverse_iterator<Iter1>& l,
+						const reverse_iterator<Iter2>& r ) 				{	return  l.base() <= r.base();	};
+
+	template <class Iter>
+	reverse_iterator<Iter>	operator + ( typename reverse_iterator<Iter>::difference_type n,
+										 const reverse_iterator<Iter>& rev_it)								{		return  rev_it + n;			};
+
+	template <class Iter1, class Iter2>
+	typename reverse_iterator<Iter1>::difference_type operator - ( const reverse_iterator<Iter1>& l,
+																   const reverse_iterator<Iter2>& r )		{		return  r.base() - l.base(); };
+
 	// template <class InputIterator>
 	// class reverse_iterator : ft::iterator<typename InputIterator::iterator_category, typename InputIterator::value_type>
 	// {
@@ -446,87 +520,180 @@ namespace ft {
 	    ~node () {};
 	};
 
-	template< typename U >
-	class treeRBIterator {
-		public:
-			typedef U								value_type;
-			typedef U*								pointer;
-			typedef const U*						const_pointer;
-			typedef U&								reference;
-			typedef const U&						const_reference;
-			typedef std::ptrdiff_t					difference_type;
-			typedef std::bidirectional_iterator_tag	iterator_category;
-			typedef node< value_type >				treeNode;
-			typedef node< const value_type >		const_treeNode;
-			typedef treeRBIterator< U >				iterator;
-			typedef treeRBIterator< const U >		const_iterator;
+	// template< typename U >
+	// class treeRBIterator {
+	// 	public:
+	// 		typedef U								value_type;
+	// 		typedef U*								pointer;
+	// 		typedef const U*						const_pointer;
+	// 		typedef U&								reference;
+	// 		typedef const U&						const_reference;
+	// 		typedef std::ptrdiff_t					difference_type;
+	// 		typedef std::bidirectional_iterator_tag	iterator_category;
+	// 		typedef node< value_type >				treeNode;
+	// 		typedef node< const value_type >		const_treeNode;
+	// 		typedef treeRBIterator< U >				iterator;
+	// 		typedef treeRBIterator< const U >		const_iterator;
 
-			treeRBIterator( void ) :  _node(NULL) {};
-			treeRBIterator( treeNode * current ) : _node(current) {};
-			treeRBIterator( treeRBIterator const& t ) : _node(t.base()) {};
-			treeRBIterator& 	operator = ( treeRBIterator const& t ) { _node = t.base(); return *this; };
+	// 		treeRBIterator( void ) :  _node(NULL) {};
+	// 		treeRBIterator( treeNode * current ) : _node(current) {};
+	// 		treeRBIterator( treeRBIterator const& t ) : _node(t.base()) {};
+	// 		treeRBIterator& 	operator = ( treeRBIterator const& t ) { _node = t.base(); return *this; };
 			
-			operator		const_iterator() const { return const_iterator(reinterpret_cast<const_treeNode *>(_node)); }
-			treeNode		*base( void ) const {	return _node; };
-			reference		operator*() { return _node->value; };
-			const_reference	operator*() const { return _node->value; };
-			pointer			operator->() { return &_node->value; };
-			const_pointer	operator->() const {return &_node->value;};
+	// 		operator		const_iterator() const { return const_iterator(reinterpret_cast<const_treeNode *>(_node)); }
+	// 		treeNode		*base( void ) const {	return _node; };
+	// 		reference		operator*() { return _node->value; };
+	// 		const_reference	operator*() const { return _node->value; };
+	// 		pointer			operator->() { return &_node->value; };
+	// 		const_pointer	operator->() const {return &_node->value;};
 
-			treeRBIterator&	operator++() {
-				if (!_node->leaf)
-					return *this;
-				if (_node && _node->right && _node->right->leaf)
-					for (_node = _node->right; _node->left && _node->left->leaf; _node = _node->left);
-				else {
-					treeNode *tmp = _node;
-					for (_node = _node->parent; _node && _node->right == tmp && _node->leaf; tmp = _node, _node = _node->parent);
-				}
+	// 		treeRBIterator&	operator++() {
+	// 			if (!_node->leaf)
+	// 				return *this;
+	// 			if (_node && _node->right && _node->right->leaf)
+	// 				for (_node = _node->right; _node->left && _node->left->leaf; _node = _node->left);
+	// 			else {
+	// 				treeNode *tmp = _node;
+	// 				for (_node = _node->parent; _node && _node->right == tmp && _node->leaf; tmp = _node, _node = _node->parent);
+	// 			}
+	// 			return *this;
+	// 		}
+
+	// 		treeRBIterator&	operator--() {
+	// 			if (!_node->leaf)
+	// 			{
+	// 				while (_node->parent->leaf)
+	// 					_node = _node->parent;
+	// 				while (_node->right->leaf)
+	// 					_node = _node->right;
+	// 				return *this;
+	// 			}
+	// 			else if (_node->left && _node->left->leaf)
+	// 				for (_node = _node->left; _node->right && _node->right->leaf; _node = _node->right);
+	// 			else {
+	// 				treeNode *tmp = _node;
+	// 				for (_node = _node->parent; _node && _node->left == tmp && _node->leaf; tmp = _node, _node = _node->parent);
+	// 			}
+	// 			return *this;
+	// 		}
+
+	// 		treeRBIterator	operator++(int) {
+	// 			treeRBIterator tmp(*this);
+	// 			operator++();
+	// 			return tmp;
+	// 		}
+
+	// 		treeRBIterator	operator--(int) {
+	// 			treeRBIterator tmp(*this);
+	// 			operator--();
+	// 			return tmp;
+	// 		}
+
+	// 		bool			operator==(const treeRBIterator &other) const { return this->_node == other._node; }
+	// 		bool			operator!=(const treeRBIterator &other) const { return this->_node != other._node; }
+	// 		bool 			operator<(const treeRBIterator &other) const { return this->_node < other._node; }
+	// 		bool			operator<=(const treeRBIterator &other) const { return this->_node <= other._node; }
+	// 		bool			operator>(const treeRBIterator &other) const { return this->_node > other._node; }
+	// 		bool			operator>=(const treeRBIterator &other) const { return this->_node >= other._node; }
+			
+	// 		virtual	~treeRBIterator() {}
+			
+	// 	private:
+	// 		treeNode	*_node;
+	// };
+	
+template< typename U >
+class treeRBIterator
+{
+	public:
+		typedef U								value_type;
+		typedef U*								pointer;
+		typedef const U*						const_pointer;
+		typedef U&								reference;
+		typedef const U&                        const_reference;
+		typedef std::ptrdiff_t					difference_type;
+		typedef std::bidirectional_iterator_tag	iterator_category;
+		typedef node< value_type >              treeNode;
+		typedef node< const value_type >        const_treeNode;
+		typedef treeRBIterator< U >               iterator;
+		typedef treeRBIterator< const U >         const_iterator;
+
+		treeRBIterator( void ) :  _node(NULL)                         {};
+		treeRBIterator( treeNode * current ) : _node(current)         {};
+		treeRBIterator( treeRBIterator const& t ) : _node(t.base())     {};
+		treeRBIterator&		operator = ( treeRBIterator const& t )    {       _node = t.base(); return *this;         };
+
+		operator            const_iterator() const                  {       return const_iterator(reinterpret_cast<const_treeNode *>(_node));    }
+
+		treeNode            *base( void )   const                   {       return _node;                           };
+
+		reference		operator* () 							    {       return _node->value;                    };
+		const_reference	operator* () const						    {       return _node->value;                    };
+		pointer			operator->()							    {       return &_node->value;                   };
+		const_pointer	operator->() const						    {       return &_node->value;                   };
+
+		treeRBIterator&		operator ++ ()
+		{
+			if (!_node->leaf)
 				return *this;
+			if (_node && _node->right && _node->right->leaf)
+			{
+				_node = _node->right;
+				while (_node && _node->left && _node->left->leaf) _node = _node->left;
 			}
-
-			treeRBIterator&	operator--() {
-				if (!_node->leaf)
+			else
+			{
+				treeNode	*curr = _node;
+				_node = _node->parent;
+				while (_node && _node->leaf && _node->right == curr)
 				{
-					while (_node->parent->leaf)
-						_node = _node->parent;
-					while (_node->right->leaf)
-						_node = _node->right;
-					return *this;
-				}
-				else if (_node->left && _node->left->leaf)
-					for (_node = _node->left; _node->right && _node->right->leaf; _node = _node->right);
-				else {
-					treeNode *tmp = _node;
-					for (_node = _node->parent; _node && _node->left == tmp && _node->leaf; tmp = _node, _node = _node->parent);
-				}
+					curr = _node;
+					_node = _node->parent;
+				};                   
+			}
+			return *this;
+		}
+
+		treeRBIterator&		operator -- ()
+		{
+			if (!_node->leaf)
+			{
+				while (_node->parent->leaf)
+					_node = _node->parent;
+				while (_node->right->leaf)
+					_node = _node->right;
 				return *this;
 			}
-
-			treeRBIterator	operator++(int) {
-				treeRBIterator tmp(*this);
-				operator++();
-				return tmp;
+			else if (_node->left && _node->left->leaf)
+			{
+				_node = _node->left;
+				while (_node->right && _node->right->leaf) _node = _node->right;
 			}
-
-			treeRBIterator	operator--(int) {
-				treeRBIterator tmp(*this);
-				operator--();
-				return tmp;
+			else
+			{
+				treeNode	*curr = _node;
+				_node = _node->parent;
+				while (_node && _node->leaf && _node->left == curr)
+				{
+					curr = _node;
+					_node = _node->parent;
+				};
 			}
+			return *this;
+		}
+		treeRBIterator		operator ++ ( int )							    {   treeRBIterator ptr(*this); operator++(); return ptr;  }
+		treeRBIterator		operator -- ( int )							    {   treeRBIterator ptr(*this); operator--(); return ptr;  }
 
-			bool			operator==(const treeRBIterator &other) const { return this->_node == other._node; }
-			bool			operator!=(const treeRBIterator &other) const { return this->_node != other._node; }
-			bool 			operator<(const treeRBIterator &other) const { return this->_node < other._node; }
-			bool			operator<=(const treeRBIterator &other) const { return this->_node <= other._node; }
-			bool			operator>(const treeRBIterator &other) const { return this->_node > other._node; }
-			bool			operator>=(const treeRBIterator &other) const { return this->_node >= other._node; }
-			
-			virtual	~treeRBIterator() {}
-			
+		bool		operator == ( treeRBIterator const& t ) 		            {	return  _node == t._node;	};
+		bool		operator != ( treeRBIterator const& t )		            {	return  _node != t._node;	};
+		bool		operator > ( treeRBIterator const& t ) 		            {	return  _node > t._node;	};
+		bool		operator <= ( treeRBIterator const& t ) 		            {	return  _node <= t._node;	};
+		bool		operator < ( treeRBIterator const& t ) 		            {	return  _node < t._node;	};
+		bool 	    operator >= ( treeRBIterator const& t ) 		            {	return  _node >= t._node;	};
+		
 		private:
-			treeNode	*_node;
-	};
+			treeNode*			    _node;
+};
 
 	template <class InputIterator>
 	typename ft::iterator_traits<InputIterator>::difference_type

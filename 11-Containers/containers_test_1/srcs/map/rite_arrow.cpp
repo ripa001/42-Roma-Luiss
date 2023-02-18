@@ -18,30 +18,30 @@ int		main(void)
 	printSize(mp);
 
 	printPair(++ite);
-	printPair(ite++);
-	printPair(ite++);
-	printPair(++ite);
+	// printPair(ite++);
+	// printPair(ite++);
+	// printPair(++ite);
 
-	it->second.m();
-	ite->second.m();
+	// it->second.m();
+	// ite->second.m();
 
-	printPair(++it);
-	printPair(it++);
-	printPair(it++);
-	printPair(++it);
+	// printPair(++it);
+	// printPair(it++);
+	// printPair(it++);
+	// printPair(++it);
 
-	printPair(--ite);
-	printPair(ite--);
-	printPair(--ite);
-	printPair(ite--);
+	// printPair(--ite);
+	// printPair(ite--);
+	// printPair(--ite);
+	// printPair(ite--);
 
-	(*it).second.m();
-	(*ite).second.m();
+	// (*it).second.m();
+	// (*ite).second.m();
 
-	printPair(--it);
-	printPair(it--);
-	printPair(it--);
-	printPair(--it);
+	// printPair(--it);
+	// printPair(it--);
+	// printPair(it--);
+	// printPair(--it);
 
 	return (0);
 }
