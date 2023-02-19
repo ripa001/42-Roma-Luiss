@@ -213,6 +213,10 @@ void testing()
 	fileout << std::endl;
 	for(ite = set3.begin(); ite != set3.end(); ++ite)
 		fileout << "[set3] = " << *ite << std::endl;
+	
+	ft::set<int> const st;
+	ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+
 }
 
 
@@ -361,7 +365,7 @@ void testing_std()
 	for(it2 = map3.begin(); it2 != map3.end(); ++it2)	
 		fileout << "[map3] key = " << it2->first << "  value = " << it2->second << std::endl;
 
-	map3 > map2;
+	
 
 	fileout << "\n\n************** TESTING SET **************\n" << std::endl;
 	std::set<int> set1;
