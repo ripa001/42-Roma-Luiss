@@ -213,9 +213,29 @@ void testing()
 	fileout << std::endl;
 	for(ite = set3.begin(); ite != set3.end(); ++ite)
 		fileout << "[set3] = " << *ite << std::endl;
-	
-	ft::set<int> const st;
-	ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+	const int size_myvec = 5;
+	ft::vector<int> vct111(size_myvec);
+	ft::vector<int>::reverse_iterator myit = vct111.rbegin();
+	ft::vector<int>::const_reverse_iterator myite = vct111.rbegin();
+	for (int i = 0; i < size_myvec; ++i)
+		myit[i] = (size_myvec - i) * 5;
+
+	myit = myit + 5;
+	myit = 1 + myit;
+	myit = myit - 4;
+	std::cout << *(myit += 2) << std::endl;
+	std::cout << *(myit -= 1) << std::endl;
+
+	*(myit -= 2) = 42;
+	*(myit += 2) = 21;
+
+	std::cout << "const_ite +=/-=: " << *(myite += 2) << " | " << *(myite -= 2) << std::endl;
+
+	std::cout << "(it == const_it): " << (myite == myit) << std::endl;
+	// std::cout << "(const_myite - myit): " << ( myite - myit) << std::endl;
+	// std::cout << "(myite + 3 == myit): " << (myite + 3 == myit) << std::endl;
+	// ft::set<int> const st;
+	// ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
 
 }
 
@@ -420,9 +440,11 @@ void testing_std()
 	for(ite = set3.begin(); ite != set3.end(); ++ite)
 		fileout << "[set3] = " << *ite << std::endl;
 }
+#define	_vector 				ft::vector
 int main(void)
 {	
-	testing();
-	testing_std();
+	// testing();
+	// testing_std();
+	_vector<int> ciao;
 	return 0;
 }
