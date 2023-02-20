@@ -1,0 +1,49 @@
+BEFORE SWAP
+foo contains:
+size: 3
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 15
+- 15
+- 15
+###############################################
+bar contains:
+size: 5
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 42
+- 42
+- 42
+- 42
+- 42
+###############################################
+AFTER SWAP
+foo contains:
+size: 5
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 42
+- 42
+- 42
+- 42
+- 42
+###############################################
+bar contains:
+size: 3
+capacity: OK
+max_size: 4611686018427387903
+
+Content is:
+- 15
+- 15
+- 15
+###############################################
+Iterator validity:
+1
+1

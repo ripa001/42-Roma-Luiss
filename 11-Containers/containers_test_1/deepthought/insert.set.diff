@@ -3,7 +3,7 @@
 < insert return: value: lol
 < Created new node: 1
 < size: 1
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: lol
@@ -12,7 +12,7 @@
 < insert return: value: mdr
 < Created new node: 1
 < size: 2
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: lol
@@ -22,7 +22,7 @@
 < insert return: value: mdr
 < Created new node: 0
 < size: 2
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: lol
@@ -32,7 +32,7 @@
 < insert return: value: funny
 < Created new node: 1
 < size: 3
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: funny
@@ -43,7 +43,7 @@
 < insert return: value: bunny
 < Created new node: 1
 < size: 4
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: bunny
@@ -55,7 +55,7 @@
 < insert return: value: fizz
 < Created new node: 1
 < size: 5
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: bunny
@@ -68,7 +68,7 @@
 < insert return: value: buzz
 < Created new node: 1
 < size: 6
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: bunny
@@ -81,7 +81,7 @@
 < 	-- [7] --
 < insert return: value: fuzzy
 < size: 7
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: bunny
@@ -95,7 +95,7 @@
 < 	-- [8] --
 < insert return: value: beauty
 < size: 1
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: beauty
@@ -103,7 +103,7 @@
 < 	-- [9] --
 < insert return: value: Hello
 < size: 2
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: Hello
@@ -112,7 +112,7 @@
 < 	-- [10] --
 < insert return: value: World
 < size: 3
-< max_size: 329406144173384850
+< max_size: 144115188075855871
 < 
 < Content is:
 < - value: Hello

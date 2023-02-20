@@ -8,7 +8,7 @@ value: 38
 value: 55
 	-- [0] --
 size: 7
-max_size: 576460752303423487
+max_size: 230584300921369395
 
 Content is:
 - value: 21
@@ -29,7 +29,7 @@ value: 100
 value: 55
 	-- [1] --
 size: 7
-max_size: 576460752303423487
+max_size: 230584300921369395
 
 Content is:
 - value: 21
@@ -42,7 +42,7 @@ Content is:
 ###############################################
 	-- [2] --
 size: 12
-max_size: 576460752303423487
+max_size: 230584300921369395
 
 Content is:
 - value: 1

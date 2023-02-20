@@ -234,8 +234,8 @@ void testing()
 	std::cout << "(it == const_it): " << (myite == myit) << std::endl;
 	// std::cout << "(const_myite - myit): " << ( myite - myit) << std::endl;
 	// std::cout << "(myite + 3 == myit): " << (myite + 3 == myit) << std::endl;
-	// ft::set<int> const st;
-	// ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+	ft::set<int> const st;
+	ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
 
 }
 
@@ -441,10 +441,74 @@ void testing_std()
 		fileout << "[set3] = " << *ite << std::endl;
 }
 #define	_vector 				ft::vector
+#define	_make_pair 			ft::make_pair
 int main(void)
 {	
-	// testing();
-	// testing_std();
-	_vector<int> ciao;
+	testing();
+	testing_std();
+	// std::vector<int> v;
+    // ft::map<int, int> mpp;
+    // ft::map<int, int> mp;
+    // mp.insert(_make_pair(16, 3));
+	// mp.insert(_make_pair(8, 3));
+	// mp.insert(_make_pair(23, 3));
+	// mp.insert(_make_pair(7, 3));
+	// mp.insert(_make_pair(19, 3));
+	// mp.insert(_make_pair(29, 3));
+	// mp.insert(_make_pair(41, 3));
+	// mp.insert(_make_pair(4, 3));
+	// mp.insert(_make_pair(11, 3));
+    // for (typename ft::map<int, int>::iterator it = mpp.begin(); it != mpp.end(); it++) { v.push_back(it->first); }
+    // for (typename ft::map<int, int>::iterator it = --mpp.end(); it != mpp.begin(); it--) { v.push_back(it->first); }
+    // ft::map<int, int> mp0;
+    // ft::map<int, int>::iterator ii = mp0.insert(_make_pair(3, 3)).first;
+    // ii++;
+    // v.push_back((--ii)->first);
+    // for (int i = 0, j = 10; i < 5; ++i, ++j)
+    //     mp.insert(_make_pair(i, j));
+    // typename ft::map<int, int>::iterator it = mp.begin();
+    // typename ft::map<int, int>::iterator it2 = mp.end();
+    // // g_start2 = timer();
+    // v.push_back(it->first);
+    // it++;
+    // it++;
+    // it++;
+    // it++;
+    // v.push_back(it->first);
+    // it++;
+    // it--;
+    // v.push_back(it->first);
+    // it2--;
+    // v.push_back(it2->first);
+    // v.push_back(it2 == it);
+    // v.push_back((--it2)->first);
+    // v.push_back((it2--)->first);
+    // v.push_back((it2++)->first);
+    // v.push_back((++it2)->first);
+    // g_end2 = timer();
+    // return v;
+	// _vector<int> ciao;
+	// ft::set<int> ciao;
+	// ciao.insert(1);
+	// ciao.insert(2);
+
+	// reproduce this function in main
+	// template <typename SET>
+	// void	ft_const_bound(const SET &st, const T1 &param)
+	// {
+	// 	ft_const_iterator ite = st.end(), it[2];
+	// 	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+
+	// 	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
+	// 	std::cout << "with key [" << param << "]:" << std::endl;
+	// 	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	// 	ft_range = st.equal_range(param);
+	// 	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
+	// 	// std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
+	// 	// std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+	// }
+
+	// ft::set<int> const set1;
+
 	return 0;
 }

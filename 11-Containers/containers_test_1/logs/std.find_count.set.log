@@ -1,5 +1,5 @@
 size: 6
-max_size: 576460752303423487
+max_size: 230584300921369395
 
 Content is:
 - value: 12
@@ -23,7 +23,7 @@ set::count(35)	returned [0]
 set::count(90)	returned [1]
 set::count(100)	returned [0]
 size: 5
-max_size: 576460752303423487
+max_size: 230584300921369395
 
 Content is:
 - value: 12

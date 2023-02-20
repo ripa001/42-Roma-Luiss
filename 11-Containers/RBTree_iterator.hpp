@@ -89,9 +89,9 @@ namespace ft {
 			{
 				if (!_node->leaf)
 				{
-					while (_node->parent->leaf)
+					while (_node->parent && _node->parent->leaf)
 						_node = _node->parent;
-					while (_node->right->leaf)
+					while (_node->right && _node->right->leaf)
 						_node = _node->right;
 					return *this;
 				}
