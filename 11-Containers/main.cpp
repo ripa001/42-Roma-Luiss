@@ -8,6 +8,7 @@
 #include <stack>
 #include <set>
 #include <map>
+#include <list>
 
 
 void testing()
@@ -234,8 +235,8 @@ void testing()
 	std::cout << "(it == const_it): " << (myite == myit) << std::endl;
 	// std::cout << "(const_myite - myit): " << ( myite - myit) << std::endl;
 	// std::cout << "(myite + 3 == myit): " << (myite + 3 == myit) << std::endl;
-	ft::set<int> const st;
-	ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
+	// ft::set<int> const st;
+	// ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
 
 }
 
@@ -444,8 +445,12 @@ void testing_std()
 #define	_make_pair 			ft::make_pair
 int main(void)
 {	
-	testing();
-	testing_std();
+	// testing();
+	// testing_std();
+	std::list<int> lst;
+	unsigned int lst_size = 7;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back('a' + i);
 	// std::vector<int> v;
     // ft::map<int, int> mpp;
     // ft::map<int, int> mp;
