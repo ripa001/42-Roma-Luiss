@@ -19,7 +19,7 @@ namespace ft {
 			typedef Alloc													allocator_type;
 			typedef typename allocator_type::reference          			reference;
 			typedef typename allocator_type::const_reference   				const_reference;
-			typedef typename allocator_type::pointer						pointer;
+			typedef typename allocator_type::const_pointer						pointer;
 			typedef typename allocator_type::const_pointer					const_pointer;
 			typedef size_t													size_type;
 			typedef node< value_type >										treeNode;
@@ -31,7 +31,7 @@ namespace ft {
 			allocator_type													_alloc;
 
 		public:
-			typedef typename rbtree::iterator								iterator;
+			typedef typename rbtree::iterator							iterator;
 			typedef typename rbtree::const_iterator							const_iterator;
 			typedef ft::reverse_iterator< iterator >						reverse_iterator;
 			typedef ft::reverse_iterator< const_iterator >					const_reverse_iterator;

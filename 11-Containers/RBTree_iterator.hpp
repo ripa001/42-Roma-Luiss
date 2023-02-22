@@ -4,6 +4,15 @@ namespace ft {
 
 	enum	nodeColor { RED, BLACK };
 
+	template <class Pair>
+	struct fakeNode {
+		fakeNode					*parent;
+		fakeNode 				*left;
+		fakeNode 				*right;
+		Pair					data;
+		int						color;
+	};
+
 	template < typename T >
 	struct node {
 	    typedef T           value_type;

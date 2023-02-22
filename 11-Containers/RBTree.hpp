@@ -26,7 +26,9 @@ namespace ft {
         	typedef typename allocator_type::const_reference		            const_reference;
         	typedef std::size_t										            size_type;
         	typedef node< value_type >                                          treeNode;
+        	typedef fakeNode< value_type >                                          fakeNodeI;
         	typedef typename Alloc::template rebind< treeNode >::other	        node_allocator;
+        	typedef typename Alloc::template rebind< fakeNodeI >::other	        node_allocator_fake;
 
 		private:
 			treeNode		*_NIL;
@@ -34,6 +36,7 @@ namespace ft {
 			size_type		_height;
 			Compare			_comp;
 			node_allocator	_node_alloc;
+			node_allocator_fake	_node_alloc_fake;
 			allocator_type	_alloc;
 
 		public:
@@ -79,7 +82,7 @@ namespace ft {
 
 			bool		empty( void ) const { return (_height == 0); };
 			size_type   size( void ) const { return (_height); };
-	    	size_type	max_size() const { return (_node_alloc.max_size()); };
+	    	size_type	max_size() const { return (_node_alloc_fake.max_size()); };
 
 			treeNode*	search(treeNode* to_find, const value_type& val) const
         	{
