@@ -30,8 +30,8 @@ void	ft_const_bound(const SET &st, const T1 &param)
 
 	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
 	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
-	ft_range = st.equal_range(param);
+	// it[0] = st.lower_bound(param); it[1] = st.upper_bound(param);
+	// ft_range = st.equal_range(param);
 	it[0] == ite;
 	// std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
 	// std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;

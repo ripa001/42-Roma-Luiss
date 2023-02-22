@@ -44,7 +44,7 @@ namespace ft {
 					value_compare 	(key_compare c) : comp(c) {}  // constructed with set's comparison object
 					
 				public:
-					typedef bool 			result_type;
+					typedef bool			result_type;
 					typedef value_type 		first_argument_type;
 					typedef value_type 		second_argument_type;
 					bool operator() ( const value_type& x, const value_type& y ) const { return comp(x, y); };

@@ -445,12 +445,12 @@ void testing_std()
 #define	_make_pair 			ft::make_pair
 int main(void)
 {	
-	// testing();
-	// testing_std();
-	std::list<int> lst;
-	unsigned int lst_size = 7;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back('a' + i);
+	testing();
+	testing_std();
+	// std::list<int> lst;
+	// unsigned int lst_size = 7;
+	// for (unsigned int i = 0; i < lst_size; ++i)
+	// 	lst.push_back('a' + i);
 	// std::vector<int> v;
     // ft::map<int, int> mpp;
     // ft::map<int, int> mp;
