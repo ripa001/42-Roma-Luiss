@@ -112,6 +112,7 @@ namespace ft {
 			ft::pair<iterator, bool> insert(value_type const &value) {
 				if (_root == _NIL) {
 					_root = newNode(value, _NIL, 2);
+					_NIL->parent = _root;
 					_root->color = BLACK;
 					return ft::make_pair(iterator(_root), true);
 				}
@@ -119,7 +120,6 @@ namespace ft {
 				treeNode	*curr = _root;
 				while (curr != _NIL)
 				{
-					
 					parent = curr;
 					if (_comp(value, curr->value))
 						curr = curr->left;
@@ -133,7 +133,6 @@ namespace ft {
             	else                                         parent->right = curr;
 				curr->left->parent = curr;
 				curr->right->parent = curr;
-				// TODO Balancing
             	rebalanceTreeInsert(curr);
             	return ft::make_pair(iterator(curr), true);
 			}

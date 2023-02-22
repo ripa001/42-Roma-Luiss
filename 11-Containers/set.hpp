@@ -106,8 +106,8 @@ namespace ft {
 
 			size_type	count(key_type const & k) const	{	return _tree.search(_tree.get_root(), get_valuetype(k)) ? 1 : 0;	};
 
-			ft::pair< iterator, iterator >				equal_range (const key_type& k) { return (( upper_bound(k))); };
-			ft::pair< const_iterator, const_iterator >	equal_range (const key_type& k) const { return (( upper_bound(k))); };
+			ft::pair< iterator, iterator >				equal_range (const key_type& k) { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
+			ft::pair< const_iterator, const_iterator >	equal_range (const key_type& k) const { return (ft::make_pair(lower_bound(k), upper_bound(k))); };
 
 			key_compare		key_comp() const { return this->_compare; };
 			value_compare	value_comp() const { return value_compare(this->_compare); };

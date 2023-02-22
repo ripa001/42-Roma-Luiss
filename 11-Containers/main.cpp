@@ -235,6 +235,9 @@ void testing()
 	std::cout << "(it == const_it): " << (myite == myit) << std::endl;
 	// std::cout << "(const_myite - myit): " << ( myite - myit) << std::endl;
 	// std::cout << "(myite + 3 == myit): " << (myite + 3 == myit) << std::endl;
+	map2.at(1);
+	std::map<int, int> mapstd;
+	mapstd.at(1);
 	// ft::set<int> const st;
 	// ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
 
@@ -445,14 +448,56 @@ void testing_std()
 #define	_make_pair 			ft::make_pair
 int main(void)
 {	
-	testing();
-	testing_std();
+	// testing();
+	// testing_std();
+	std::vector<int> v;
+    ft::map<int, int> mpp;
+    mpp.insert(ft::make_pair(16, 3));
+	mpp.insert(ft::make_pair(8, 3));
+	mpp.insert(ft::make_pair(23, 3));
+	mpp.insert(ft::make_pair(7, 3));
+	mpp.insert(ft::make_pair(19, 3));
+	mpp.insert(ft::make_pair(29, 3));
+	mpp.insert(ft::make_pair(41, 3));
+	mpp.insert(ft::make_pair(4, 3));
+	mpp.insert(ft::make_pair(11, 3));
+    // for (typename ft::map<int, int>::iterator it = mpp.begin(); it != mpp.end(); it++) { v.push_back(it->first); }
+    // for (typename ft::map<int, int>::iterator it = --mpp.end(); it != mpp.begin(); it--) { v.push_back(it->first); }
+    ft::map<int, int> mp0;
+    ft::map<int, int>::iterator ii = mp0.insert(_make_pair(3, 3)).first;
+	// std::cout << (ii++)->first << std::endl;
+	std::cout << (++ii)->first << std::endl;
+	std::cout << (--ii)->first << std::endl;
+    // v.push_back((--ii)->first);
+
+	std::vector<int> v1;
+    std::map<int, int> mpp2;
+    mpp2.insert(std::make_pair(16, 3));
+	mpp2.insert(std::make_pair(8, 3));
+	mpp2.insert(std::make_pair(23, 3));
+	mpp2.insert(std::make_pair(7, 3));
+	mpp2.insert(std::make_pair(19, 3));
+	mpp2.insert(std::make_pair(29, 3));
+	mpp2.insert(std::make_pair(41, 3));
+	mpp2.insert(std::make_pair(4, 3));
+	mpp2.insert(std::make_pair(11, 3));
+    // for (typename std::map<int, int>::iterator it = mpp2.begin(); it != mpp2.end(); it++) { v1.push_back(it->first); }
+    // for (typename std::map<int, int>::iterator it = --mpp2.end(); it != mpp2.begin(); it--) { v1.push_back(it->first); }
+   	std::map<int, int> mp012;
+    std::map<int, int>::iterator ii1 = mp012.insert(std::make_pair(3, 3)).first;
+    // ii1++;
+	std::cout << (++ii1)->first << std::endl;
+	// std::cout << (ii1++)->first << std::endl;
+	std::cout << (--ii1)->first << std::endl;
+    // v1.push_back((--ii1)->first);
+	// std::cout >> v >> std::endl;
+	// std::cout >> v1 >> std::endl;
 	// std::list<int> lst;
 	// unsigned int lst_size = 7;
 	// for (unsigned int i = 0; i < lst_size; ++i)
 	// 	lst.push_back('a' + i);
 	// std::vector<int> v;
-    // ft::map<int, int> mpp;
+    // ft::map<int, int> mpp2;
     // ft::map<int, int> mp;
     // mp.insert(_make_pair(16, 3));
 	// mp.insert(_make_pair(8, 3));

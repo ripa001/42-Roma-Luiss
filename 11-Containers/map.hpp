@@ -74,6 +74,9 @@ namespace ft {
 			size_type 				size( void ) const { return _tree.size(); };
 			size_type 				max_size() const { return _tree.max_size();	};
 
+			mapped_type&	at( const key_type& k ) { return (*(insert(ft::make_pair( k, mapped_type() )).first)).second; }
+
+
 			void	clear() { _tree.clear(_tree.get_root()); };
 			void	swap(map& x) { _tree.swap(x._tree); };
 			map&			operator=(map const& x) { 

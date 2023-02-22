@@ -69,24 +69,31 @@ namespace ft {
 					return *this;
 				if (_node && _node->right && _node->right->leaf)
 				{
+					// std::cout << "quisakhdskjdas" << std::endl;
 					_node = _node->right;
 					while (_node && _node->left && _node->left->leaf) _node = _node->left;
 				}
 				else
 				{
+
+					// std::cout << "cdsjncds" << std::endl;
+					// if (!_node->parent->leaf)
+					// 	return *this;
 					treeNode	*curr = _node;
 					_node = _node->parent;
 					while (_node && _node->leaf && _node->right == curr)
 					{
 						curr = _node;
 						_node = _node->parent;
-					};                   
+					};
 				}
+				// std::cout << "sasdsa" << std::endl;
 				return *this;
 			}
-
+			
 			treeRBIterator&		operator-- ()
 			{
+				// std::cout << this << "ksajndksjan";
 				if (!_node->leaf)
 				{
 					while (_node->parent && _node->parent->leaf)
