@@ -235,9 +235,6 @@ void testing()
 	std::cout << "(it == const_it): " << (myite == myit) << std::endl;
 	// std::cout << "(const_myite - myit): " << ( myite - myit) << std::endl;
 	// std::cout << "(myite + 3 == myit): " << (myite + 3 == myit) << std::endl;
-	map2.at(1);
-	std::map<int, int> mapstd;
-	mapstd.at(1);
 	// ft::set<int> const st;
 	// ft::set<int>::iterator iterar = st.begin(); // <-- no error, actually ! set allows for const_iterator => iterator conversion
 

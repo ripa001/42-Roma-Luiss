@@ -31,7 +31,7 @@ namespace ft {
 			allocator_type													_alloc;
 
 		public:
-			typedef typename rbtree::iterator							iterator;
+			typedef typename rbtree::iterator								iterator;
 			typedef typename rbtree::const_iterator							const_iterator;
 			typedef ft::reverse_iterator< iterator >						reverse_iterator;
 			typedef ft::reverse_iterator< const_iterator >					const_reverse_iterator;
