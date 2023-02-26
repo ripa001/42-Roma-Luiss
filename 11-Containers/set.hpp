@@ -3,8 +3,8 @@
 #include <algorithm>
 #include "utils.hpp"
 #include "vector.hpp"
-#include "RBTree.hpp"
-#include "iterator.hpp"
+#include "RBTreeConst.hpp"
+#include "iterator/iterator.hpp"
 
 namespace ft {
 	template <class Key, class Compare = std::less<Key>, class Alloc = std::allocator<Key> >
@@ -14,18 +14,18 @@ namespace ft {
 
 			typedef Key                                         			key_type;
 			typedef	Key			 											mapped_type;
-            typedef Key    							value_type;
+            typedef Key    													value_type;
 			typedef Compare                                     			key_compare;
 			typedef Alloc													allocator_type;
 			typedef typename allocator_type::reference          			reference;
 			typedef typename allocator_type::const_reference   				const_reference;
-			typedef typename allocator_type::const_pointer						pointer;
+			typedef typename allocator_type::const_pointer					pointer;
 			typedef typename allocator_type::const_pointer					const_pointer;
 			typedef size_t													size_type;
 			typedef node< value_type >										treeNode;
 
 		private:
-			typedef RBTree<value_type, value_compare, allocator_type>		rbtree;
+			typedef RBTreeConst<value_type, value_compare, allocator_type>		rbtree;
 			rbtree															_tree;
 			key_compare														_compare;
 			allocator_type													_alloc;

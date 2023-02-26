@@ -6,9 +6,9 @@
 #include <string>
 #include "asserts.hpp"
 #include "utils.hpp"
-#include "iterator.hpp"
-#include "vector_iterator.hpp"
-#include "reverse_iterator.hpp"
+#include "iterator/iterator.hpp"
+#include "iterator/vector_iterator.hpp"
+#include "iterator/reverse_iterator.hpp"
 #include <limits>
 
 
