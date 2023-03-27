@@ -54,6 +54,7 @@ services:
       - frontend
       - backend
     restart: always
+    
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/.
