@@ -6,14 +6,14 @@ volumes:
     driver: local
     driver-opts:
       type: none
-      device: /Users/dripanuc/Inception/srcs/mariadb
+      device: /Users/dripanuc/Desktop/Inception/srcs/mariadb
       o: bind
   wordpress_data:
     name: wordpress_data
     driver: local
     driver-opts:
       type: none
-      device: /Users/dripanuc/Inception/srcs/wordpress
+      device: /Users/dripanuc/Desktop/Inception/srcs/wordpress
       o: bind
 
 networks:
@@ -54,7 +54,7 @@ services:
       - frontend
       - backend
     restart: always
-    
+
   mariadb:
     container_name: mariadb
     build: ./requirements/mariadb/.
