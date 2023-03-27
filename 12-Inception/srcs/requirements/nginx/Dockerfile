@@ -1,12 +1,14 @@
-FROM debian:buster
+FROM alpine:3.13
 
-RUN apt update -y && apt upgrade -y
+RUN	apk update && apk upgrade && apk add --no-cache \
+        nginx \
+        openssl
 
-RUN apt install -y nginx && apt install openssl -y
-
-RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout /etc/ssl/private/dripanuc.key \
-	-out /etc/ssl/certs/dripanuc.pem \
+# nginx SSL
+RUN mkdir /etc/nginx/ssl
+RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+    -out /etc/nginx/ssl/raccoman.pem \
+    -keyout /etc/nginx/ssl/raccoman.key \
 	-subj "/C=IT/ST=Italy/L=Rome/O=42/OU=42/CN=[dripanuc.42.fr](http://dripanuc.42.fr/)"
 
 RUN mkdir -p /run/nginx

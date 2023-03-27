@@ -52,6 +52,7 @@ services:
       - wordpress_data:/var/www/html
     networks:
       - frontend
+      - backend
     restart: always
   mariadb:
     container_name: mariadb
