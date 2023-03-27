@@ -2,7 +2,6 @@
 
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/dripanuc.key -out $CERTS_ -subj "/C=IT/ST=Italy/L=Rome/O=42/OU=42/CN=dripanuc"
 
-
 echo "
 server {
     listen 443 ssl;
