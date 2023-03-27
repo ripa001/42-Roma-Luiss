@@ -7,8 +7,8 @@ RUN	apk update && apk upgrade && apk add --no-cache \
 # nginx SSL
 RUN mkdir /etc/nginx/ssl
 RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-    -out /etc/nginx/ssl/raccoman.pem \
-    -keyout /etc/nginx/ssl/raccoman.key \
+    -out /etc/nginx/ssl/dripanuc.pem \
+    -keyout /etc/nginx/ssl/dripanuc.key \
 	-subj "/C=IT/ST=Italy/L=Rome/O=42/OU=42/CN=[dripanuc.42.fr](http://dripanuc.42.fr/)"
 
 RUN mkdir -p /run/nginx
