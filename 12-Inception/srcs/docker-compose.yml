@@ -4,14 +4,14 @@ volumes:
   db_data:
     name: mariadb_data
     driver: local
-    driver-opts:
+    driver_opts:
       type: none
       device: /home/dripanuc/data/mariadb
       o: bind
   wordpress_data:
     name: wordpress_data
     driver: local
-    driver-opts:
+    driver_opts:
       type: none
       device: /home/dripanuc/data/wordpress
       o: bind
@@ -64,5 +64,3 @@ services:
     networks:
       - backend
     restart: always
-    
-
