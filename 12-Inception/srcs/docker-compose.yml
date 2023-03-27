@@ -41,6 +41,9 @@ services:
       - frontend
     
     restart: always
+    
+    env_file:
+      - .env
 
   wordpress:
     container_name: wordpress
@@ -54,6 +57,8 @@ services:
       - frontend
       - backend
     restart: always
+    env_file:
+      - .env
 
   mariadb:
     container_name: mariadb
@@ -64,3 +69,5 @@ services:
     networks:
       - backend
     restart: always
+    env_file:
+      - .env

@@ -6,12 +6,17 @@ RUN	apk update && apk upgrade && apk add --no-cache \
 
 # nginx SSL
 RUN mkdir /etc/nginx/ssl
-RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
-    -out /etc/nginx/ssl/dripanuc.pem \
-    -keyout /etc/nginx/ssl/dripanuc.key \
-	-subj "/C=IT/ST=Italy/L=Rome/O=42/OU=42/CN=dripanuc"
+# RUN openssl req -newkey rsa:4096 -x509 -sha256 -days 365 -nodes \
+#     -out /etc/nginx/ssl/dripanuc.pem \
+#     -keyout /etc/nginx/ssl/dripanuc.key \
+# 	-subj "/C=IT/ST=Italy/L=Rome/O=42/OU=42/CN=dripanuc"
 
-RUN mkdir -p /run/nginx
-COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+# RUN mkdir -p /run/nginx
+# COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+# ENTRYPOINT ["nginx", "-g", "daemon off;"]
+COPY ./tools/script.sh /
+
+
+
+CMD [ "/script.sh" ]
