@@ -6,14 +6,14 @@ volumes:
     driver: local
     driver-opts:
       type: none
-      device: /home/dripanuc/data
+      device: /home/dripanuc/data/mariadb
       o: bind
   wordpress_data:
     name: wordpress_data
     driver: local
     driver-opts:
       type: none
-      device: /home/dripanuc/data
+      device: /home/dripanuc/data/wordpress
       o: bind
 
 networks:
