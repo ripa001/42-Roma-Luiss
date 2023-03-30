@@ -1,0 +1,4 @@
+CREATE DATABASE IF NOT EXISTS wpdb;
+CREATE USER 'wpuser'@'%' identified by 'dbpassword';
+GRANT ALL PRIVILEGES ON wpdb.* TO 'wpuser'@'%';
+FLUSH PRIVILEGES;

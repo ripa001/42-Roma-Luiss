@@ -1,0 +1,1 @@
+mysql < wpdb.sql
