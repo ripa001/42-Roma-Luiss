@@ -25,6 +25,8 @@ FROM debian:buster
 
 RUN apt -y update && apt install -y nginx && apt install openssl -y
 
+# RUN mkdir -p /run/nginxù
+COPY conf/nginx.conf /etc/nginx/sites-available/default
 
 
 

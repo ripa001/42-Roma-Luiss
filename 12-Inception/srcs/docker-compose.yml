@@ -1,30 +1,36 @@
 version: "3.5"
 
 volumes:
-  db_data:
-    name: mariadb_data
+  wordpress:
+    name: wordpress
     driver: local
     driver_opts:
-      type: none
-      device: /home/dripanuc/data/mariadb
-      o: bind
-  wordpress_data:
-    name: wordpress_data
-    driver: local
-    driver_opts:
-      type: none
       device: /home/dripanuc/data/wordpress
       o: bind
+      type: none
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/dripanuc/data/mariadb
+      o: bind
+      type: none
 
 networks:
-  backend:
-    name: backend
-  
-  frontend:
-    name: frontend
-
+  - inception
 
 services:
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb/.
+    image: mariadb:42
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+    restart: always
+    env_file:
+      - .env
   nginx:
     container_name: nginx
     build: ./requirements/nginx/.
@@ -35,10 +41,10 @@ services:
       - wordpress 
     
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress:/var/www/html
     
     networks:
-      - frontend
+      - inception
     
     restart: always
     
@@ -52,23 +58,12 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wordpress_data:/var/www/html
+      - wordpress:/var/www/html
     networks:
-      - frontend
-      - backend
+      - inception
     restart: always
     env_file:
       - .env
 
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb/.
-    image: mariadb:42
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - backend
-    restart: always
-    env_file:
-      - .env
+  
 
