@@ -22,12 +22,25 @@ networks:
 
 
 services:
+  # mariadb:
+  #   container_name: mariadb
+  #   build: ./requirements/mariadb/.
+  #   image: mariadb:42
+  #   volumes:
+  #     - mariadb:/var/lib/mysql
+  #   networks:
+  #     - inception
+  #   restart: always
+  #   env_file:
+  #     - .env
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb/.
-    image: mariadb:42
+    build: ./requirements/mariadb
+    #volumes allow to store in a persistent disk the content in a local disk
+    #db_data is a volume created by docker directly
     volumes:
       - mariadb:/var/lib/mysql
+    # in case of problem we restart automatically the container
     networks:
       - inception
     restart: always
