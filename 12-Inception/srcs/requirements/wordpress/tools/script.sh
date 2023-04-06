@@ -22,7 +22,6 @@ wp core download --allow-root
 
 mv /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 
-echo $DB1_NAME $DB1_USER $DB1_PWD $DOMAIN_NAME $WP_TITLE $WP_ADMIN_USR $WP_ADMIN_PWD $WP_ADMIN_EMAIL $WP_USR $WP_EMAIL $WP_PWD
 
 sed -i -r "s/db1/$DB_NAME/1"   wp-config.php
 sed -i -r "s/user/$DB_USER/1"  wp-config.php
