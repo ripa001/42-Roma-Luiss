@@ -33,19 +33,7 @@ services:
   #   restart: always
   #   env_file:
   #     - .env
-  mariadb:
-    container_name: mariadb
-    build: ./requirements/mariadb
-    #volumes allow to store in a persistent disk the content in a local disk
-    #db_data is a volume created by docker directly
-    volumes:
-      - mariadb:/var/lib/mysql
-    # in case of problem we restart automatically the container
-    networks:
-      - inception
-    restart: always
-    env_file:
-      - .env
+
   nginx:
     container_name: nginx
     build: ./requirements/nginx/.
@@ -63,6 +51,20 @@ services:
     
     restart: always
     
+    env_file:
+      - .env
+
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    #volumes allow to store in a persistent disk the content in a local disk
+    #db_data is a volume created by docker directly
+    volumes:
+      - mariadb:/var/lib/mysql
+    # in case of problem we restart automatically the container
+    networks:
+      - inception
+    restart: always
     env_file:
       - .env
 
