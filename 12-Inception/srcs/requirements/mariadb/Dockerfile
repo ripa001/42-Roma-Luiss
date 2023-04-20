@@ -1,15 +1,25 @@
-FROM debian:buster
+FROM alpine:3.13
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache mariadb mariadb-client
+
+COPY tools/configure.sh /tmp/configure.sh
+
+ENTRYPOINT [ "sh", "/tmp/configure.sh" ]
 
 
-RUN apt-get update -y && apt-get install mariadb-server -y
-
-COPY ./tools/50-server.cnf /etc/mysql/mariadb.conf.d/
+# FROM debian:buster
 
 
-COPY ./tools/script.sh /
+# RUN apt-get update -y && apt-get install mariadb-server -y
+
+# COPY ./tools/50-server.cnf /etc/mysql/mariadb.conf.d/
 
 
-CMD ["/script.sh"]
+# COPY ./tools/script.sh /
+
+
+# CMD ["/script.sh"]
 
 # FROM debian:buster
 
