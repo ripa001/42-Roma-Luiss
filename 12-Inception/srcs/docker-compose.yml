@@ -81,6 +81,46 @@ services:
     restart: always
     env_file:
       - .env
+  
+  redis:
+    build: ./requirements/bonus/redis
+    depends_on:
+      - wordpress
+    ports:
+     - '6379:6379'
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - inception
+  
+  
+  # ftp-server:
+  #   build: requirements/bonus/ftp_server
+  #   container_name: ftp-server
+  #   ports:
+  #     - "21:21"
+  #     - "21100-21110:21100-21110"
+  #   volumes:
+  #     - "wordpress:/var/www/html"
+  #   networks:
+  #     - inception
+  #   restart: always
+  #   environment:
+  #     FTP_USR: ${FTP_USR}
+  #     FTP_PWD: ${FTP_PWD}
+
+  # adminer:
+  #   build: ./requirements/bonus/adminer
+  #   restart: always
+  #   depends_on:
+  #     - mariadb
+  #   expose:
+  #    - "9000"
+  #   networks:
+  #     - inception
 
   
 

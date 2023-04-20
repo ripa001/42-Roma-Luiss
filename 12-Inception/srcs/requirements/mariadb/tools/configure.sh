@@ -9,8 +9,9 @@ fi
 if [ ! -d "/var/lib/mysql/mysql" ];
 then
     chown -R mysql:mysql /var/lib/mysql
-    
+    echo "MariaDB first launch: OK"
     mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm > /dev/null
+    echo "MariaDB first launch 2: OK"
 
     tmp=`mktemp`
     if [ ! -f "$tmp" ];
@@ -32,6 +33,8 @@ GRANT ALL PRIVILEGES ON $DB1_NAME.* TO '$DB1_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp
+    echo "MariaDB first launch 2: OK"
+
     rm -f $tmp 
 fi
 
