@@ -33,13 +33,13 @@ then
 	wp config set WP_REDIS_PASSWORD $REDIS_PASSWORD --allow-root
 	wp config set WP_REDIS_CLIENT phpredis --allow-root
 	echo "REDIS CONFIG STATUS : OK"
-	# wp plugin install redis-cache --activate --allow-root
-	# wp plugin update --all --allow-root
-	# echo "REDIS PLUGIN STATUS : OK"
-	# wp redis enable --allow-root
+	wp plugin install redis-cache --activate --allow-root
+	wp plugin update --all --allow-root
+	echo "REDIS PLUGIN STATUS : OK"
+	wp redis enable --allow-root
 
-	# echo "REDIS STATUS : OK"
-	# ###  end of redis part  ###
+	echo "REDIS STATUS : OK"
+	###  end of redis part  ###
 
 fi
 
