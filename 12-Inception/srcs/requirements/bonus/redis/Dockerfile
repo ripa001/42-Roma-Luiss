@@ -1,11 +1,11 @@
 FROM debian:buster
 
+RUN		apt-get update
+RUN		apt-get install -y redis \
+		&& rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y update && apt install redis-server -y && echo "maxmemory 256mb" >> /etc/redis/redis.conf
+COPY ./tools/redis.sh /tmp/redis.sh
 
-RUN echo "maxmemory-policy allkeys-lru" >> /etc/redis/redis.conf
+EXPOSE 6379
 
-RUN sed -i -r "s/bind 127.0.0.1/#bind 127.0.0.0/" /etc/redis/redis.conf
-
-
-CMD ["redis-server",  "--protected-mode", "no"]
+CMD ["sh", "/tmp/redis.sh"]
