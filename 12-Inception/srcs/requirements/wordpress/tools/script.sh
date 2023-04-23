@@ -44,8 +44,8 @@ then
 	wp plugin install redis-cache --activate --allow-root
 	cat  wp-config.php
 	
-	wp plugin update --all --allow-root
-	wp redis enable --allow-root
+	# wp plugin update --all --allow-root
+	# wp redis enable --allow-root
 	echo "REDIS PLUGIN STATUS : OK"
 
 	echo "REDIS STATUS : OK"
