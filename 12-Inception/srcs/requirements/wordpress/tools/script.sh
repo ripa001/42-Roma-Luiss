@@ -30,9 +30,9 @@ then
 	wp config set WP_REDIS_HOST 127.0.0.1 --allow-root #I put --allowroot because i am on the root user on my VM
 	wp config set WP_REDIS_PORT 6379 --raw --allow-root
 	wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME --allow-root
-	wp config set WP_CACHE true --allow-root
+	wp config set WP_CACHE true --raw --type=constant --allow-root
 	wp config set WP_REDIS_PASSWORD $REDIS_PASSWORD --allow-root
-	wp config set WP_REDIS_SELECTIVE_FLUSH true --allow-root
+	wp config set WP_REDIS_SELECTIVE_FLUSH true --raw --type=constant --allow-root
 	# wp config set WP_REDIS_CLIENT phpredis --allow-root
 # 	define('WP_CACHE_KEY_SALT', 'your_unique_key_here');
 # define('WP_CACHE', true);
