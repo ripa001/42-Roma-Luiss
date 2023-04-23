@@ -27,7 +27,7 @@ then
 
 	## redis ##
 	echo "REDIS START STATUS : OK"
-	wp config set WP_REDIS_HOST 0.0.0.0 --allow-root #I put --allowroot because i am on the root user on my VM
+	wp config set WP_REDIS_HOST redis --allow-root #I put --allowroot because i am on the root user on my VM
 	wp config set WP_REDIS_PORT 6379 --raw --allow-root
 	wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME --allow-root
 	wp config set WP_CACHE true --raw --type=constant --allow-root
