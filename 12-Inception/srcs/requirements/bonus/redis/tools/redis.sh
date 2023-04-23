@@ -8,7 +8,6 @@ if [ ! -f "/etc/redis/redis.conf.bak" ]; then
     sed -i "s|# requirepass foobared|requirepass $REDIS_PASSWORD|g" /etc/redis/redis.conf
     sed -i "s|# maxmemory <bytes>|maxmemory 2mb|g" /etc/redis/redis.conf
     sed -i "s|# maxmemory-policy noeviction|maxmemory-policy allkeys-lru|g" /etc/redis/redis.conf
-    cat  /etc/redis/redis.conf
 fi
 
 redis-server --protected-mode no

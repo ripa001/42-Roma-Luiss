@@ -34,18 +34,12 @@ then
 	wp config set WP_REDIS_PASSWORD $REDIS_PASSWORD --allow-root
 	# wp config set WP_REDIS_SELECTIVE_FLUSH true --raw --type=constant --allow-root
 	wp config set WP_REDIS_CLIENT phpredis --allow-root
-# 	define('WP_CACHE_KEY_SALT', 'your_unique_key_here');
-# define('WP_CACHE', true);
-# define('WP_REDIS_HOST', '127.0.0.1');
-# define('WP_REDIS_PORT', '6379');
-# define('WP_REDIS_PASSWORD', 'your_redis_password_here');
-# define('WP_REDIS_SELECTIVE_FLUSH', true);
+	# Finally, set a Redis key with a value of "myvalue".
+	wp eval '$redis = WP_Object_Cache::get_instance()->get_redis_instance(); $redis->set("mykey", "redis on wordpress is working");' --allow-root
+
 	echo "REDIS CONFIG STATUS : OK"
 	wp plugin install redis-cache --activate --allow-root
-	cat  wp-config.php
-	
-	# wp plugin update --all --allow-root
-	# wp redis enable --allow-root
+
 	echo "REDIS PLUGIN STATUS : OK"
 
 	echo "REDIS STATUS : OK"
