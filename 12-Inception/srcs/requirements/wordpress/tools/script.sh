@@ -30,9 +30,9 @@ then
 	wp config set WP_REDIS_HOST redis --allow-root #I put --allowroot because i am on the root user on my VM
 	wp config set WP_REDIS_PORT 6379 --raw --allow-root
 	wp config set WP_CACHE_KEY_SALT $DOMAIN_NAME --allow-root
-	wp config set WP_CACHE true --raw --type=constant --allow-root
+	wp config set WP_CACHE true --raw --type=constant --allow-root #--raw to avoid the quotes
 	wp config set WP_REDIS_PASSWORD $REDIS_PASSWORD --allow-root
-	# wp config set WP_REDIS_SELECTIVE_FLUSH true --raw --type=constant --allow-root
+	# wp config set WP_REDIS_SELECTIVE_FLUSH true --raw --type=constant --allow-root # WP_REDIS_SELECTIVE_FLUSH allow 
 	wp config set WP_REDIS_CLIENT phpredis --allow-root
 	# Finally, set a Redis key with a value of "myvalue".
 	wp eval '$redis = WP_Object_Cache::get_instance()->get_redis_instance(); $redis->set("mykey", "redis on wordpress is working");' --allow-root
