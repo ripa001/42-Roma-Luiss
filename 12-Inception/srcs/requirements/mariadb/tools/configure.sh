@@ -27,9 +27,9 @@ DROP DATABASE test;
 DELETE FROM mysql.db WHERE Db='test';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 ALTER USER 'root'@'localhost' IDENTIFIED BY '12345';
-CREATE DATABASE $DB1_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER '$DB1_USER'@'%' IDENTIFIED BY '$DB1_PWD';
-GRANT ALL PRIVILEGES ON $DB1_NAME.* TO '$DB1_USER'@'%';
+CREATE DATABASE $DB_NAME CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '$DB_USER'@'%' IDENTIFIED BY '$DB_PWD';
+GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%';
 FLUSH PRIVILEGES;
 EOF
     /usr/bin/mysqld --user=mysql --bootstrap < $tmp

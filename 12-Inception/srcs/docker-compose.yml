@@ -22,18 +22,6 @@ networks:
 
 
 services:
-  # mariadb:
-  #   container_name: mariadb
-  #   build: ./requirements/mariadb/.
-  #   image: mariadb:42
-  #   volumes:
-  #     - mariadb:/var/lib/mysql
-  #   networks:
-  #     - inception
-  #   restart: always
-  #   env_file:
-  #     - .env
-
   nginx:
     container_name: nginx
     build: ./requirements/nginx/.
@@ -98,30 +86,54 @@ services:
       - inception
   
   
-  # # ftp-server:
-  #   build: requirements/bonus/ftp_server
-  #   container_name: ftp-server
-  #   ports:
-  #     - "21:21"
-  #     - "21100-21110:21100-21110"
-  #   volumes:
-  #     - "wordpress:/var/www/html"
-  #   networks:
-  #     - inception
-  #   restart: always
-  #   environment:
-  #     FTP_USR: ${FTP_USR}
-  #     FTP_PWD: ${FTP_PWD}
+  ftp:
+    build: ./requirements/bonus/ftp
+    container_name: ftp
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    volumes:
+      - "wordpress:/var/www/html"
+    networks:
+      - inception
+    restart: always
+    env_file:
+      - .env
 
-  # adminer:
-  #   build: ./requirements/bonus/adminer
-  #   restart: always
-  #   depends_on:
-  #     - mariadb
-  #   expose:
-  #    - "9000"
-  #   networks:
-  #     - inception
+  adminer:
+    build: ./requirements/bonus/adminer
+    restart: always
+    depends_on:
+      - mariadb
+    expose:
+     - "9000"
+    networks:
+      - inception
+
+  website:
+    container_name: website
+    build: ./requirements/bonus/website/.
+    image: website:42
+    ports:
+      - "3000:3000"
+    networks:
+      - inception
+    restart: always
+    
+  cadvisor:
+    container_name: cadvisor
+    build: ./requirements/bonus/cadvisor/.
+    image: cadvisor:42
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro 
+      - /sys:/sys:ro 
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: always
 
   
 
