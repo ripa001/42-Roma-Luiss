@@ -21,4 +21,3 @@ int main(int argc, char** argv)
 	cleanup(servers);
 	return 0;
 }
-```
