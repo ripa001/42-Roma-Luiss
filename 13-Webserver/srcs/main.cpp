@@ -1,4 +1,4 @@
-#include "webservers.hpp"
+#include "../includes/Webserver.hpp"
 
 int main(int argc, char** argv)
 {
@@ -7,17 +7,18 @@ int main(int argc, char** argv)
 		std::cout << "Usage: " << argv[0] << " <config_file>" << std::endl;
 		return 1;
 	}
+	WebServer webserver(argv[1]);
 	// Create a webserver object
-	configs = parseConficurationFile(argv[1]);
-	servers = createServerBasedOnConfiguration(configs);
+	// configs = parseConficurationFile(argv[1]);
+	// servers = createServerBasedOnConfiguration(configs);
 
-	// Start the webserver
-	startListening(servers);
+	// // Start the webserver
+	// startListening();
 
-	// Wait for the webserver to finish
-	waitForWebserverToFinish(servers);
+	// // Wait for the webserver to finish
+	// waitForWebserverToFinish(servers);
 
-	// Cleanup
-	cleanup(servers);
+	// // Cleanup
+	// cleanup(servers);
 	return 0;
 }
