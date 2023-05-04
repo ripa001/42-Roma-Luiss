@@ -3,6 +3,7 @@
 size_t findServerAndLocation(const std::string& str, size_t skipChars = 0, size_t returEnd = 0, int location = 0) {
     size_t pos = skipChars;
 	std::string	to_find = "server";
+
     while (true) {
 		if (location == 1)
 			to_find = "location";
@@ -18,8 +19,7 @@ size_t findServerAndLocation(const std::string& str, size_t skipChars = 0, size_
 				error("Error: no location path found");
 			while (str[pos] != '{')
 				++pos;
-		}
-			
+		}			
         if (str[pos] == '{') {
 			if (returEnd == 1)
 				return ++pos;
@@ -27,7 +27,6 @@ size_t findServerAndLocation(const std::string& str, size_t skipChars = 0, size_
         }
     }
 }
-
 
 void	divideServers(std::string text, std::vector<std::string> *serverBlocks) {
 	size_t found;
@@ -60,14 +59,53 @@ void	divideServers(std::string text, std::vector<std::string> *serverBlocks) {
 	}
 }
 
+bool	checkPort(std::string value) {
+	if (value == "")
+		error("Error: no port found");
+	// check if port is a number
+	for (size_t i = 0; i < value.length(); i++)
+		if (!std::isdigit(value[i]))
+			error("Error: port is not a number");
+	// check if port is between 0 and 65535
+	if (std::stoi(value) < 0 || std::stoi(value) > 65535)
+		error("Error: port is not between 0 and 65535");
+	return true;
+}
+
+bool	checkHost(std::string host) {
+		// check if host is a valid ip
+
+	for (size_t i = 0; i < host.length(); i++)
+		if (host[i] == '.')
+			if (host[i + 1] == '.' || host[i - 1] == '.')
+				error("Error: host is not a valid ip it shouldn't have 2 dots in a row");
+	for (size_t i = 0; i < host.length(); i++)
+		if (!std::isdigit(host[i]) && host[i] != '.')
+			error("Error: host is not a valid ip it should be a number or a dot");
+	if (std::count(host.begin(), host.end(), '.') != 3)
+		error("Error: host is not a valid ip it should have 3 dots");
+
+	size_t j = 0;
+	for (size_t i = 0; i < host.length(); i++)
+		if (host[i] == '.') {
+			if (std::stoi(host.substr(j, i - j)) < 0 || std::stoi(host.substr(j, i - j)) > 255)
+				error("Error: host is not a valid ip in range 0-255");
+			j = i + 1;
+		}
+	if (std::stoi(host.substr(j, host.length() - j)) < 0 || std::stoi(host.substr(j, host.length() - j)) > 255)
+		error("Error: host is not a valid ip in range 0-255");
+	
+	return true;
+}
+
 bool	checkPortHost(std::string value) {
 	std::string	port;
-	std::string	host;
-	std::string	tmpHost;
+	std::string	host = "";
 
 	if (value.find(":") == std::string::npos) {
 		port = value;
-		host = "";
+		if (checkPort(port))
+			return true;
 	}
 	else {
 		port = value.substr(value.find(":") + 1);
@@ -75,40 +113,11 @@ bool	checkPortHost(std::string value) {
 	}
 	std::cout << "port: " << port << std::endl;
 	std::cout << "host: " << host << std::endl;
-	if (port == "")
-		return false;
-	// check if port is a number
-	for (size_t i = 0; i < port.length(); i++)
-		if (!std::isdigit(port[i]))
-			return false;
-	// check if port is between 0 and 65535
-	if (std::stoi(port) < 0 || std::stoi(port) > 65535)
-		return false;
 
 	// check if host is a valid ip
-	if (host == "")
+	if (checkHost(host) && checkPort(port))
 		return true;
-
-	tmpHost = host;
-	size_t j = 0;
-	for (size_t i = 0; i < tmpHost.length(); i++)
-		if (tmpHost[i] == '.') {
-			if (std::stoi(tmpHost.substr(j, i - j)) < 0 || std::stoi(tmpHost.substr(j, i - j)) > 255)
-				return false;
-			j = i + 1;
-		}
-	if (std::stoi(tmpHost.substr(j, tmpHost.length() - j)) < 0 || std::stoi(tmpHost.substr(j, tmpHost.length() - j)) > 255)
-		return false;
-	for (size_t i = 0; i < host.length(); i++)
-		if (!std::isdigit(host[i]) && host[i] != '.')
-			return false;
-	if (std::count(host.begin(), host.end(), '.') != 3)
-		return false;
-	for (size_t i = 0; i < host.length(); i++)
-		if (host[i] == '.')
-			if (host[i + 1] == '.' || host[i - 1] == '.')
-				return false;
-	return true;
+	return false;
 }
 
 void	parseListen(std::string value, t_config &config) {
