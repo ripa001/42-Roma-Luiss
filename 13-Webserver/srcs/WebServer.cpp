@@ -13,7 +13,6 @@ void	WebServer::createConfigs(std::string const &configPath) {
 	std::ifstream				confFile(configPath);
 	std::string					text;
 	std::stringstream			buffer;
-	std::vector<std::string>	serverBlocks;
 	
 	if (!confFile.is_open())
 		throw std::runtime_error("Error: cannot open config file");
@@ -23,5 +22,6 @@ void	WebServer::createConfigs(std::string const &configPath) {
 	text = buffer.str();
 
 	// Divide file into server blocks
-	divideServers(text, serverBlocks);
+	parse(text);
+	// divideServers(text, serverBlocks);
 }

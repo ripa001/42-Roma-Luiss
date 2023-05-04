@@ -14,6 +14,7 @@
 void	error(std::string const err);
 
 // Parsing
+void	parse(std::string text);
 void 	divideServers(std::string text, std::vector<std::string> serverBlocks);
 
 typedef	struct	s_location
