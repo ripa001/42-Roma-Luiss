@@ -60,25 +60,25 @@ void	divideServers(std::string text, std::vector<std::string> *serverBlocks) {
 			break;
 		text = text.substr(text.find("server {", found + 1));
 	}
-	// for (size_t i = 0; i < serverBlocks.size(); i++)
-	// {
-	// 	std::cout << serverBlocks[i]  << std::endl << "---" << std::endl;
-	// }
 }
 
-std::string	myTrim(std::string str) {
-	str = str.substr(str.find_first_not_of(" \n\r\t"));
-	str = str.substr(0, str.find_last_not_of(" \n\r\t") + 1);
-	return str;
+
+void	fillKeyValueArgs(std::string &text, t_config &config) {
+	key = text.substr(0, text.find_first_of(" \n\r\t"));
+	value = text.substr(text.find_first_of(" \n\r\t") + 1);
+	// parse arguments
+	std::cout << "key: " << key << std::endl;
+	std::cout << "value: " << value << std::endl;
+	std::string	toCompare[9] = { "listen", "server_name", "root", "autoindex", "index", "error_page", "client_max_body_size", "allowed_methods", "location" };
+	
 }
 
-void	parseServerBlocks(std::vector<std::string> serverBlocks, t_config &config) {
+void	parseServerBlocks(std::vector<std::string> serverBlocks) {
 	std::vector<std::string>::iterator	it;
-	std::vector<std::string>::iterator	tmpIt;
+	t_config							config;
 	std::string							content;
 	std::string							tmp;
-	std::string							key;
-	std::string							value;
+
 	std::cout << "serverBlocks.size(): " << serverBlocks.size() << std::endl;
 	for (it = serverBlocks.begin(); it != serverBlocks.end(); it++) {
 		content = (*it).substr(findServerLocation(*it,0,1), (*it).find_last_of("}"));
@@ -95,12 +95,8 @@ void	parseServerBlocks(std::vector<std::string> serverBlocks, t_config &config) 
 				content = content.substr(content.find("}") + 1);
 				continue;
 			}
-			tmp = myTrim(tmp);
-			key = tmp.substr(0, tmp.find_first_of(" \n\r\t"));
-			value = tmp.substr(tmp.find_first_of(" \n\r\t") + 1);
-			// parse arguments
-			std::cout << "key: " << key << std::endl;
-			std::cout << "value: " << value << std::endl;
+			tmp = fillKeyValueArgs(myTrim(tmp), config));
+			
 			(void)config;
 			// if (key.find("location")
 			content = content.substr(content.find(";") + 1);
@@ -123,9 +119,8 @@ void	parseServerBlocks(std::vector<std::string> serverBlocks, t_config &config) 
 
 void	parse(std::string text) {
 	std::vector<std::string>	serverBlocks;
-	t_config					config;
 
 	divideServers(text, &serverBlocks);
-	parseServerBlocks(serverBlocks, config);
+	parseServerBlocks(serverBlocks);
 }
 

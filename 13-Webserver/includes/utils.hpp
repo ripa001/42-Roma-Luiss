@@ -11,7 +11,8 @@
 #include <algorithm>
 
 
-void	error(std::string const err);
+void		error(std::string const err);
+std::string	myTrim(std::string str);
 
 // Parsing
 void	parse(std::string text);
