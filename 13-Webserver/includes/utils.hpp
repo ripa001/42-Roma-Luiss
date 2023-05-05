@@ -22,14 +22,14 @@ typedef	struct	s_location
 {
 	bool						regex;		// ~
 	bool						exact_path;	// =
-	std::vector<std::string>	allowedMethods;
+	std::vector<std::string>	allowed_methods;
 	std::string					location;	// path
 	std::string					text;		// block
 	s_location&	operator=(s_location const & rhs)
 	{
 		this->regex = rhs.regex;
 		this->exact_path = rhs.exact_path;
-		this->allowedMethods = rhs.allowedMethods;
+		this->allowed_methods = rhs.allowed_methods;
 		this->location = rhs.location;
 		this->text = rhs.text;
 		return (*this);
@@ -45,10 +45,10 @@ typedef struct	s_config
 	std::string					root;					// root
 	bool						autoindex;				// autoindex
 	std::vector<std::string>	index;					// index
-	std::vector<std::string>	errorPages;				// error_page
+	std::vector<std::string>	error_pages;				// error_page
 	unsigned long				client_max_body_size;	// client_max_body_size
-	std::vector<std::string>	allowedMethods;
-	std::vector<t_location>		locationRules;			// location
+	std::vector<std::string>	allowed_methods;
+	std::vector<t_location>		location_rules;			// location
 	std::vector<std::string>	files;					// files to try
 	std::string					cgi_script;
 	bool						valid;
@@ -67,15 +67,15 @@ typedef struct	s_config
 		server_name = src.server_name;
 		autoindex = src.autoindex;
 		index = src.index;
-		errorPages = src.errorPages;
-		allowedMethods = src.allowedMethods;
+		error_pages = src.error_pages;
+		allowed_methods = src.allowed_methods;
 		files = src.files;
 		root = src.root;
 		host = src.host;
 		client_max_body_size = src.client_max_body_size;
 		valid = src.valid;
 		cgi_script = src.cgi_script;
-		locationRules = src.locationRules;
+		location_rules = src.location_rules;
 	}
 	s_config&	operator=(s_config const & rhs)
 	{
@@ -83,15 +83,15 @@ typedef struct	s_config
 		server_name = rhs.server_name;
 		autoindex = rhs.autoindex;
 		index = rhs.index;
-		errorPages = rhs.errorPages;
-		allowedMethods = rhs.allowedMethods;
+		error_pages = rhs.error_pages;
+		allowed_methods = rhs.allowed_methods;
 		files = rhs.files;
 		root = rhs.root;
 		host = rhs.host;
 		client_max_body_size = rhs.client_max_body_size;
 		valid = rhs.valid;
 		cgi_script = rhs.cgi_script;
-		locationRules = rhs.locationRules;
+		location_rules = rhs.location_rules;
 		return (*this);
 	}
 	s_config(bool val) : valid(val) {}

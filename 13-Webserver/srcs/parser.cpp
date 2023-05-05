@@ -73,8 +73,7 @@ bool	checkPort(std::string value) {
 }
 
 bool	checkHost(std::string host) {
-		// check if host is a valid ip
-
+	// check if host is a valid ip
 	for (size_t i = 0; i < host.length(); i++)
 		if (host[i] == '.')
 			if (host[i + 1] == '.' || host[i - 1] == '.')
@@ -179,6 +178,62 @@ void	parseRoot(std::string value, t_config &config) {
 	config.root = value;
 }
 
+void	parseAutoindex(std::string value, t_config &config) {
+	if (value == "on")
+		config.autoindex = true;
+	else if (value == "off")
+		config.autoindex = false;
+	else
+		error("Error: invalid autoindex");
+	std::cout << "autoindex: " << config.autoindex << std::endl;
+	
+}
+
+void parseIndex(std::string value, t_config &config) {
+	std::string	idx;
+
+	while (value.find_first_of(" \n\r\t") != std::string::npos)
+	{
+		idx = myTrim(value.substr(0, value.find_first_of(" \n\r\t")));
+		if (idx == "")
+			return ;
+		config.index.push_back(myTrim(value.substr(0, value.find_first_of(" \n\r\t"))));
+		value = myTrim(value.substr(value.find_first_of(" \n\r\t") + 1));
+	}
+	if (value != "")
+		config.index.push_back(value);
+	for (size_t i = 0; i < config.index.size(); i++)
+		std::cout << "index: " << config.index[i] << std::endl;
+}
+
+void parseErrorPage(std::string value, t_config &config) {
+	std::string	error_page;
+
+	while (value.find_first_of(" \n\r\t") != std::string::npos)
+	{
+		error_page = myTrim(value.substr(0, value.find_first_of(" \n\r\t")));
+		if (error_page == "")
+			return ;
+		config.error_pages.push_back(myTrim(value.substr(0, value.find_first_of(" \n\r\t"))));
+		value = myTrim(value.substr(value.find_first_of(" \n\r\t") + 1));
+	}
+	if (value != "")
+		config.error_pages.push_back(value);
+	for (size_t i = 0; i < config.error_pages.size(); i++)
+		std::cout << "error_pages: " << config.error_pages[i] << std::endl;
+}
+
+// void parseClientMaxBodySize(std::string value, t_config &config) {
+// 	if (value.find_first_of(" \n\r\t") != std::string::npos)
+// 		error("Error: invalid client_max_body_size should be one number");
+// 	else {
+// 		config.client_max_body_size = std::stoi(value);
+// 		if (config.client_max_body_size < 0)
+// 			error("Error: invalid client_max_body_size should be positive");
+// 	}
+// 	std::cout << "client_max_body_size: " << config.client_max_body_size << std::endl;
+// }
+
 void	fillKeyValueArgs(std::string text, t_config &config) {
 	std::string	key;
 	std::string	value;
@@ -197,26 +252,40 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 	else if (key == "root")
 		parseRoot(value, config);
 	else if (key == "autoindex")
-		;
-		// parseAutoindex(value, config);
+		parseAutoindex(value, config);
 	else if (key == "index")
-		;
-		// parseIndex(value, config);
+		parseIndex(value, config);
 	else if (key == "error_page")
-		;
-		// parseErrorPage(value, config);
+		parseErrorPage(value, config);
 	else if (key == "client_max_body_size")
 		;
 		// parseClientMaxBodySize(value, config);
+		// parseClientMaxBodySize(value, config);
 	else if (key == "allowed_methods")
 		;
-		// parseAllowedMethods(value, config);
+		// parseallowed_methods(value, config);
 	else
 		error("Error: invalid instruction: " + key);
 
 
 	(void)config;
 
+}
+
+void resetConfig(t_config &config) {
+	config.port = 0;
+	config.host = "0.0.0.0";
+	config.server_name.clear();
+	config.root = "";
+	config.valid = true;
+	config.autoindex = false;
+	config.index.clear();
+	config.error_pages.clear();
+	config.client_max_body_size = 1048576;
+	config.allowed_methods.clear();
+	config.location_rules.clear();
+	config.cgi_script = "";
+	 
 }
 
 void	parseServerBlocks(std::vector<std::string> serverBlocks) {
@@ -227,6 +296,7 @@ void	parseServerBlocks(std::vector<std::string> serverBlocks) {
 
 	std::cout << "serverBlocks.size(): " << serverBlocks.size() << std::endl;
 	for (it = serverBlocks.begin(); it != serverBlocks.end(); it++) {
+		resetConfig(config);
 		content = (*it).substr(findServerAndLocation(*it,0,1), (*it).find_last_of("}"));
 		if (content.find(";") == std::string::npos)
 			error("Error: no instruction in server block");
