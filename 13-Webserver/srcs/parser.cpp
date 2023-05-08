@@ -129,8 +129,7 @@ void	parseListen(std::string value, t_config &config) {
 		config.port = std::stoi(value);
 	else if (!checkPortHost(value))
 		error("Error: invalid port or host");
-	else
-	{
+	else {
 		config.port = std::stoi(value.substr(value.find(":") + 1));
 		config.host = value.substr(0, value.find(":"));
 	}
@@ -161,8 +160,7 @@ void	parseServerName(std::string value, t_config &config) {
 	std::string	serverName;
 	int count = 0;
 
-	while (value.find_first_of(" \n\r\t") != std::string::npos)
-	{
+	while (value.find_first_of(" \n\r\t") != std::string::npos) {
 		serverName = value.substr(0, value.find_first_of(" \n\r\t"));
 		count++;
 		if (checkServerName(serverName) == false)
@@ -192,8 +190,7 @@ void	parseAutoindex(std::string value, t_config &config) {
 void parseIndex(std::string value, t_config &config) {
 	std::string	idx;
 
-	while (value.find_first_of(" \n\r\t") != std::string::npos)
-	{
+	while (value.find_first_of(" \n\r\t") != std::string::npos) {
 		idx = myTrim(value.substr(0, value.find_first_of(" \n\r\t")));
 		if (idx == "")
 			return ;
@@ -209,8 +206,7 @@ void parseIndex(std::string value, t_config &config) {
 void parseErrorPage(std::string value, t_config &config) {
 	std::string	error_page;
 
-	while (value.find_first_of(" \n\r\t") != std::string::npos)
-	{
+	while (value.find_first_of(" \n\r\t") != std::string::npos) {
 		error_page = myTrim(value.substr(0, value.find_first_of(" \n\r\t")));
 		if (error_page == "")
 			return ;
@@ -223,16 +219,57 @@ void parseErrorPage(std::string value, t_config &config) {
 		std::cout << "error_pages: " << config.error_pages[i] << std::endl;
 }
 
-// void parseClientMaxBodySize(std::string value, t_config &config) {
-// 	if (value.find_first_of(" \n\r\t") != std::string::npos)
-// 		error("Error: invalid client_max_body_size should be one number");
-// 	else {
-// 		config.client_max_body_size = std::stoi(value);
-// 		if (config.client_max_body_size < 0)
-// 			error("Error: invalid client_max_body_size should be positive");
-// 	}
-// 	std::cout << "client_max_body_size: " << config.client_max_body_size << std::endl;
-// }
+void		parseClientMaxBodySize(std::string value, t_config &config) {
+	size_t	idx = value.find_first_not_of("0123456789");
+	unsigned long	size;
+	size = strtoul(value.c_str(), NULL, 0);
+
+	if (idx != std::string::npos) {
+		if (value.find_last_of("KMB") == value.length() - 1) {
+			if (value[value.length() - 1] == 'K')
+				size *= 1024;
+			else if (value[value.length() - 1] == 'M')
+				size *= 1024 * 1024;
+			else if (value[value.length() - 1] == 'B')
+				;
+			else
+				error("Error: not a correct size - K (kilobit), M (megabit), B (bit)");
+		}
+		else
+			error("Error: invalid client body max size syntax");
+		config.client_max_body_size = size;
+	}
+	std::cout << "client_max_body_size: " << config.client_max_body_size << std::endl;
+}
+
+void	parseAllowedMethods(std::string text, t_config &config) {
+	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
+	std::string	method;
+	int count = 0;
+
+	while (text.find_first_of(" \n\r\t") != std::string::npos) {
+		method = text.substr(0, text.find_first_of(" \n\r\t"));
+		count++;
+		if (std::find(std::begin(methods), std::end(methods), method) == std::end(methods))
+			error("Error: invalid method in server block: " + std::to_string(count));
+		
+		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
+			continue;
+		config.allowed_methods.push_back(method);
+		text = myTrim(text.substr(text.find_first_of(" \n\r\t") + 1));
+	}
+	if (text != "") {
+		count++;
+		if (std::find(std::begin(methods), std::end(methods), text) == std::end(methods))
+			error("Error: invalid method in server block: " + std::to_string(count));
+		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
+			return ;
+		config.allowed_methods.push_back(text);
+	}
+	for (size_t i = 0; i < config.allowed_methods.size(); i++)
+		std::cout << "allowed_methods: " << config.allowed_methods[i] << std::endl;
+
+}
 
 void	fillKeyValueArgs(std::string text, t_config &config) {
 	std::string	key;
@@ -241,9 +278,6 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 	key = text.substr(0, text.find_first_of(" \n\r\t"));
 	value = text.substr(text.find_first_of(" \n\r\t") + 1);
 	value = myTrim(value);
-	// parse arguments
-	std::cout << "key: " << key << std::endl;
-	std::cout << "value: " << value << std::endl;
 
 	if (key == "listen")
 		parseListen(value, config);
@@ -258,12 +292,9 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 	else if (key == "error_page")
 		parseErrorPage(value, config);
 	else if (key == "client_max_body_size")
-		;
-		// parseClientMaxBodySize(value, config);
-		// parseClientMaxBodySize(value, config);
+		parseClientMaxBodySize(value, config);
 	else if (key == "allowed_methods")
-		;
-		// parseallowed_methods(value, config);
+		parseAllowedMethods(value, config);
 	else
 		error("Error: invalid instruction: " + key);
 
