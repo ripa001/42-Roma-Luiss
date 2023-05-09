@@ -105,14 +105,10 @@ bool	checkPortHost(std::string value) {
 		port = value;
 		if (checkPort(port))
 			return true;
-	}
-	else {
+	} else {
 		port = value.substr(value.find(":") + 1);
 		host = value.substr(0, value.find(":"));
 	}
-	std::cout << "port: " << port << std::endl;
-	std::cout << "host: " << host << std::endl;
-
 	// check if host is a valid ip
 	if (checkHost(host) && checkPort(port))
 		return true;
@@ -182,9 +178,7 @@ void	parseAutoindex(std::string value, t_config &config) {
 	else if (value == "off")
 		config.autoindex = false;
 	else
-		error("Error: invalid autoindex");
-	std::cout << "autoindex: " << config.autoindex << std::endl;
-	
+		error("Error: invalid autoindex");	
 }
 
 void parseIndex(std::string value, t_config &config) {
@@ -199,8 +193,6 @@ void parseIndex(std::string value, t_config &config) {
 	}
 	if (value != "")
 		config.index.push_back(value);
-	for (size_t i = 0; i < config.index.size(); i++)
-		std::cout << "index: " << config.index[i] << std::endl;
 }
 
 void parseErrorPage(std::string value, t_config &config) {
@@ -215,8 +207,6 @@ void parseErrorPage(std::string value, t_config &config) {
 	}
 	if (value != "")
 		config.error_pages.push_back(value);
-	for (size_t i = 0; i < config.error_pages.size(); i++)
-		std::cout << "error_pages: " << config.error_pages[i] << std::endl;
 }
 
 void		parseClientMaxBodySize(std::string value, t_config &config) {
@@ -266,9 +256,27 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 			return ;
 		config.allowed_methods.push_back(text);
 	}
-	for (size_t i = 0; i < config.allowed_methods.size(); i++)
-		std::cout << "allowed_methods: " << config.allowed_methods[i] << std::endl;
+}
 
+void	parseLocationBlock(std::string text, t_config &config) {
+	t_location	location;
+
+	location.regex = false;
+	location.exact_path = false;
+	text = myTrim(text.substr(8));
+	if (text.at(0) == '~')
+		location.regex = true;
+	else if (text.at(0) == '=')
+		location.exact_path = true;
+	text = myTrim(text.substr(text.find_first_not_of(" \n\r\t~=")));
+	location.path = text.substr(0, text.find_first_of(" \n\r\t{"));
+	if (location.path == "")
+		error("Error: location block must have a path");
+	text = myTrim(text.substr(text.find_first_of(" \n\r\t{")));
+	if (text.at(0) != '{')
+		error("Error: location block must start with {");
+	location.content = myTrim(text.substr(1, text.find_last_of(" \n\r\t}")));
+	config.locations.push_back(location);
 }
 
 void	fillKeyValueArgs(std::string text, t_config &config) {
@@ -314,16 +322,17 @@ void resetConfig(t_config &config) {
 	config.error_pages.clear();
 	config.client_max_body_size = 1048576;
 	config.allowed_methods.clear();
-	config.location_rules.clear();
+	config.locations.clear();
 	config.cgi_script = "";
 	 
 }
 
-void	parseServerBlocks(std::vector<std::string> serverBlocks) {
+std::vector<t_config>	parseServerBlocks(std::vector<std::string> serverBlocks) {
 	std::vector<std::string>::iterator	it;
 	t_config							config;
 	std::string							content;
 	std::string							tmp;
+	std::vector<t_config>				tmpVec;
 
 	std::cout << "serverBlocks.size(): " << serverBlocks.size() << std::endl;
 	for (it = serverBlocks.begin(); it != serverBlocks.end(); it++) {
@@ -337,31 +346,22 @@ void	parseServerBlocks(std::vector<std::string> serverBlocks) {
 				error("Error: invalid instruction, there should ne spaces between the instruction and the parameters");
 			if (findServerAndLocation(tmp, 0, 0, 1) != std::string::npos) {
 				tmp = myTrim(content.substr(0, content.find("}") + 1));
-				// parseLocationBlock(tmp, config);
-				std::cout << "location: " << tmp << std::endl;
+				parseLocationBlock(tmp, config);
 				content = content.substr(content.find("}") + 1);
 				continue;
 			}
 			fillKeyValueArgs(myTrim(tmp), config);
-			
-			(void)config;
-			// if (key.find("location")
 			content = content.substr(content.find(";") + 1);
-			
 		}
-		
+		tmpVec.push_back(config);
 	}
-	
-	// for (size_t i = 0; i < serverBlocks.size(); i++)
-	// {
-	// 	std::cout << serverBlocks[i]  << std::endl << "---" << std::endl;
-	// }
+	return tmpVec;
 }
 
-void	parse(std::string text) {
+std::vector<t_config>	parse(std::string text) {
 	std::vector<std::string>	serverBlocks;
 
 	divideServers(text, &serverBlocks);
-	parseServerBlocks(serverBlocks);
+	return(parseServerBlocks(serverBlocks));
 }
 
