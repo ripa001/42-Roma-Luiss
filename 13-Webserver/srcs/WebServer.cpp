@@ -67,5 +67,8 @@ void	WebServer::createConfigs(std::string const &configPath) {
 			}
 		std::cout << " -------------------------------------- " << std::endl;
 		}
+	for (std::vector<t_config>::iterator it = _configs.begin(); it != _configs.end(); it++) {
+		_servers.push_back(Server(*it));
+	}
 	// divideServers(text, serverBlocks);
 }
