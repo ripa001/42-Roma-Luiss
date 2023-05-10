@@ -9,11 +9,22 @@ WebServer::WebServer(std::string const &configPath) {
 WebServer::~WebServer() {
 }
 
+Server* findServer(std::vector<Server> &servers, std::string host, int port) {
+	for (std::vector<Server>::iterator it = servers.begin(); it != servers.end(); it++) {
+		for (int i = 0; i < (int)(*it).getConfigs().size(); i++) {
+			if ((*it).getConfig(i)->host == host && (*it).getConfig(i)->port == port)
+				return (&(*it));
+		}
+	}
+	return (NULL);
+}
+
 void	WebServer::createConfigs(std::string const &configPath) {
 	std::ifstream				confFile(configPath);
 	std::string					text;
 	std::stringstream			buffer;
 	std::vector<t_config>		v_prime;
+	Server*						server;
 	
 	if (!confFile.is_open())
 		throw std::runtime_error("Error: cannot open config file");
@@ -68,7 +79,13 @@ void	WebServer::createConfigs(std::string const &configPath) {
 		std::cout << " -------------------------------------- " << std::endl;
 		}
 	for (std::vector<t_config>::iterator it = _configs.begin(); it != _configs.end(); it++) {
-		_servers.push_back(Server(*it));
+		server = findServer(_servers, it->host, it->port);
+		if (server == NULL)
+			_servers.push_back(Server(*it));
+		else
+			server->getConfigs().push_back(*it);
 	}
+	// while (true)
+	// 	;	
 	// divideServers(text, serverBlocks);
 }

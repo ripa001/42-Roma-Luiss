@@ -17,7 +17,14 @@ private:
 		int													_sockfd;
 		std::vector<t_connInfo>								_connections;
 		std::map<std::string, std::string>					_cookies;
+
+
 public:
+	t_config*												getConfig();
+	t_config*												getConfig(int i);
+	std::vector<t_config>									getConfigs();
+	bool													startServer();
+
 	Server(t_config config);
 	~Server();
 };

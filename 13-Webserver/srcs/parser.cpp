@@ -209,11 +209,11 @@ void parseErrorPage(std::string value, t_config &config) {
 		config.error_pages.push_back(value);
 }
 
-void		parseClientMaxBodySize(std::string value, t_config &config) {
+void	parseClientMaxBodySize(std::string value, t_config &config) {
 	size_t	idx = value.find_first_not_of("0123456789");
 	unsigned long	size;
-	size = strtoul(value.c_str(), NULL, 0);
 
+	size = strtoul(value.c_str(), NULL, 0);
 	if (idx != std::string::npos) {
 		if (value.find_last_of("KMB") == value.length() - 1) {
 			if (value[value.length() - 1] == 'K')
@@ -240,6 +240,8 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		method = text.substr(0, text.find_first_of(" \n\r\t"));
 		count++;
+		std::cout << "EBONDIIII" << method << std::endl;
+		// print("EBONDIIII", method)
 		if (std::find(std::begin(methods), std::end(methods), method) == std::end(methods))
 			error("Error: invalid method in server block: " + std::to_string(count));
 		
