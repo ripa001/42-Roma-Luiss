@@ -19,8 +19,60 @@ Server* findServer(std::vector<Server> &servers, std::string host, int port) {
 	return (NULL);
 }
 
+void	WebServer::startLooping(int fd_count, int fd_size) {
+	int	socket;
+	int poll_count;
+
+	for (;;) {
+		poll_count = poll(_pfds, fd_count, -1);
+
+		if (poll_count == -1) {
+			perror("poll");
+			exit(1);
+		}
+		for (int i = 0; i < fd_count; i++) {
+			if (_pfds[i].revents & (POLLIN | POLLPRI | POLLRDNORM)) {
+				for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); ++it) {
+					if (_pfds[i].fd == it->getSocket()) {;
+						socket = it->newConnection(it->getSocket());
+						if (fd_count == fd_size) {
+							fd_size *= 2; // Double it
+							_pfds = (struct pollfd *)realloc(_pfds, sizeof(*_pfds) * (fd_size));
+						}
+						_pfds[fd_count].fd = socket;
+						_pfds[fd_count].events = POLLIN | POLLPRI; // Check ready-to-read
+						fd_count++;
+					} else {
+						;
+						// if (it->handleClient(_pfds[i].fd) == 1) {
+						// 	del_from_pfds(_pfds, i, &fd_count);
+						// }
+					}
+				}
+			}
+		}
+	}
+}
+
+void	WebServer::start() {
+	int fd_count = 0;
+	int fd_size;
+
+	this->_pfds = (struct pollfd*)malloc(sizeof(*_pfds) * _servers.size());
+
+	for (std::vector<Server>::size_type i = 0; i < _servers.size(); i++) {
+		_pfds[i].fd = _servers[i].getSocket();
+		_pfds[i].events = POLLIN;
+		fd_count++;
+	}
+	fd_size = fd_count;
+	startLooping(fd_count, fd_size);
+	
+}
+
+
 void	WebServer::createConfigs(std::string const &configPath) {
-	std::ifstream				confFile(configPath);
+	std::ifstream				confFile(configPath.c_str());
 	std::string					text;
 	std::stringstream			buffer;
 	std::vector<t_config>		v_prime;
@@ -85,7 +137,6 @@ void	WebServer::createConfigs(std::string const &configPath) {
 		else
 			server->getConfigs().push_back(*it);
 	}
-	// while (true)
-	// 	;	
+	start();
 	// divideServers(text, serverBlocks);
 }

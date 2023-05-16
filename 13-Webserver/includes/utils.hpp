@@ -12,6 +12,8 @@
 
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <poll.h>
+
 
 typedef	struct	s_location
 {
@@ -30,6 +32,14 @@ typedef	struct	s_location
 		return (*this);
 	}
 }				t_location;
+
+typedef struct	s_connection
+{
+	int						socket;
+
+	s_connection() {};
+	s_connection(int i) : socket(i) {};
+}				t_connection;
 
 
 typedef struct	s_config

@@ -23,6 +23,24 @@ t_config*	Server::getConfig(int i) {
 	return &_configs[i];
 }
 
+int Server::getSocket() {
+	return _sockfd;
+}
+
+int	Server::newConnection(int socket) {
+	socklen_t				addrlen;
+	struct sockaddr_storage	sockaddr;
+	int						connection;
+
+	addrlen = sizeof(sockaddr);
+	connection = accept(socket, (struct sockaddr*)&sockaddr, (socklen_t*)&addrlen);
+	if (connection < 0)
+		error("Error: Connection could not be accepted");
+	_connections.push_back(t_connection(connection));
+	return connection;
+}
+
+
 Server::Server(t_config config) {
 	_config = NULL;
 	_configs.push_back(config);

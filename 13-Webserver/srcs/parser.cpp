@@ -67,7 +67,7 @@ bool	checkPort(std::string value) {
 		if (!std::isdigit(value[i]))
 			error("Error: port is not a number");
 	// check if port is between 0 and 65535
-	if (std::stoi(value) < 0 || std::stoi(value) > 65535)
+	if (strtol(value.c_str(), NULL, 0) < 0 || strtol(value.c_str(), NULL, 0) > 65535)
 		error("Error: port is not between 0 and 65535");
 	return true;
 }
@@ -87,11 +87,11 @@ bool	checkHost(std::string host) {
 	size_t j = 0;
 	for (size_t i = 0; i < host.length(); i++)
 		if (host[i] == '.') {
-			if (std::stoi(host.substr(j, i - j)) < 0 || std::stoi(host.substr(j, i - j)) > 255)
+			if (strtol(host.substr(j, i - j).c_str(), NULL, 0) < 0 || strtol(host.substr(j, i - j).c_str(), NULL, 0) > 255)
 				error("Error: host is not a valid ip in range 0-255");
 			j = i + 1;
 		}
-	if (std::stoi(host.substr(j, host.length() - j)) < 0 || std::stoi(host.substr(j, host.length() - j)) > 255)
+	if (strtol(host.substr(j, host.length() - j).c_str(), NULL, 0) < 0 || strtol(host.substr(j, host.length() - j).c_str(), NULL, 0) > 255)
 		error("Error: host is not a valid ip in range 0-255");
 	
 	return true;
@@ -122,11 +122,11 @@ void	parseListen(std::string value, t_config &config) {
 	if (value.find(":") == std::string::npos && !checkPortHost(value))
 		error("Error: invalid port");
 	else if (value.find(":") == std::string::npos)
-		config.port = std::stoi(value);
+		config.port = strtol(value.c_str(), NULL, 0);
 	else if (!checkPortHost(value))
 		error("Error: invalid port or host");
 	else {
-		config.port = std::stoi(value.substr(value.find(":") + 1));
+		config.port = strtol(value.substr(value.find(":") + 1).c_str(), NULL, 0);
 		config.host = value.substr(0, value.find(":"));
 	}
 }
@@ -160,7 +160,7 @@ void	parseServerName(std::string value, t_config &config) {
 		serverName = value.substr(0, value.find_first_of(" \n\r\t"));
 		count++;
 		if (checkServerName(serverName) == false)
-			error("Error: invalid server name in server block: " + std::to_string(count));
+			error("Error: invalid server name in server block: " );
 		config.server_name.push_back(serverName);
 		value = value.substr(value.find_first_of(" \n\r\t") + 1);
 	}
@@ -242,8 +242,8 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 		count++;
 		std::cout << "EBONDIIII" << method << std::endl;
 		// print("EBONDIIII", method)
-		if (std::find(std::begin(methods), std::end(methods), method) == std::end(methods))
-			error("Error: invalid method in server block: " + std::to_string(count));
+		if (std::find(methods, methods + 5, method) == methods + 5)
+			error("Error: invalid method in server block: ");
 		
 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
 			continue;
@@ -252,8 +252,8 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 	}
 	if (text != "") {
 		count++;
-		if (std::find(std::begin(methods), std::end(methods), text) == std::end(methods))
-			error("Error: invalid method in server block: " + std::to_string(count));
+		if (std::find(methods, methods + 5, text) == methods + 5)
+			error("Error: invalid method in server block: ");
 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
 			return ;
 		config.allowed_methods.push_back(text);
