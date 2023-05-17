@@ -33,9 +33,46 @@ typedef	struct	s_location
 	}
 }				t_location;
 
+typedef struct	s_request
+{
+	std::string											line;
+	std::string											method;
+	std::string											path;
+	std::string											arguments;
+	std::vector<std::pair<std::string, std::string> >	headers;
+	std::string											body;
+
+	s_request() {
+		headers.push_back(std::make_pair("Host", ""));
+		headers.push_back(std::make_pair("User-Agent", ""));
+		headers.push_back(std::make_pair("Accept", ""));
+		headers.push_back(std::make_pair("Accept-Language", ""));
+		headers.push_back(std::make_pair("Accept-Encoding", ""));
+		headers.push_back(std::make_pair("Connection", ""));
+		headers.push_back(std::make_pair("Upgrade-Insecure-Requests", ""));
+		headers.push_back(std::make_pair("Sec-Fetch-Dest", ""));
+		headers.push_back(std::make_pair("Sec-Fetch-Mode", ""));
+		headers.push_back(std::make_pair("Sec-Fetch-Site", ""));
+		headers.push_back(std::make_pair("Sec-Fetch-User", ""));
+		headers.push_back(std::make_pair("Content-Length", ""));
+		headers.push_back(std::make_pair("Content-Type", ""));
+		headers.push_back(std::make_pair("Expect", ""));
+		headers.push_back(std::make_pair("Transfer-Encoding", ""));
+		headers.push_back(std::make_pair("Cookie", ""));
+	};
+
+	~s_request() {
+		headers.clear();
+	};
+
+}		t_request;
+
 typedef struct	s_connection
 {
 	int						socket;
+	s_request				request;
+	std::string				buffer;
+
 
 	s_connection() {};
 	s_connection(int i) : socket(i) {};

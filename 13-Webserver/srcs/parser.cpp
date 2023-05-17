@@ -15,6 +15,8 @@ size_t findServerAndLocation(const std::string& str, size_t skipChars = 0, size_
         while (std::isspace(str[pos]))
             ++pos;
 		if (location == 1){
+			if (str[pos] == ';')
+				error("Error: no location path found");
 			if (str[pos] == '{')
 				error("Error: no location path found");
 			while (str[pos] != '{')
@@ -73,7 +75,8 @@ bool	checkPort(std::string value) {
 }
 
 bool	checkHost(std::string host) {
-	// check if host is a valid ip
+	size_t j = 0;
+
 	for (size_t i = 0; i < host.length(); i++)
 		if (host[i] == '.')
 			if (host[i + 1] == '.' || host[i - 1] == '.')
@@ -83,8 +86,6 @@ bool	checkHost(std::string host) {
 			error("Error: host is not a valid ip it should be a number or a dot");
 	if (std::count(host.begin(), host.end(), '.') != 3)
 		error("Error: host is not a valid ip it should have 3 dots");
-
-	size_t j = 0;
 	for (size_t i = 0; i < host.length(); i++)
 		if (host[i] == '.') {
 			if (strtol(host.substr(j, i - j).c_str(), NULL, 0) < 0 || strtol(host.substr(j, i - j).c_str(), NULL, 0) > 255)
@@ -93,7 +94,6 @@ bool	checkHost(std::string host) {
 		}
 	if (strtol(host.substr(j, host.length() - j).c_str(), NULL, 0) < 0 || strtol(host.substr(j, host.length() - j).c_str(), NULL, 0) > 255)
 		error("Error: host is not a valid ip in range 0-255");
-	
 	return true;
 }
 
@@ -240,8 +240,6 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		method = text.substr(0, text.find_first_of(" \n\r\t"));
 		count++;
-		std::cout << "EBONDIIII" << method << std::endl;
-		// print("EBONDIIII", method)
 		if (std::find(methods, methods + 5, method) == methods + 5)
 			error("Error: invalid method in server block: ");
 		
@@ -365,5 +363,12 @@ std::vector<t_config>	parse(std::string text) {
 
 	divideServers(text, &serverBlocks);
 	return(parseServerBlocks(serverBlocks));
+}
+
+void	parseRequest(std::string request) {
+	std::string		method;
+
+	method = request.substr(0, request.find_first_of("/"));
+	
 }
 

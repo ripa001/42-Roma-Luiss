@@ -43,7 +43,7 @@ void	WebServer::startLooping(int fd_count, int fd_size) {
 						_pfds[fd_count].events = POLLIN | POLLPRI; // Check ready-to-read
 						fd_count++;
 					} else {
-						;
+						it->handleClient(_pfds[i].fd);
 						// if (it->handleClient(_pfds[i].fd) == 1) {
 						// 	del_from_pfds(_pfds, i, &fd_count);
 						// }

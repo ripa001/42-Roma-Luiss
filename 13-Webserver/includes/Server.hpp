@@ -15,7 +15,7 @@ private:
 		struct sockaddr_in									_client;
 		socklen_t											_size;
 		int													_sockfd;
-		std::vector<t_connection>								_connections;
+		std::vector<t_connection>							_connections;
 		std::map<std::string, std::string>					_cookies;
 
 
@@ -26,7 +26,9 @@ public:
 	int														getSocket();
 	bool													startServer();
 	int														newConnection(int socket);
-	
+	std::vector<t_connection>::iterator						findSocket(std::vector<t_connection> connections, int socket);
+	int														handleClient(int socket);
+	std::vector<t_connection>::iterator						findSocket(int socket);
 
 	Server(t_config config);
 	~Server();
