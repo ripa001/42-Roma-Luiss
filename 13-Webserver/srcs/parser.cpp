@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 10:45:28 by dripanuc          #+#    #+#             */
+/*   Updated: 2023/05/18 10:45:28 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/utils.hpp"
 
 size_t findServerAndLocation(const std::string& str, size_t skipChars = 0, size_t returEnd = 0, int location = 0) {
@@ -365,10 +377,32 @@ std::vector<t_config>	parse(std::string text) {
 	return(parseServerBlocks(serverBlocks));
 }
 
-void	parseRequest(std::string request) {
-	std::string		method;
+bool	parseRequest(std::string buffer, t_request &request) {
+	std::string	key;
+	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
 
-	method = request.substr(0, request.find_first_of("/"));
-	
+	buffer = myTrim(buffer);
+	request.method = buffer.substr(0, buffer.find_first_of(" "));
+	std::cout << "request.method: " << request.method << std::endl;
+	buffer = myTrim(buffer.substr(buffer.find_first_of(" ") + 1));
+	request.path = buffer.substr(0, buffer.find_first_of(" "));
+	std::cout << "request.path: " << request.path << std::endl;
+	if (std::find(methods, methods + 5, request.method) == methods + 5)
+		return (0);
+	buffer = myTrim(buffer.substr(buffer.find_first_of("\n") + 1));
+	while (buffer.find_first_of("\n") != std::string::npos) {
+		key = buffer.substr(0, buffer.find_first_of(":"));
+		if (request.headers.find(key) == request.headers.end())
+			return (0);
+		request.headers[key] = buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2);
+		std::cout << buffer.substr(0, buffer.find_first_of(":")) << ": " << request.headers[key] << std::endl;
+		buffer = myTrim(buffer.substr(buffer.find_first_of("\n") + 1));
+	}
+	key = buffer.substr(0, buffer.find_first_of(":"));
+	if (request.headers.find(key) == request.headers.end())
+		return (0);
+	request.headers[key] = buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2);
+	std::cout << buffer.substr(0, buffer.find_first_of(":")) << ": " << request.headers[key] << std::endl;
+	return (1);
 }
 

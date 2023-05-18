@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dripanuc <dripanuc@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/18 10:45:09 by dripanuc          #+#    #+#             */
+/*   Updated: 2023/05/18 10:45:09 by dripanuc         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #pragma once
 
 #include "utils.hpp"
 
 class Server
 {
-private:
+	private:
 		typedef std::vector<std::pair<std::string, std::string> >::iterator	iterator;
 		Server();
 
@@ -19,17 +31,18 @@ private:
 		std::map<std::string, std::string>					_cookies;
 
 
-public:
-	t_config*												getConfig();
-	t_config*												getConfig(int i);
-	std::vector<t_config>									getConfigs();
-	int														getSocket();
-	bool													startServer();
-	int														newConnection(int socket);
-	std::vector<t_connection>::iterator						findSocket(std::vector<t_connection> connections, int socket);
-	int														handleClient(int socket);
-	std::vector<t_connection>::iterator						findSocket(int socket);
+	public:
+		bool													startServer();
+		int														getSocket();
+		int														newConnection(int socket);
+		int														handleClient(int socket);
+		t_config*												getConfig();
+		t_config*												getConfig(int i);
+		std::vector<t_config>									getConfigs();
+		std::vector<t_connection>::iterator						findSocket(std::vector<t_connection> connections, int socket);
+		std::vector<t_connection>::iterator						findSocket(int socket);
+		void													defaultAnswerError(int err, t_connection conn);
 
-	Server(t_config config);
-	~Server();
+		Server(t_config config);
+		~Server();
 };
