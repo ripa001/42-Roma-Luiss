@@ -172,7 +172,7 @@ typedef struct	s_connection
 	t_response				response;
 	std::string				buffer;
 	t_config				config;
-
+	t_location*				location;
 
 
 	s_connection() {};

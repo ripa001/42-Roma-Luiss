@@ -30,18 +30,21 @@ class Server
 		std::vector<t_connection>							_connections;
 		std::map<std::string, std::string>					_cookies;
 
+		void												defaultAnswerError(int err, t_connection conn);
+		t_location*											findLocationByConnection(t_connection &conn);
+		t_config*											findConfigByConnection(t_connection &conn);
+		bool												isRegex(std::string path, t_config *config);
 
 	public:
-		bool													startServer();
-		int														getSocket();
-		int														newConnection(int socket);
-		int														handleClient(int socket);
-		t_config*												getConfig();
-		t_config*												getConfig(int i);
-		std::vector<t_config>									getConfigs();
-		std::vector<t_connection>::iterator						findSocket(std::vector<t_connection> connections, int socket);
-		std::vector<t_connection>::iterator						findSocket(int socket);
-		void													defaultAnswerError(int err, t_connection conn);
+		bool												startServer();
+		int													getSocket();
+		int													newConnection(int socket);
+		int													handleClient(int socket);
+		t_config*											getConfig();
+		t_config*											getConfig(int i);
+		std::vector<t_config>								getConfigs();
+		std::vector<t_connection>::iterator					findSocket(std::vector<t_connection> connections, int socket);
+		std::vector<t_connection>::iterator					findSocket(int socket);
 
 		Server(t_config config);
 		~Server();

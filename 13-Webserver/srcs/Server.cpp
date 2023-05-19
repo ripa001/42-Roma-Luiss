@@ -83,8 +83,55 @@ void	Server::defaultAnswerError(int err, t_connection conn) {
 	conn.response.line = "HTTP/1.1 " + tmpString;
 }
 
+t_config*	Server::findConfigByConnection(t_connection &conn) {
+	std::string	serverName = conn.request.headers["Host"];
+
+
+	if (serverName.find(":") != serverName.npos)
+		serverName = serverName.substr(0, serverName.find(":"));
+
+	if (!std::strncmp(serverName.c_str(), "localhost", 9) || serverName.find("localhost") != serverName.npos)
+		return (&(*(_configs.begin())));
+		
+	for (std::vector<t_config>::iterator iter = _configs.begin(); iter != _configs.end(); iter++)
+	{
+		for (std::vector<std::string>::iterator serverNameIt = iter->server_name.begin(); serverNameIt != iter->server_name.end(); serverNameIt++)
+		{
+			if (!serverName.compare(*serverNameIt))
+				return (&(*iter));
+		}
+	}
+	return (&(*(_configs.begin())));
+}
+
+bool	Server::isRegex(std::string path, t_config *config) {
+	std::vector<t_location>::iterator iter = config->locations.begin();
+
+	while (iter != config->locations.end()) {
+		if (iter->regex && !std::strncmp(iter->path.c_str(), &(path.c_str())[path.length() - iter->path.length()], iter->path.length()))
+			return true;
+
+		// if (iter->regex && !std::strncmp(iter->path.c_str(), path.c_str(), iter->path.length()))
+		iter++;
+	}
+	return false;
+}
+
+t_location*	Server::findLocationByConnection(t_connection &conn) {
+	// std::vector<t_location>::iterator iter = _config->locations.begin();
+	// t_location *ret = NULL;
+	bool regex;
+
+	_config = findConfigByConnection(conn);
+	regex = isRegex(conn.request.path, _config);
+	std::cout << "Regex: " << regex << std::endl;
+	return &_config->locations[0];
+}
+
+
 int	Server::handleClient(int socket) {
 	std::vector<t_connection>::iterator it = findSocket(socket);
+
 	if (it == _connections.end())
 		return (0);
 
@@ -104,16 +151,9 @@ int	Server::handleClient(int socket) {
 			_connections.erase(it);
 			return (1);
 		}
-		// parseRequest(it->buffer, it->request);
-		// if (!this->readRequest(*it, it->buffer))
-		// {
-		// 	defaultAnswerError(400, *it);
-		// 	_connections.erase(it);
-		// 	return (1);
-		// }
+		it->location = findLocationByConnection(*it);
 	}
 	return (0);
-
 }
 
 int	Server::newConnection(int socket) {
