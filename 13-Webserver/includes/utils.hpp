@@ -204,4 +204,5 @@ std::string	myTrim(std::string str);
 // Parsing
 std::vector<t_config>	parse(std::string text);
 bool					parseRequest(std::string buffer, t_request &request);
+void					parseLocationContent(t_location &location)
 void 					divideServers(std::string text, std::vector<std::string> serverBlocks);

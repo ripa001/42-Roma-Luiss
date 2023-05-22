@@ -406,3 +406,9 @@ bool	parseRequest(std::string buffer, t_request &request) {
 	return (1);
 }
 
+void	parseLocationContent(t_location &location) {
+	// TODO parse loc
+	(void)location;
+
+}
+

@@ -42,6 +42,7 @@ class Server
 		int													handleClient(int socket);
 		t_config*											getConfig();
 		t_config*											getConfig(int i);
+		t_config											getConfigByConnection(t_connection &conn);
 		std::vector<t_config>								getConfigs();
 		std::vector<t_connection>::iterator					findSocket(std::vector<t_connection> connections, int socket);
 		std::vector<t_connection>::iterator					findSocket(int socket);
