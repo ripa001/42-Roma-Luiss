@@ -53,7 +53,6 @@ void	divideServers(std::string text, std::vector<std::string> *serverBlocks) {
 	while ((found = findServerAndLocation(text)) != std::string::npos) {
 		serverBlockTmp = text.substr(found, findServerAndLocation(text, found + 1));
 		// check if there are comments
-		std::cout << "serverBlockTmp: " << findServerAndLocation(text, found + 1) << found << std::endl;
 		while (serverBlockTmp.find("#") != std::string::npos)
 		{
 			if (serverBlockTmp.find("#") == 0)
@@ -241,7 +240,6 @@ void	parseClientMaxBodySize(std::string value, t_config &config) {
 			error("Error: invalid client body max size syntax");
 		config.client_max_body_size = size;
 	}
-	std::cout << "client_max_body_size: " << config.client_max_body_size << std::endl;
 }
 
 void	parseAllowedMethods(std::string text, t_config &config) {
@@ -287,7 +285,7 @@ void	parseLocationBlock(std::string text, t_config &config) {
 	text = myTrim(text.substr(text.find_first_of(" \n\r\t{")));
 	if (text.at(0) != '{')
 		error("Error: location block must start with {");
-	location.content = myTrim(text.substr(1, text.find_last_of(" \n\r\t}")));
+	location.content = myTrim(text.substr(1, text.find_last_of("}") - 1));
 	config.locations.push_back(location);
 }
 
@@ -346,7 +344,6 @@ std::vector<t_config>	parseServerBlocks(std::vector<std::string> serverBlocks) {
 	std::string							tmp;
 	std::vector<t_config>				tmpVec;
 
-	std::cout << "serverBlocks.size(): " << serverBlocks.size() << std::endl;
 	for (it = serverBlocks.begin(); it != serverBlocks.end(); it++) {
 		resetConfig(config);
 		content = (*it).substr(findServerAndLocation(*it,0,1), (*it).find_last_of("}"));
@@ -355,7 +352,7 @@ std::vector<t_config>	parseServerBlocks(std::vector<std::string> serverBlocks) {
 		while (content.find(";") != std::string::npos) {
 			tmp = content.substr(0, content.find(";"));
 			if (tmp.find_first_of(" \n\r\t") == std::string::npos)
-				error("Error: invalid instruction, there should ne spaces between the instruction and the parameters");
+				error("Error: invalid instruction, there should be spaces between the instruction and the parameters");
 			if (findServerAndLocation(tmp, 0, 0, 1) != std::string::npos) {
 				tmp = myTrim(content.substr(0, content.find("}") + 1));
 				parseLocationBlock(tmp, config);
@@ -406,9 +403,38 @@ bool	parseRequest(std::string buffer, t_request &request) {
 	return (1);
 }
 
+
+void	parseAllowedMethods(std::string text, t_config &config) {
+	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
+	std::string	method;
+	int count = 0;
+
+	while (text.find_first_of(" \n\r\t") != std::string::npos) {
+		method = text.substr(0, text.find_first_of(" \n\r\t"));
+		count++;
+		if (std::find(methods, methods + 5, method) == methods + 5)
+			error("Error: invalid method in server block: ");
+		
+		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
+			continue;
+		config.allowed_methods.push_back(method);
+		text = myTrim(text.substr(text.find_first_of(" \n\r\t") + 1));
+	}
+	if (text != "") {
+		count++;
+		if (std::find(methods, methods + 5, text) == methods + 5)
+			error("Error: invalid method in server block: ");
+		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
+			return ;
+		config.allowed_methods.push_back(text);
+	}
+}
+
 void	parseLocationContent(t_location *location) {
 	// TODO parse loc
 	(void)location;
+	std::cout << "location content: " << location->content << std::endl;
+	// lo
 
 }
 

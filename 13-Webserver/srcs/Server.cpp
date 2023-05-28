@@ -169,17 +169,24 @@ int	Server::handleClient(int socket) {
 	l.l_onoff = 1;
 	l.l_linger = 0;
 	(void)l;
+	std::cout << "Handling client" << std::endl;
 
 	unsigned char buffer;
 	if (it->request.method == "") {
+		std::cout << "Receiving request" << std::endl;
+
 		recv(socket, &buffer, sizeof(unsigned char), 0);
+		std::cout << "Received: " << buffer << std::endl;
 		it->buffer.push_back(buffer);
 		if (it->buffer.find("\r\n\r\n") == (size_t)-1) return 0;
-		if (parseRequest(it->buffer, it->request) == 1) {
+		std::cout << "Request received" << std::endl;
+		if (parseRequest(it->buffer, it->request) == 0) {
+			std::cout << "Request not parsed" << std::endl;
 			defaultAnswerError(400, *it);
 			_connections.erase(it);
 			return (1);
 		}
+		std::cout << "Request parsed" << std::endl;
 		it->location = findLocationByConnection(*it);
 		if (it->location->path == "") {
 			defaultAnswerError(404, *it);
