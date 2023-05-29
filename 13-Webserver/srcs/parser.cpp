@@ -183,7 +183,7 @@ void	parseRoot(std::string value, t_config &config) {
 	config.root = value;
 }
 
-void	parseAutoindex(std::string value, t_config &config) {
+void	parseAutoIndex(std::string value, t_config &config) {
 	if (value == "on")
 		config.autoindex = true;
 	else if (value == "off")
@@ -304,7 +304,7 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 	else if (key == "root")
 		parseRoot(value, config);
 	else if (key == "autoindex")
-		parseAutoindex(value, config);
+		parseAutoIndex(value, config);
 	else if (key == "index")
 		parseIndex(value, config);
 	else if (key == "error_page")
@@ -404,36 +404,79 @@ bool	parseRequest(std::string buffer, t_request &request) {
 }
 
 
-void	parseAllowedMethods(std::string text, t_config &config) {
-	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
-	std::string	method;
-	int count = 0;
+// void	parseAllowedMethodsLocation(std::string text, t_config &config) {
+// 	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
+// 	std::string	method;
+// 	int count = 0;
 
-	while (text.find_first_of(" \n\r\t") != std::string::npos) {
-		method = text.substr(0, text.find_first_of(" \n\r\t"));
-		count++;
-		if (std::find(methods, methods + 5, method) == methods + 5)
-			error("Error: invalid method in server block: ");
+// 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
+// 		method = text.substr(0, text.find_first_of(" \n\r\t"));
+// 		count++;
+// 		if (std::find(methods, methods + 5, method) == methods + 5)
+// 			error("Error: invalid method in server block: ");
 		
-		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
-			continue;
-		config.allowed_methods.push_back(method);
-		text = myTrim(text.substr(text.find_first_of(" \n\r\t") + 1));
-	}
-	if (text != "") {
-		count++;
-		if (std::find(methods, methods + 5, text) == methods + 5)
-			error("Error: invalid method in server block: ");
-		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
-			return ;
-		config.allowed_methods.push_back(text);
-	}
-}
+// 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
+// 			continue;
+// 		config.allowed_methods.push_back(method);
+// 		text = myTrim(text.substr(text.find_first_of(" \n\r\t") + 1));
+// 	}
+// 	if (text != "") {
+// 		count++;
+// 		if (std::find(methods, methods + 5, text) == methods + 5)
+// 			error("Error: invalid method in server block: ");
+// 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
+// 			return ;
+// 		config.allowed_methods.push_back(text);
+// 	}
+// }
 
 void	parseLocationContent(t_location *location) {
 	// TODO parse loc
-	(void)location;
+	std::string line;
+	std::string key;
+	std::string value;
+	t_config config;
+
 	std::cout << "location content: " << location->content << std::endl;
+	// while (line = location->content.substr(0, location->content.find("\n") + 1), line != "") {
+	for (line = location->content.substr(0, location->content.find("\n") + 1); line != ""; line = location->content.substr(0, location->content.find("\n") + 1)) {
+		std::cout << "line: " << line << std::endl;
+		line = myTrim(line);
+		if (line.find_last_of(";") != line.length() - 1)
+			error("Error: invalid instruction in location block -> ;");
+		if (line.find_first_of(" \n\r\t") == std::string::npos)
+			error("Error: invalid instruction in location block");
+		// if (line.find(" \n\r\t", 0) == std::string::npos)
+		// 	error("Error: invalid instruction in location block");
+		key = line.substr(0, line.find_first_of(" \n\r\t"));
+		value = myTrim(line.substr(line.find_first_of(" \n\r\t") + 1, line.find(";", 0) - line.find_first_of(" \n\r\t") - 1));
+		if (key == "root")
+			parseRoot(value, config);
+		else if (key == "allowed_methods")
+			parseAllowedMethods(value, config);
+		else if (key == "auto_index")
+			parseAutoIndex(value, config);
+		else if (key == "error_page")
+			parseErrorPage(value, config);
+		else if (key == "index")
+			parseIndex(value, config);
+		else if (key == "client_max_body_size")
+			parseClientMaxBodySize(value, config);
+		
+		
+
+
+		location->content = location->content.substr(location->content.find("\n") + 1);
+		std::cout << "key: " << key;
+		std::cout << "  value: " << value << std::endl;
+		// if (line.find("autoindex") != std::string::npos) {
+			
+		
+		// location->content.find("\n") != std::string::npos) {
+		// std::cout << "location content: " << location->content << std::endl;
+		// tmp = location->content.substr(0, location->content.find("\n"));
+		// location->content = location->content.substr(location->content.find("\n") + 1);
+	}
 	// lo
 
 }
