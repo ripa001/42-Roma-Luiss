@@ -92,10 +92,10 @@ typedef struct	s_config
 	s_config&	operator=(s_config const & rhs)
 	{
 		port = rhs.port;
-		server_name = rhs.server_name;
 		autoindex = rhs.autoindex;
 		index = rhs.index;
 		error_pages = rhs.error_pages;
+		server_name = rhs.server_name;
 		allowed_methods = rhs.allowed_methods;
 		try_files = rhs.try_files;
 		root = rhs.root;

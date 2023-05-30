@@ -149,26 +149,20 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 	t_config ret = *(findConfigByConnection(conn));
 	std::string path = conn.request.path;
 	std::string toCompare[9] = {"root", "autoindex", "index", "error_page", "client_max_body_size", "allowed_methods", "try_files", "return", "cgi_pass"};
-
 	if (path.find("?") != path.npos)
 		path = path.substr(0, path.find("?"));
-	// TODO: check if replace right string in location 
-	// std::cout << "Path: " << path << std::endl;
-	// std::cout << "Location conf try_files: " << conn.location->config->allowed_methods[0] << std::endl;
-	for (std::vector<std::string>::iterator iter = conn.location->config->try_files.begin(); iter != conn.location->config->try_files.end(); iter++) {
-		std::cout << "COnfig di location è buggutissimooo: " << conn.location->config << std::endl;
-		(void)iter;
-		// while (iter->find("$uri") != iter->npos) {
-		// 	size_t index = std::distance(conn.location->config->try_files.begin(), iter);
-		// 	std::cout << "Location conf try_files: " << *iter << index << std::endl;
-		// 	conn.location->config->try_files[index].replace(iter->find("$uri"), iter->find("$uri") + 4, path);
-		// }
-		// std::cout << "Location conf try_files: " << *iter << std::endl;
+	s_config& config = *(conn.location->config);
+	for (std::vector<std::string>::iterator iter = config.try_files.begin(); iter != config.try_files.end(); iter++) {
+	
+		std::cout << "COnfig di location è buggutissimooo: " << *iter << std::endl;
+		if (iter->find("$uri") != iter->npos) {
+			size_t index = std::distance(config.try_files.begin(), iter);
+			std::cout << "Location conf try_files: " << *iter << index << std::endl;
+			config.try_files[index].replace(iter->find("$uri"), iter->find("$uri") + 4, path);
+		}
+		std::cout << "Ora é un po' meno buggato: " << *iter << std::endl;
 	}
-	//  conn.location->config;
-	// for (std::string::iterator iter = conn.location->content.begin();conn.location->content.find("$uri") != std::string::npos;iter = conn.location->content.begin())
-	// 	conn.location->content.replace(iter + conn.location->content.find("$uri"), iter + conn.location->content.find("$uri") + 4, path);
-	// parseLocationContentConfig(conn);
+
 	//TODO follow il parsing di dd per le operazioni da effettuare sulla connection
 
 	return (ret);

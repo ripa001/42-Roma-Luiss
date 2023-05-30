@@ -269,10 +269,29 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 		config.allowed_methods.push_back(text);
 	}
 }
+void convertToSConfig(const t_config& source, s_config& target)
+{
+    // Convert individual elements from source to target
+    target.port = source.port;
+    target.host = source.host;
+    target.server_name = source.server_name;
+    target.root = source.root;
+    target.autoindex = source.autoindex;
+    target.index = source.index;
+    target.error_pages = source.error_pages;
+    target.client_max_body_size = source.client_max_body_size;
+    target.allowed_methods = source.allowed_methods;
+    target.locations = source.locations;
+    target.try_files = source.try_files;
+    target.return_ = source.return_;
+    target.cgi_script = source.cgi_script;
+    target.valid = source.valid;
+}
 
 void	parseLocationBlock(std::string text, t_config &config) {
 	t_location	location;
 	t_config	tmp;
+    location.config = new s_config();
 
 	location.regex = false;
 	location.exact_path = false;
@@ -291,7 +310,10 @@ void	parseLocationBlock(std::string text, t_config &config) {
 	location.content = myTrim(text.substr(1, text.find_last_of("}") - 1));
 	parseLocationContentConfig(location.content, tmp);
 	// std::cout << "location path: " << tmp.allowed_methods[0] << std::endl;
-	location.config = &tmp;
+	// std::cout << "try path: " << tmp.try_files[0] << std::endl;
+	// std::cout << "location path: " << tmp.allowed_methods[0] << std::endl;
+	convertToSConfig(tmp, *(location.config));
+	// location.config = &tmp;
 	// std::cout << "location path: " << configObj.allowed_methods[0] << std::endl;
 	// std::cout << "location path: " << (*(location.config)).allowed_methods[0] << std::endl;
 	// location.config = &(parseLocationContentConfig(location.content));
@@ -420,10 +442,11 @@ bool	parseRequest(std::string buffer, t_request &request) {
 void parseTryFiles(std::string text, t_config &config) {
 	std::string	tmp;
 
-
+	std::cout << " parsing rty text: " << text << std::endl;
 
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		tmp = text.substr(0, text.find_first_of(" \n\r\t"));
+		std::cout << "tmp try: " << tmp << std::endl;
 		// if (tmp.find_first_of("/") == std::string::npos)
 		// 	error("Error: invalid path in try_files: ");
 		config.try_files.push_back(tmp);
@@ -525,6 +548,7 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 			error("Error: invalid instruction in location block");
 		key = line.substr(0, line.find_first_of(" \n\r\t"));
 		value = myTrim(line.substr(line.find_first_of(" \n\r\t") + 1, line.find(";", 0) - line.find_first_of(" \n\r\t") - 1));
+		std::cout << "key: " << key << std::endl;
 		if (key == "root")
 			parseRoot(value, config);
 		else if (key == "allowed_methods")
@@ -543,7 +567,13 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 			parseReturn(value, config);
 		// else if (key == "cgi_pass")
 		// 	;
-		content = content.substr(content.find("\n") + 1);
+
+		if (myTrim(content).find("\n") == std::string::npos)
+			break ;
+		content = myTrim(content.substr(content.find("\n") + 1));
+		if (content.find("\n") == std::string::npos)
+			content = content + "\n";
+
 		// std::cout << "config: " << config.root << std::endl;
 		// std::cout << "config.allowed_methods: " << config.allowed_methods[0] << std::endl;
 		// std::cout << "config.autoindex: " << config.autoindex << std::endl;
@@ -555,6 +585,10 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 		// std::cout << "config.return_: " << config.return_[1] << std::endl;
 
 	}
+
+
+
+
 	return config;
 	// lo
 
