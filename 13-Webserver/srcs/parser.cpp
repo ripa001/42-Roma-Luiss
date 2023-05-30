@@ -269,9 +269,9 @@ void	parseAllowedMethods(std::string text, t_config &config) {
 		config.allowed_methods.push_back(text);
 	}
 }
+
 void convertToSConfig(const t_config& source, s_config& target)
 {
-    // Convert individual elements from source to target
     target.port = source.port;
     target.host = source.host;
     target.server_name = source.server_name;
@@ -309,19 +309,7 @@ void	parseLocationBlock(std::string text, t_config &config) {
 		error("Error: location block must start with {");
 	location.content = myTrim(text.substr(1, text.find_last_of("}") - 1));
 	parseLocationContentConfig(location.content, tmp);
-	// std::cout << "location path: " << tmp.allowed_methods[0] << std::endl;
-	// std::cout << "try path: " << tmp.try_files[0] << std::endl;
-	// std::cout << "location path: " << tmp.allowed_methods[0] << std::endl;
 	convertToSConfig(tmp, *(location.config));
-	// location.config = &tmp;
-	// std::cout << "location path: " << configObj.allowed_methods[0] << std::endl;
-	// std::cout << "location path: " << (*(location.config)).allowed_methods[0] << std::endl;
-	// location.config = &(parseLocationContentConfig(location.content));
-	// t_config configObj;  // Create an object of type t_config (s_config)
-	// s_config* configPtr; // Declare a pointer to s_config
-
-	// // Assign the address of configObj to configPtr
-	// configPtr = &configObj;
 	config.locations.push_back(location);
 }
 
@@ -332,7 +320,6 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 	key = text.substr(0, text.find_first_of(" \n\r\t"));
 	value = text.substr(text.find_first_of(" \n\r\t") + 1);
 	value = myTrim(value);
-
 	if (key == "listen")
 		parseListen(value, config);
 	else if (key == "server_name")
@@ -351,10 +338,6 @@ void	fillKeyValueArgs(std::string text, t_config &config) {
 		parseAllowedMethods(value, config);
 	else
 		error("Error: invalid instruction: " + key);
-
-
-	(void)config;
-
 }
 
 void resetConfig(t_config &config) {
@@ -442,8 +425,6 @@ bool	parseRequest(std::string buffer, t_request &request) {
 void parseTryFiles(std::string text, t_config &config) {
 	std::string	tmp;
 
-	std::cout << " parsing rty text: " << text << std::endl;
-
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		tmp = text.substr(0, text.find_first_of(" \n\r\t"));
 		std::cout << "tmp try: " << tmp << std::endl;
@@ -452,8 +433,6 @@ void parseTryFiles(std::string text, t_config &config) {
 		config.try_files.push_back(tmp);
 		text = text.substr(text.find_first_of(" \n\r\t") + 1);
 	}
-	// if (tmp.find_first_of("/") == std::string::npos)
-	// 	error("Error: invalid path in try_files: ");
 	config.try_files.push_back(text);
 
 	
