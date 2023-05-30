@@ -26,6 +26,7 @@
 #include <arpa/inet.h>
 #include <poll.h>
 
+struct s_config;
 
 typedef	struct	s_location
 {
@@ -34,6 +35,7 @@ typedef	struct	s_location
 	std::vector<std::string>	allowed_methods;
 	std::string					path;	// path
 	std::string					content;// block
+	s_config					*config;
 	s_location&	operator=(s_location const & rhs)
 	{
 		this->regex = rhs.regex;
@@ -58,7 +60,8 @@ typedef struct	s_config
 	unsigned long				client_max_body_size;	// client_max_body_size
 	std::vector<std::string>	allowed_methods;
 	std::vector<t_location>		locations;			// location
-	std::vector<std::string>	files;					// files to try
+	std::vector<std::string>	try_files;			// files to try
+	std::vector<std::string>	return_;
 	std::string					cgi_script;
 	bool						valid;
 
@@ -78,7 +81,7 @@ typedef struct	s_config
 		index = src.index;
 		error_pages = src.error_pages;
 		allowed_methods = src.allowed_methods;
-		files = src.files;
+		try_files = src.try_files;
 		root = src.root;
 		host = src.host;
 		client_max_body_size = src.client_max_body_size;
@@ -94,7 +97,7 @@ typedef struct	s_config
 		index = rhs.index;
 		error_pages = rhs.error_pages;
 		allowed_methods = rhs.allowed_methods;
-		files = rhs.files;
+		try_files = rhs.try_files;
 		root = rhs.root;
 		host = rhs.host;
 		client_max_body_size = rhs.client_max_body_size;
@@ -204,5 +207,6 @@ std::string	myTrim(std::string str);
 // Parsing
 std::vector<t_config>	parse(std::string text);
 bool					parseRequest(std::string buffer, t_request &request);
-void					parseLocationContent(t_location *location);
+t_config		parseLocationContentConfig(std::string content, t_config &config);
+// void					parseLocationContentConfig(t_connection &conn);
 void 					divideServers(std::string text, std::vector<std::string> serverBlocks);

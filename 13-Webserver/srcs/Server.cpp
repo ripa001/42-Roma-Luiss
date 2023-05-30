@@ -152,9 +152,25 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 
 	if (path.find("?") != path.npos)
 		path = path.substr(0, path.find("?"));
-	for (std::string::iterator iter = conn.location->content.begin();conn.location->content.find("$uri") != std::string::npos;iter = conn.location->content.begin())
-		conn.location->content.replace(iter + conn.location->content.find("$uri"), iter + conn.location->content.find("$uri") + 4, path);
-	parseLocationContent(conn.location);
+	// TODO: check if replace right string in location 
+	// std::cout << "Path: " << path << std::endl;
+	// std::cout << "Location conf try_files: " << conn.location->config->allowed_methods[0] << std::endl;
+	for (std::vector<std::string>::iterator iter = conn.location->config->try_files.begin(); iter != conn.location->config->try_files.end(); iter++) {
+		std::cout << "COnfig di location è buggutissimooo: " << conn.location->config << std::endl;
+		(void)iter;
+		// while (iter->find("$uri") != iter->npos) {
+		// 	size_t index = std::distance(conn.location->config->try_files.begin(), iter);
+		// 	std::cout << "Location conf try_files: " << *iter << index << std::endl;
+		// 	conn.location->config->try_files[index].replace(iter->find("$uri"), iter->find("$uri") + 4, path);
+		// }
+		// std::cout << "Location conf try_files: " << *iter << std::endl;
+	}
+	//  conn.location->config;
+	// for (std::string::iterator iter = conn.location->content.begin();conn.location->content.find("$uri") != std::string::npos;iter = conn.location->content.begin())
+	// 	conn.location->content.replace(iter + conn.location->content.find("$uri"), iter + conn.location->content.find("$uri") + 4, path);
+	// parseLocationContentConfig(conn);
+	//TODO follow il parsing di dd per le operazioni da effettuare sulla connection
+
 	return (ret);
 }
 
@@ -192,6 +208,7 @@ int	Server::handleClient(int socket) {
 			defaultAnswerError(404, *it);
 			return (1);
 		}
+		// std::cout << "Location found at aaaa: " << it->location->config->allowed_methods[0] << std::endl;
 		std::cout << "Location found at path: " << it->location->path << std::endl;
 		it->config = getConfigByConnection(*it);
 	}
