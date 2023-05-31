@@ -34,7 +34,7 @@ class Server
 		t_location*											findLocationByConnection(t_connection &conn);
 		t_config*											findConfigByConnection(t_connection &conn);
 		bool												isRegex(std::string path, t_config *config);
-
+		int													execGet(t_connection &conn);
 	public:
 		bool												startServer();
 		int													getSocket();

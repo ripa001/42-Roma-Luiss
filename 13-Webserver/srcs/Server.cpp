@@ -146,12 +146,17 @@ t_location*	Server::findLocationByConnection(t_connection &conn) {
 }
 
 t_config	Server::getConfigByConnection(t_connection &conn) {
-	t_config ret = *(findConfigByConnection(conn));
+	// t_config ret = *(findConfigByConnection(conn));
+	t_config ret;
 	std::string path = conn.request.path;
 	std::string toCompare[9] = {"root", "autoindex", "index", "error_page", "client_max_body_size", "allowed_methods", "try_files", "return", "cgi_pass"};
 	if (path.find("?") != path.npos)
 		path = path.substr(0, path.find("?"));
 	s_config& config = *(conn.location->config);
+	if (config.client_max_body_size && std::strlen(conn.request.body.c_str()) > config.client_max_body_size) {
+		defaultAnswerError(413, conn);
+		return (t_config(false));
+	}
 	for (std::vector<std::string>::iterator iter = config.try_files.begin(); iter != config.try_files.end(); iter++) {
 	
 		std::cout << "COnfig di location è buggutissimooo: " << *iter << std::endl;
@@ -162,13 +167,41 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 		}
 		std::cout << "Ora é un po' meno buggato: " << *iter << std::endl;
 	}
-
+	
 	//TODO follow il parsing di dd per le operazioni da effettuare sulla connection
 
-	return (ret);
+	return (config);
 }
 
+// int 		VirtServ::execGet(t_connInfo & conn)
+// {
+// 	std::vector<std::pair<std::string, std::string> >::iterator it;
+// 	for (it = _storeReq.begin(); it != _storeReq.end(); it++) {
+// 		if (it->first == conn.headers) {
+// 			conn.request.method.clear();
+// 			send(conn.socket, it->second.c_str(), it->second.size(), 0);
+// 			return 1;
+// 		}
+// 	}
 	
+// 	tryFiles(conn); conn.request.method.clear(); return 1;
+// }
+int Server::execGet(t_connection &conn) {
+	std::vector<std::pair<std::string, std::string> >::iterator it;
+	std::cout << "ExecGet" << std::endl;
+	for (it = _storeReq.begin(); it != _storeReq.end(); it++) {
+		if (it->first == conn.headers) {
+			conn.request.method.clear();
+			std::cout << "Sending: " << it->second << std::endl;
+			send(conn.socket, it->second.c_str(), it->second.size(), 0);
+			return (1);
+		}
+	}
+	return (1);
+
+	// TODO try files menagement and return
+	// tryFiles(conn); conn.request.method.clear(); return 1;
+}
 
 int	Server::handleClient(int socket) {
 	std::vector<t_connection>::iterator it = findSocket(socket);
@@ -205,7 +238,18 @@ int	Server::handleClient(int socket) {
 		// std::cout << "Location found at aaaa: " << it->location->config->allowed_methods[0] << std::endl;
 		std::cout << "Location found at path: " << it->location->path << std::endl;
 		it->config = getConfigByConnection(*it);
+		if (it->config.valid == false)
+		{
+			_connections.erase(it);
+			return (1);
+		}
+		it->headers = it->buffer;
+		it->buffer.clear();
 	}
+	std::cout << "Request parsed method: " << it->request.method << std::endl;
+	if (it->request.method == "GET")
+		execGet(*it);
+
 	return (0);
 }
 

@@ -176,30 +176,32 @@ typedef struct	s_connection
 	std::string				buffer;
 	t_config				config;
 	t_location*				location;
+	std::string				headers;
+
 
 
 	s_connection() {};
 	s_connection(int i) : socket(i) {};
 }				t_connection;
 
-typedef struct	s_connInfo
-{
-	int									fd;
-	std::string							buffer;
-	std::string							headers;
-	std::string							path;
-	t_config							config;
-	int									chunk_size;
-	// t_request							request;
-	// t_response							response;
-	std::string							body;
-	t_location*							location;
-	bool								set_cookie;
-	std::pair<std::string, std::string>	cookie;
+// typedef struct	s_connInfo
+// {
+// 	int									fd;
+// 	std::string							buffer;
+// 	std::string							headers;
+// 	std::string							path;
+// 	t_config							config;
+// 	int									chunk_size;
+// 	// t_request							request;
+// 	// t_response							response;
+// 	std::string							body;
+// 	t_location*							location;
+// 	bool								set_cookie;
+// 	std::pair<std::string, std::string>	cookie;
 	
-	s_connInfo() : chunk_size(-1), set_cookie(false) {};
-	s_connInfo(int i) : fd(i), chunk_size(-1), set_cookie(false) {};
-}			t_connInfo;
+// 	s_connInfo() : chunk_size(-1), set_cookie(false) {};
+// 	s_connInfo(int i) : fd(i), chunk_size(-1), set_cookie(false) {};
+// }			t_connInfo;
 
 void		error(std::string const err);
 std::string	myTrim(std::string str);
