@@ -176,7 +176,7 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 // int 		VirtServ::execGet(t_connInfo & conn)
 // {
 // 	std::vector<std::pair<std::string, std::string> >::iterator it;
-// 	for (it = _storeReq.begin(); it != _storeReq.end(); it++) {
+// 	for (it = _cacheRequests.begin(); it != _cacheRequests.end(); it++) {
 // 		if (it->first == conn.headers) {
 // 			conn.request.method.clear();
 // 			send(conn.socket, it->second.c_str(), it->second.size(), 0);
@@ -186,10 +186,26 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 	
 // 	tryFiles(conn); conn.request.method.clear(); return 1;
 // }
+
+int Server::tryFiles(t_connection &conn) {
+	// std::vector<std::string>::iterator it = conn.location->config->try_files.begin();
+	for (std ::vector<std::string>::iterator it = conn.location->config->try_files.begin(); it != conn.location->config->try_files.end(); it++) {
+		std::cout << "TryFiles: " << *it << conn.request.method<< std::endl;
+		if (conn.config.allowed_methods.size() && std::find(conn.config.allowed_methods.begin(), conn.config.allowed_methods.end(), conn.request.method) == conn.config.allowed_methods.end()) {
+			defaultAnswerError(405, conn);
+			return (1);
+		}
+		// TODO: check if file exists try get it and send response, store the request in cacheRequests
+	}
+	return (1);
+}
+
 int Server::execGet(t_connection &conn) {
 	std::vector<std::pair<std::string, std::string> >::iterator it;
 	std::cout << "ExecGet" << std::endl;
-	for (it = _storeReq.begin(); it != _storeReq.end(); it++) {
+	for (it = _cacheRequests.begin(); it != _cacheRequests.end(); it++) {
+		std::cout << "ExecGet" << std::endl;
+
 		if (it->first == conn.headers) {
 			conn.request.method.clear();
 			std::cout << "Sending: " << it->second << std::endl;
@@ -197,6 +213,7 @@ int Server::execGet(t_connection &conn) {
 			return (1);
 		}
 	}
+	tryFiles(conn); conn.request.method.clear(); return 1;
 	return (1);
 
 	// TODO try files menagement and return

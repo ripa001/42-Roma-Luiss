@@ -22,7 +22,7 @@ class Server
 
 		std::vector<t_config>								_configs;
 		t_config*											_config;
-		std::vector<std::pair<std::string, std::string> >	_storeReq; 
+		std::vector<std::pair<std::string, std::string> >	_cacheRequests; 
 		struct sockaddr_in									_sin;
 		struct sockaddr_in									_client;
 		socklen_t											_size;
@@ -35,6 +35,7 @@ class Server
 		t_config*											findConfigByConnection(t_connection &conn);
 		bool												isRegex(std::string path, t_config *config);
 		int													execGet(t_connection &conn);
+		int 												tryFiles(t_connection &conn);
 	public:
 		bool												startServer();
 		int													getSocket();
