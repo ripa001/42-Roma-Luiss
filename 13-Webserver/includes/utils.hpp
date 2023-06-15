@@ -21,7 +21,7 @@
 #include <cstdlib>
 #include <cstdio>
 #include <algorithm>
-
+#include <dirent.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <poll.h>

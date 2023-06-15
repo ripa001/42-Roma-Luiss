@@ -188,14 +188,50 @@ t_config	Server::getConfigByConnection(t_connection &conn) {
 // }
 
 int Server::tryFiles(t_connection &conn) {
+	std::string filename;
+	std::string fullPath = conn.config.root;
+	char rootPath[conn.config.root.size()];
+	std::string	rootPath2;
+	// DIR *directory;
+	// struct dirent *dirent;
+
+
+
+	conn.config.root.copy(rootPath, conn.config.root.size());
+	rootPath[conn.config.root.size()] = '\0';
+	rootPath2 = rootPath;
 	// std::vector<std::string>::iterator it = conn.location->config->try_files.begin();
 	for (std ::vector<std::string>::iterator it = conn.location->config->try_files.begin(); it != conn.location->config->try_files.end(); it++) {
-		std::cout << "TryFiles: " << *it << conn.request.method<< std::endl;
+		filename = *it;
 		if (conn.config.allowed_methods.size() && std::find(conn.config.allowed_methods.begin(), conn.config.allowed_methods.end(), conn.request.method) == conn.config.allowed_methods.end()) {
 			defaultAnswerError(405, conn);
 			return (1);
 		}
-		// TODO: check if file exists try get it and send response, store the request in cacheRequests
+		if (!std::strncmp(conn.location->path.c_str(), (*it).c_str(), std::strlen(conn.location->path.c_str()))) {
+			filename = filename.substr(std::strlen((conn.location->path).c_str()));
+			std::cout << "Filename: " << filename << std::endl;
+			if (*filename.begin() == '/' && filename.length() > 1)
+				filename = filename.substr(1);
+			else if (*filename.begin() == '/')
+				filename = "";
+			else if (filename.size() == 0)
+				filename = "/";
+			if (filename.find('/') != std::string::npos)
+			{
+				if (*rootPath2.rbegin() != '/')
+					rootPath2 = std::string(rootPath) + "/" + filename.substr(0, filename.find_last_of("/"));
+				else
+					rootPath2 = std::string(rootPath) + filename.substr(0, filename.find_last_of("/"));
+				std::cout << "RootPath2: " << rootPath2 << std::endl;
+				filename = filename.substr(filename.find_last_of("/"));
+				if (*filename.begin() == '/' && filename.length() > 1)
+					filename = filename.substr(1);
+				else if (*filename.begin() == '/')
+					filename = "";
+				std::cout << "Filename fin: " << filename << std::endl;
+			}
+		}
+			// TODO: check if file exists try get it and send response, store the request in cacheRequests
 	}
 	return (1);
 }
