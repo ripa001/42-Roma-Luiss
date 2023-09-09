@@ -183,6 +183,12 @@ void	parseRoot(std::string value, t_config &config) {
 	config.root = value;
 }
 
+void	parseCgi(std::string value, t_config &config) {
+	if (value.find_first_of(" \n\r\t") != std::string::npos)
+		error("Error: invalid root");
+	config.cgi_script = value;
+}
+
 void	parseAutoIndex(std::string value, t_config &config) {
 	if (value == "on")
 		config.autoindex = true;
@@ -238,23 +244,20 @@ void	parseClientMaxBodySize(std::string value, t_config &config) {
 		}
 		else
 			error("Error: invalid client body max size syntax");
-		config.client_max_body_size = size;
 	}
+	config.client_max_body_size = size;
 }
 
 void	parseAllowedMethods(std::string text, t_config &config) {
 	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
 	std::string	method;
 	int count = 0;
-	
-	std::cout << "text: " << text << std::endl;
 
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		method = text.substr(0, text.find_first_of(" \n\r\t"));
 		count++;
 		if (std::find(methods, methods + 5, method) == methods + 5)
 			error("Error: invalid method in server block: ");
-		
 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
 			continue;
 		config.allowed_methods.push_back(method);
@@ -291,8 +294,8 @@ void convertToSConfig(const t_config& source, s_config& target)
 void	parseLocationBlock(std::string text, t_config &config) {
 	t_location	location;
 	t_config	tmp;
-    location.config = new s_config();
 
+    location.config = new s_config();
 	location.regex = false;
 	location.exact_path = false;
 	text = myTrim(text.substr(8));
@@ -393,32 +396,34 @@ std::vector<t_config>	parse(std::string text) {
 	return(parseServerBlocks(serverBlocks));
 }
 
-bool	parseRequest(std::string buffer, t_request &request) {
+bool	parseRequest(std::string buffer, t_request &request, t_connection &conn) {
 	std::string	key;
 	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
 
 	buffer = myTrim(buffer);
+	conn.request.line = buffer.substr(buffer.find_first_of("/"), buffer.npos);
+	conn.request.line = conn.request.line.substr(0, conn.request.line.find_first_of("\r\n"));
+	conn.path = conn.request.line.substr(0, conn.request.line.find(" "));
+	if (conn.path.find("registered.html?") != conn.path.npos) {
+		conn.request.arguments = conn.path.substr(conn.path.find("?") + 1);
+		conn.path = conn.path.substr(0, conn.path.find("?"));
+	}
 	request.method = buffer.substr(0, buffer.find_first_of(" "));
-	std::cout << "request.method: " << request.method << std::endl;
 	buffer = myTrim(buffer.substr(buffer.find_first_of(" ") + 1));
 	request.path = buffer.substr(0, buffer.find_first_of(" "));
-	std::cout << "request.path: " << request.path << std::endl;
 	if (std::find(methods, methods + 5, request.method) == methods + 5)
 		return (0);
 	buffer = myTrim(buffer.substr(buffer.find_first_of("\n") + 1));
 	while (buffer.find_first_of("\n") != std::string::npos) {
 		key = buffer.substr(0, buffer.find_first_of(":"));
-		if (request.headers.find(key) == request.headers.end())
-			return (0);
-		request.headers[key] = buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2);
-		std::cout << buffer.substr(0, buffer.find_first_of(":")) << ": " << request.headers[key] << std::endl;
+		if (request.headers.find(key) != request.headers.end())
+			request.headers[key] = myTrim(buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2));
 		buffer = myTrim(buffer.substr(buffer.find_first_of("\n") + 1));
 	}
 	key = buffer.substr(0, buffer.find_first_of(":"));
 	if (request.headers.find(key) == request.headers.end())
-		return (0);
-	request.headers[key] = buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2);
-	std::cout << buffer.substr(0, buffer.find_first_of(":")) << ": " << request.headers[key] << std::endl;
+		return (1);
+	request.headers[key] = myTrim(buffer.substr(buffer.find_first_of(":") + 2, buffer.find_first_of("\n") - buffer.find_first_of(":") - 2));
 	return (1);
 }
 
@@ -427,43 +432,12 @@ void parseTryFiles(std::string text, t_config &config) {
 
 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
 		tmp = text.substr(0, text.find_first_of(" \n\r\t"));
-		std::cout << "tmp try: " << tmp << std::endl;
-		// if (tmp.find_first_of("/") == std::string::npos)
-		// 	error("Error: invalid path in try_files: ");
 		config.try_files.push_back(tmp);
 		text = text.substr(text.find_first_of(" \n\r\t") + 1);
 	}
 	config.try_files.push_back(text);
-
-	
 }
 
-
-// void	parseAllowedMethodsLocation(std::string text, t_config &config) {
-// 	std::string	methods[5] = { "GET", "POST", "DELETE", "PUT", "HEAD" };
-// 	std::string	method;
-// 	int count = 0;
-
-// 	while (text.find_first_of(" \n\r\t") != std::string::npos) {
-// 		method = text.substr(0, text.find_first_of(" \n\r\t"));
-// 		count++;
-// 		if (std::find(methods, methods + 5, method) == methods + 5)
-// 			error("Error: invalid method in server block: ");
-		
-// 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), method) != config.allowed_methods.end())
-// 			continue;
-// 		config.allowed_methods.push_back(method);
-// 		text = myTrim(text.substr(text.find_first_of(" \n\r\t") + 1));
-// 	}
-// 	if (text != "") {
-// 		count++;
-// 		if (std::find(methods, methods + 5, text) == methods + 5)
-// 			error("Error: invalid method in server block: ");
-// 		if (std::find(config.allowed_methods.begin(), config.allowed_methods.end(), text) != config.allowed_methods.end())
-// 			return ;
-// 		config.allowed_methods.push_back(text);
-// 	}
-// }
 void parseReturn(std::string text, t_config &config) {
 	const std::string res[] = {"301"};
 	// std::string	result;
@@ -511,13 +485,8 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 	std::string	line;
 	std::string	key;
 	std::string	value;
-	// t_config	config;
-	// t_location	*location = conn.location; 
 
-	// std::cout << "location content: " << location->content << std::endl;
-	// while (line = location->content.substr(0, location->content.find("\n") + 1), line != "") {
 	for (line = content.substr(0, content.find("\n") + 1); line != ""; line = content.substr(0, content.find("\n") + 1)) {
-		std::cout << "line: " << line << std::endl;
 		line = myTrim(line);
 		if (line.find_last_of(";") != line.length() - 1)
 			error("Error: invalid instruction in location block -> ;");
@@ -527,7 +496,6 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 			error("Error: invalid instruction in location block");
 		key = line.substr(0, line.find_first_of(" \n\r\t"));
 		value = myTrim(line.substr(line.find_first_of(" \n\r\t") + 1, line.find(";", 0) - line.find_first_of(" \n\r\t") - 1));
-		std::cout << "key: " << key << std::endl;
 		if (key == "root")
 			parseRoot(value, config);
 		else if (key == "allowed_methods")
@@ -544,32 +512,14 @@ t_config	parseLocationContentConfig(std::string content, t_config &config) {
 			parseTryFiles(value, config);
 		else if (key == "return")
 			parseReturn(value, config);
-		// else if (key == "cgi_pass")
+		else if (key == "cgi_pass")
+			parseCgi(value, config);
 		// 	;
-
 		if (myTrim(content).find("\n") == std::string::npos)
 			break ;
 		content = myTrim(content.substr(content.find("\n") + 1));
 		if (content.find("\n") == std::string::npos)
 			content = content + "\n";
-
-		// std::cout << "config: " << config.root << std::endl;
-		// std::cout << "config.allowed_methods: " << config.allowed_methods[0] << std::endl;
-		// std::cout << "config.autoindex: " << config.autoindex << std::endl;
-		// std::cout << "config.error_page: " << config.error_pages[0] << std::endl;
-		// std::cout << "config.index: " << config.index[0] << std::endl;
-		// std::cout << "config.client_max_body_size: " << config.client_max_body_size << std::endl;
-		// std::cout << "config.try_files: " << config.try_files[0] << std::endl;
-		// std::cout << "config.return_: " << config.return_[0] << std::endl;
-		// std::cout << "config.return_: " << config.return_[1] << std::endl;
-
 	}
-
-
-
-
 	return config;
-	// lo
-
 }
-

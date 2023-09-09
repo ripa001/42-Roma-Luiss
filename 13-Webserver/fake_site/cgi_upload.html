@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<title>Upload page</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+	<body>
+	<form ACTION="cgi/upload.cgi" METHOD="post" ENCTYPE="multipart/form-data">
+	Photo to Upload: <input TYPE="file" NAME="photo">
+	<br><br>
+	Your Email Address: <input TYPE="text" NAME="email_address">
+	<br><br>
+	<input TYPE="submit" NAME="Submit" VALUE="Submit Form">
+	</form>
+	<hr>
+	<h1 style="text-align: center;">GALLERY</h1>
+	<div id="photo_container" style="display: flex; flex-wrap: wrap; flex-basis: 33%; align-items: center;">
+	</div>
+	</body>
+	<script src="photos.js"></script>
+</html>

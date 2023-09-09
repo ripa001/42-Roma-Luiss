@@ -5,7 +5,8 @@ SRC		=	main.cpp \
 			utils.cpp \
 			Server.cpp \
 			parser.cpp \
-			WebServer.cpp 
+			WebServer.cpp \
+			Cgi.cpp
 SRCS	=	$(addprefix srcs/, $(SRC))
 OBJS	=	$(SRCS:.cpp=.o)
 

@@ -23,7 +23,8 @@ class WebServer
 		std::vector<t_config> _configs;
 		struct pollfd		*_pfds;
 
-
+		void	del_from_pfds(struct pollfd pfds[], int i, int *fd_count);
+		void	add_to_pfds(struct pollfd *pfds[], int newfd, int *fd_count, int *fd_size);
 
 	public:
 		WebServer(std::string const &configPath);

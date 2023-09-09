@@ -15,6 +15,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <stack>
 #include <map>
 #include <fstream>
 #include <cstring>
@@ -24,6 +25,11 @@
 #include <dirent.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <fcntl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <poll.h>
 
 struct s_config;
@@ -89,6 +95,7 @@ typedef struct	s_config
 		cgi_script = src.cgi_script;
 		locations = src.locations;
 	}
+
 	s_config&	operator=(s_config const & rhs)
 	{
 		port = rhs.port;
@@ -146,8 +153,8 @@ typedef struct	s_request
 typedef struct	s_response
 {
 	std::string											line;
-	std::map<std::string, std::string>					headers;
 	std::string											body;
+	std::map<std::string, std::string>					headers;
 
 	s_response()
 	{
@@ -170,18 +177,21 @@ typedef struct	s_response
 
 typedef struct	s_connection
 {
-	int						socket;
+	int						socketfd;
+	int						buff_size;
+	bool					set_cookie;
+	std::map<std::string, std::string>	cookie;
+	std::string				path;
+	std::string				buffer;
+	std::string				headers;
+	std::string				body;
 	t_request				request;
 	t_response				response;
-	std::string				buffer;
 	t_config				config;
 	t_location*				location;
-	std::string				headers;
 
-
-
-	s_connection() {};
-	s_connection(int i) : socket(i) {};
+	s_connection() : socketfd(0), buff_size(-1), set_cookie(false) {};
+	s_connection(int i) : socketfd(i), buff_size(-1), set_cookie(false) {};
 }				t_connection;
 
 // typedef struct	s_connInfo
@@ -204,11 +214,13 @@ typedef struct	s_connection
 // }			t_connInfo;
 
 void		error(std::string const err);
+void		error(std::string const err, int socket);
 std::string	myTrim(std::string str);
-
+std::string getDateTime();
 // Parsing
 std::vector<t_config>	parse(std::string text);
-bool					parseRequest(std::string buffer, t_request &request);
-t_config		parseLocationContentConfig(std::string content, t_config &config);
+bool					parseRequest(std::string buffer, t_request &request, t_connection &conn);
+t_config				parseLocationContentConfig(std::string content, t_config &config);
 // void					parseLocationContentConfig(t_connection &conn);
 void 					divideServers(std::string text, std::vector<std::string> serverBlocks);
+std::map<std::string, std::string>::iterator					findKey(std::map<std::string, std::string> &map, std::string key);

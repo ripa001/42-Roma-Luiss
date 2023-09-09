@@ -27,9 +27,26 @@ Server* findServer(std::vector<Server> &servers, std::string host, int port) {
 			if ((*it).getConfig(i)->host == host && (*it).getConfig(i)->port == port)
 				return (&(*it));
 	return (NULL);
+
 }
 
-void	WebServer::startLooping(int fd_count, int fd_size) {
+void WebServer::add_to_pfds(struct pollfd *pfds[], int newfd, int *fd_count, int *fd_size)
+{
+	if (*fd_count == *fd_size) {
+		*fd_size *= 2; // Double it
+		*pfds = (struct pollfd *)realloc(*pfds, sizeof(**pfds) * (*fd_size));
+	}
+	(*pfds)[*fd_count].fd = newfd;
+	(*pfds)[*fd_count].events = POLLIN | POLLPRI; // Check ready-to-read
+	(*fd_count)++;
+}
+
+void WebServer::del_from_pfds(struct pollfd pfds[], int i, int *fd_count) {
+	pfds[i] = pfds[*fd_count-1];
+	(*fd_count)--;
+}
+
+void	WebServer::startLooping(int fd_count,  int fd_size) {
 	int	socket;
 	int poll_count;
 
@@ -43,20 +60,13 @@ void	WebServer::startLooping(int fd_count, int fd_size) {
 		for (int i = 0; i < fd_count; i++) {
 			if (_pfds[i].revents & (POLLIN | POLLPRI | POLLRDNORM)) {
 				for (std::vector<Server>::iterator it = _servers.begin(); it != _servers.end(); ++it) {
-					if (_pfds[i].fd == it->getSocket()) {;
+					if (_pfds[i].fd == it->getSocket()) {
 						socket = it->newConnection(it->getSocket());
-						if (fd_count == fd_size) {
-							fd_size *= 2; // Double it
-							_pfds = (struct pollfd *)realloc(_pfds, sizeof(*_pfds) * (fd_size));
-						}
-						_pfds[fd_count].fd = socket;
-						_pfds[fd_count].events = POLLIN | POLLPRI; // Check ready-to-read
-						fd_count++;
+						if (socket != -1)
+							this->add_to_pfds(&_pfds, socket, &fd_count, &fd_size);
 					} else {
-						it->handleClient(_pfds[i].fd);
-						// if (it->handleClient(_pfds[i].fd) == 1) {
-						// 	del_from_pfds(_pfds, i, &fd_count);
-						// }
+						if (it->handleClient(_pfds[i].fd) == 1)
+							del_from_pfds(_pfds, i, &fd_count);
 					}
 				}
 			}
@@ -65,19 +75,23 @@ void	WebServer::startLooping(int fd_count, int fd_size) {
 }
 
 void	WebServer::start() {
-	int fd_count = 0;
-	int fd_size;
+	std::stack<int>	vServSock;
+	int				fd_count = 0;
+	int				fd_size;
 
-	this->_pfds = (struct pollfd*)malloc(sizeof(*_pfds) * _servers.size());
-
-	for (std::vector<Server>::size_type i = 0; i < _servers.size(); i++) {
-		_pfds[i].fd = _servers[i].getSocket();
+	for(std::vector<Server>::iterator it = _servers.begin(); it < _servers.end(); it++) {
+		vServSock.push(it->getSocket());
+	}
+	fd_size = vServSock.size();
+	this->_pfds = (struct pollfd*)malloc(sizeof(*_pfds) * fd_size);
+	
+	for(int i = 0; vServSock.size() > 0; i++) {
+		_pfds[i].fd = vServSock.top();
 		_pfds[i].events = POLLIN;
+		vServSock.pop();
 		fd_count++;
 	}
-	fd_size = fd_count;
 	startLooping(fd_count, fd_size);
-	
 }
 
 
@@ -88,58 +102,18 @@ void	WebServer::createConfigs(std::string const &configPath) {
 	std::vector<t_config>		v_prime;
 	Server*						server;
 	
-	if (!confFile.is_open())
-		throw std::runtime_error("Error: cannot open config file");
 
-	// Save file in one string
+	if (!confFile || !confFile.is_open()){
+		std::cout << "Error: Can't open config file" << std::endl;
+		exit(1);
+	}
 	buffer << confFile.rdbuf();
 	text = buffer.str();
+	
 
 	// Divide file into server blocks
 	v_prime = parse(text);
 	_configs.insert(_configs.end(),v_prime.begin(),v_prime.end());
-	// for (std::vector<t_config>::iterator it = _configs.begin(); it != _configs.end(); it++) {
-	// 	std::cout << "Server Name:  ";
-
-	// 	for (std::vector<std::string>::iterator it2 = it->server_name.begin(); it2 != it->server_name.end(); it2++) {
-	// 		std::cout << *it2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << "Port: " << it->port << std::endl;
-	// 	std::cout << "Host: " << it->host << std::endl;
-	// 	std::cout << "Root: " << it->root << std::endl;
-	// 	std::cout << "Autoindex: " << it->autoindex << std::endl;
-	// 	std::cout << "Client max body size: " << it->client_max_body_size << std::endl;
-	// 	std::cout << "Allowed methods: ";
-	// 	for (std::vector<std::string>::iterator it2 = it->allowed_methods.begin(); it2 != it->allowed_methods.end(); it2++) {
-	// 		std::cout << *it2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << "Index: ";
-	// 	for (std::vector<std::string>::iterator it2 = it->index.begin(); it2 != it->index.end(); it2++) {
-	// 		std::cout << *it2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << "Error pages: ";
-	// 	for (std::vector<std::string>::iterator it2 = it->error_pages.begin(); it2 != it->error_pages.end(); it2++) {
-	// 		std::cout << *it2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << "Files: ";
-	// 	for (std::vector<std::string>::iterator it2 = it->files.begin(); it2 != it->files.end(); it2++) {
-	// 		std::cout << *it2 << " ";
-	// 	}
-	// 	std::cout << std::endl;
-	// 	std::cout << "CGI script: " << it->cgi_script << std::endl;
-	// 	std::cout << "Locations: " << std::endl;
-	// 	for ( std::vector<t_location>::iterator it2 = it->locations.begin(); it2 != it->locations.end(); it2++) {
-	// 		std::cout << "  Regex: " << it2->regex << std::endl;
-	// 		std::cout << "  Exact: " << it2->exact_path << std::endl;
-	// 		std::cout << "  Content: " << it2->content << std::endl;
-	// 		std::cout << "  Path: " << it2->path << std::endl;
-	// 		}
-	// 	std::cout << " -------------------------------------- " << std::endl;
-	// 	}
 	for (std::vector<t_config>::iterator it = _configs.begin(); it != _configs.end(); it++) {
 		server = findServer(_servers, it->host, it->port);
 		if (server == NULL)
@@ -147,6 +121,7 @@ void	WebServer::createConfigs(std::string const &configPath) {
 		else
 			server->getConfigs().push_back(*it);
 	}
+	confFile.close();
 	start();
 	// divideServers(text, serverBlocks);
 }
