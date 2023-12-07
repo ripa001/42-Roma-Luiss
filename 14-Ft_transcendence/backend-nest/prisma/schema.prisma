@@ -1,0 +1,155 @@
+
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "postgresql"
+	url = env("DATABASE_URL")
+}
+
+
+// UDTs (User defined data types)
+enum ChatRoomVisibility {
+	public
+	private
+	protected
+}
+
+enum GameMode {
+	public
+	direct
+}
+
+//Entities
+model Player {
+	createdAt			DateTime					@default(now())
+	updatedAt			DateTime					@updatedAt
+
+	id					Int							@id
+	username			String						@unique
+	avatar				String
+
+	firstName			String ?
+	lastName			String ?
+	profileIntra		String ?
+	wins				Int							@default(0)
+	losses				Int							@default(0)
+	ladder_lvl			Int							@default(0)
+	profile_completed	Boolean						@default(false)
+
+	twofaSecret			String ?
+
+
+	sentFriendshipRequests		BeFriends[]			@relation("SendFriendship")
+	receivedFriendshipRequests	BeFriends[]			@relation("ReceiveFriendship")
+	sent_messages				Message[]			@relation("Sent")
+	received_messages_dm		Message[]			@relation("Recipient")
+	founded_channels			ChatRoom[]			@relation("Founded")
+	chatroomSubscriptions		Subscribed[]		@relation("Subscribed")
+	achievements				Achieved[]			@relation("Achieved")
+	HostedGames					Plays[]				@relation("HostGame")
+	asGuestGames				Plays[]				@relation("AcceptGame")
+}
+
+model Message {
+	createdAt			DateTime				@default(now())
+	updatedAt			DateTime				@updatedAt
+
+
+	content				String
+	timestamp			DateTime
+	messageID			Int						@id @default(autoincrement())
+
+
+
+	sender				Player					@relation("Sent", fields: [senderID], references: [id])
+	senderID			Int
+	receiver			Player	?				@relation("Recipient", fields: [receiverID], references: [id])
+	receiverID			Int	?
+	receivers			ChatRoom	?			@relation("RecipientS", fields: [receiverSID], references: [groupID])
+	receiverSID			Int	?
+}
+
+model ChatRoom {
+	createdAt			DateTime				@default(now())
+	updatedAt			DateTime				@updatedAt
+
+	groupID				Int						@id @default(autoincrement())
+	name				String
+
+	visibility			ChatRoomVisibility
+	password			String
+
+
+	messages			Message[]				@relation("RecipientS")
+	founder				Player					@relation("Founded", fields: [founderID], references: [id])
+	founderID			Int
+	subscriptions		Subscribed[]			@relation("hasParticipant")
+}
+
+model Achievement {
+	createdAt			DateTime				@default(now())
+	updatedAt			DateTime				@updatedAt
+
+	name				String					@id
+
+	description			String
+	picture				String
+
+	achievedBy			Achieved[]		@relation("Achieved")
+}
+
+
+//JOIN TABLES (many-to-many relations)
+model Plays {
+	matchID					Int			@id @default(autoincrement())
+
+	createdAt				DateTime	@default(now())
+	score_host				Int
+	score_Guest				Int
+
+	host					Player @relation("HostGame", fields: [hostID], references: [id])
+	hostID					Int
+	guest					Player @relation("AcceptGame", fields: [guestID], references: [id])
+	guestID					Int
+
+}
+
+model Subscribed {
+	isAdmin					Boolean
+	isMuted					Boolean
+	isBanned				Boolean
+
+	player					Player @relation("Subscribed", fields: [playerID], references: [id])
+	playerID				Int
+	chatroom				ChatRoom @relation("hasParticipant", fields: [chatroomID], references: [groupID])
+	chatroomID				Int
+
+	@@id([playerID, chatroomID])
+}
+
+model	BeFriends {
+	are_friends				Boolean	@default(false)
+	pending_friendship		Boolean	@default(true)
+	requestor_blacklisted	Boolean	@default(false)
+	recipient_blacklisted	Boolean	@default(false)
+
+	requestor				Player @relation("SendFriendship", fields: [requestorID], references: [id])
+	requestorID				Int
+	recipient				Player @relation("ReceiveFriendship", fields: [recipientID], references: [id])
+	recipientID				Int
+
+	@@id([requestorID, recipientID])
+}
+
+model	Achieved {
+	player				Player					@relation("Achieved", fields: [playerID], references: [id])
+	playerID			Int
+	achievement			Achievement				@relation("Achieved", fields: [achievementName], references: [name])
+	achievementName		String
+
+	date_of_issue		DateTime
+
+	@@id([playerID, achievementName])
+}

@@ -1,0 +1,55 @@
+#!/bin/bash
+
+COMPIL_MODE=$1
+
+case $COMPIL_MODE in
+    docker)
+        PATTERN_DELETE_LINE="#local"
+        PATTERN_DELETE_EMPTY_LINE="# local"
+        PATTERN_DELETE_SUBSTRING="\#docker"
+        ;;
+    local)
+        PATTERN_DELETE_LINE="#docker"
+        PATTERN_DELETE_EMPTY_LINE="# docker"
+        PATTERN_DELETE_SUBSTRING="\#local"
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+declare -a INFILES=("./env/.env_backend-nest" "./env/.env_frontend-vue-vite" "./env/.env_backend-nest_prisma")
+declare -a FINAL_DEST=("./backend-nest" "./frontend-vue-vite" "./backend-nest/prisma")
+
+for ((i=0; i<${#INFILES[@]}; i++))
+do
+    INFILE="${INFILES[$i]}"
+    TEMPFILE="$INFILE"_temp""
+    OUTFILE="$INFILE"_final""
+    FINAL_DEST_FILE="${FINAL_DEST[$i]}/.env"
+
+    # delete unwanted lines
+    grep -v "$PATTERN_DELETE_LINE\|$PATTERN_DELETE_EMPTY_LINE" "$INFILE" > "$TEMPFILE"
+
+    # delete unwanted substring
+    while read line;
+    do
+        echo ${line#${PATTERN_DELETE_SUBSTRING}};
+    done < "$TEMPFILE" > "$OUTFILE";
+
+    # set env file in the right spot and delete temp files
+    cp "$OUTFILE" "$FINAL_DEST_FILE"
+    rm -f "$TEMPFILE" "$OUTFILE"
+
+done
+
+# delete unwanted comments on docker compose if working on docker mode
+# if [ $COMPIL_MODE="docker" ]
+# then
+#     while read line;
+#     do
+#         echo ${line#\# };
+#     done < "./docker-compose.yml" > "./docker-compose_tmp.yml";
+#     cp "./docker-compose_tmp.yml" "./docker-compose.yml"
+#     rm -rf "./docker-compose_tmp.yml"
+# fi

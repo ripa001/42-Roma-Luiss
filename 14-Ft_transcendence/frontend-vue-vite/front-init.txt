@@ -1,0 +1,47 @@
+# Commands to set-up the front
+# TODO Vite
+# TODO Vue3
+# TODO Pinia
+# TODO Vue router
+# TODO Vuetify
+# TODO mdi fonts
+
+# create the app, select options : TypeScript, Pinia, router, Vitest, ESlint, Prettier
+npm create vue@3
+# once the app is created, install the packages, run format and test if the output is correct
+cd front-wip  
+npm install   
+npm run format
+npm run dev
+# install the vue client
+#! doesn't work yet
+npm install @vue/cli --save-dev
+npm install @vue/cli-service --save-dev
+# install the vuetify and the mdi fonts
+vue add vuetify
+npm install vuetify
+npm install @mdi/font -D
+# set-up vuetify in the project
+cat > src/plugins/vuetify.ts \
+"import 'vuetify/styles'
+import '@mdi/font/css/materialdesignicons.css' // Ensure you are using css-loader
+
+import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { aliases, mdi } from 'vuetify/iconsets/mdi'
+
+export default createVuetify({
+  components,
+  directives,
+  icons: {
+    defaultSet: 'mdi',
+    aliases,
+    sets: {
+      mdi,
+    },
+  },
+
+})"
+
+npm install --save axios vue-axios
